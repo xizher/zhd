@@ -4,6 +4,7 @@ import View, { ViewOptions } from 'ol/View'
 import { baseUtils } from '../../../js-utils/utilities/base-utils'
 import { Observer } from '../../../observer/observer'
 import { Basemap } from '../plugins/basemap/basemap'
+import { MapCursor } from '../plugins/map-cursor/map-cursor'
 import { IPlugins, WebMapPlugin } from './web-map-plugin'
 
 /** 地图接口 */
@@ -30,6 +31,7 @@ export class WebMap extends Observer<{
   //#region 公有属性（插件对象）
 
   public basemap?: Basemap
+  public mapCursor?: MapCursor
 
   //#endregion
 
