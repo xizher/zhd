@@ -1,4 +1,4 @@
-import { IObject } from "../global/interfaces.global"
+import { IObject } from '../global/interfaces.global'
 
 /** 监听处理函数接口 */
 export interface IObserverHandler {
@@ -7,7 +7,7 @@ export interface IObserverHandler {
 }
 
 /** 监听回调函数参数接口 */
-export interface IObserverCallbackParams<T extends string, K = {}> {
+export interface IObserverCallbackParams<T extends string, K> {
   /** 监听类型名 */
   name: T,
   /** 监听源对象 */
@@ -61,7 +61,7 @@ export interface IObserverCallback<T, K extends string, U> {
 export class Observer<T extends IObject> {
 
   /** 监听处理函数存储池 */
-  private _eventPool : Map<keyof T, Function[]> = new Map()
+  private _eventPool : Map<keyof T, IObserverCallback<IObject, string, this>[]> = new Map()
 
   /**
    * 绑定监听函数
