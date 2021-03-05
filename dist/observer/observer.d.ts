@@ -1,11 +1,11 @@
-import { IObject } from "../global/interfaces.global";
+import { IObject } from '../global/interfaces.global';
 /** 监听处理函数接口 */
 export interface IObserverHandler {
     /** 移除监听处理函数 */
     remove(): void;
 }
 /** 监听回调函数参数接口 */
-export interface IObserverCallbackParams<T extends string, K = {}> {
+export interface IObserverCallbackParams<T extends string, K> {
     /** 监听类型名 */
     name: T;
     /** 监听源对象 */
