@@ -1,13 +1,14 @@
+/* eslint-disable no-undef */
 import { test } from '@jest/globals'
-import  { TestClass } from '../../dist/observer/observer.test'
+import { TestClass } from '../../dist/observer/observer.test'
 
 test('can on and fire', () => {
   const testObj = new TestClass()
   let count = 0
-  testObj.on('inc', e => {
+  testObj.on('inc', () => {
     count++
   })
-  testObj.on('dev', e => {
+  testObj.on('dev', () => {
     count++
   })
   testObj.inc() // +1
@@ -21,10 +22,10 @@ test('can on and fire', () => {
 test('can off', () => {
   const testObj = new TestClass()
   let count = 0
-  const handler = testObj.on('inc', e => {
+  const handler = testObj.on('inc', () => {
     count++
   })
-  testObj.on('dev', e => {
+  testObj.on('dev', () => {
     count++
   })
   testObj.inc() // +1
@@ -39,13 +40,13 @@ test('can off', () => {
 test('can off all', () => {
   const testObj = new TestClass()
   let count = 0
-  testObj.on('inc', e => {
+  testObj.on('inc', () => {
     count++
   })
-  testObj.on('inc', e => {
+  testObj.on('inc', () => {
     count++
   })
-  testObj.on('dev', e => {
+  testObj.on('dev', () => {
     count++
   })
   testObj.inc() // +2
@@ -60,7 +61,7 @@ test('can off all', () => {
 test('off and off again', () => {
   const testObj = new TestClass()
   let count = 0
-  const handler = testObj.on('inc', e => {
+  const handler = testObj.on('inc', () => {
     count++
   })
   testObj.off('inc')
@@ -72,7 +73,7 @@ test('off and off again', () => {
 test('on only once', () => {
   const testObj = new TestClass()
   let count = 0
-  const handler = testObj.on('inc', e => {
+  const handler = testObj.on('inc', () => {
     count++
     handler.remove()
   })
