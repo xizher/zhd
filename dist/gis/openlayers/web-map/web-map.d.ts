@@ -4,6 +4,7 @@ import View, { ViewOptions } from 'ol/View';
 import { Observer } from '../../../observer/observer';
 import { Basemap } from '../plugins/basemap/basemap';
 import { MapCursor } from '../plugins/map-cursor/map-cursor';
+import { MapTools } from '../plugins/map-tools/map-tools';
 import { IPlugins, WebMapPlugin } from './web-map-plugin';
 /** 地图接口 */
 export interface IMap extends OLMap {
@@ -24,6 +25,7 @@ export declare class WebMap extends Observer<{
 }> implements IPlugins {
     basemap?: Basemap;
     mapCursor?: MapCursor;
+    mapTools?: MapTools;
     /** 目标容器ID */
     private _targetDiv;
     /** 地图对象 */

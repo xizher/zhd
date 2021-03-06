@@ -19,7 +19,7 @@ export declare class Basemap extends WebMapPlugin<{
     /** 天地图地址集合 */ private _tianDiTuUrls;
     /** GEOQ地图地址集合 */
     private _geoqUrls;
-    /** */
+    /** 高德地图地址集合 */
     private _gaodeUrls;
     /** 配置项 */
     private _options;
