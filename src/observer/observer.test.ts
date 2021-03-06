@@ -8,13 +8,13 @@ export class TestClass extends Observer<{
   constructor () {
     super()
   }
-  inc () {
+  inc () : void {
     this._value++
     this.fire('inc', {
       value: this._value
     })
   }
-  dec () {
+  dec () : void {
     this._value--
     this.fire('dev', {
       val: this._value
