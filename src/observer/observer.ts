@@ -15,8 +15,8 @@ export interface IObserverCallbackParams<T extends string, K> {
 }
 
 /** 监听回调函数接口 */
-export interface IObserverCallback<T, K extends string, U> {
-  (e: T & IObserverCallbackParams<K, U>) : void
+export interface IObserverCallback<T, K extends string, U, V = void> {
+  (e: T & IObserverCallbackParams<K, U>) : V
 }
 
 /**
