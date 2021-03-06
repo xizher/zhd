@@ -32,4 +32,33 @@ export declare const baseUtils: {
      * @param targetObj 目标对象
      */
     $extend<T_2, K extends T_2>(_deep: boolean, sourceObj: T_2, targetObj: K): T_2;
+    /**
+     * 防抖
+     * （当持续触发事件时，
+     * 一定时间段内没有再触发事件，
+     * 事件处理函数才会执行一次，
+     * 如果设定的时间到来之前，
+     * 又一次触发了事件，
+     * 就重新开始延时）
+     * @param fn 函数
+     * @param wait 延时毫秒数
+     * @param immediate 是否立即执行
+     */
+    debounce<T_3 extends Function>(fn: T_3, wait: number, immediate?: boolean): T_3 & {
+        cancle(): void;
+    };
+    /**
+     * 节流
+     * （当持续触发事件时，
+     * 保证一定时间段内只调用一次事件处理函数）
+     * @param fn 函数
+     * @param wait 间隔毫秒数
+     * @param options 配置项
+     */
+    throttle<T_4 extends Function>(fn: T_4, wait: number, options?: {
+        leading: boolean;
+        trailing: boolean;
+    }): T_4 & {
+        cancle(): void;
+    };
 };
