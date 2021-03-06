@@ -19,6 +19,8 @@ export declare class Basemap extends WebMapPlugin<{
     /** 天地图地址集合 */ private _tianDiTuUrls;
     /** GEOQ地图地址集合 */
     private _geoqUrls;
+    /** */
+    private _gaodeUrls;
     /** 配置项 */
     private _options;
     /** 底图项池 */
@@ -43,6 +45,8 @@ export declare class Basemap extends WebMapPlugin<{
     private _createTianDiTu;
     /** 创建GeoQ底图项 */
     private _createGeoQDiTu;
+    /** 创建Gaode底图项 */
+    private _createHGaoDeDiTu;
     /**
      * 安装插件
      * @param webMap WebMap对象
@@ -53,6 +57,11 @@ export declare class Basemap extends WebMapPlugin<{
      * @param key 底图项Key
      */
     selectBasemap(key: string): Basemap;
+    /**
+     * 设置底图可见性
+     * @param visible 可见性
+     */
+    setVisible(visible: boolean): Basemap;
     /**
      * 创建自定义底图项
      * @param key 底图项Key

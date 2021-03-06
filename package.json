@@ -4,7 +4,8 @@
   "description": "Something JavaScript Modules Code With Hi-Target",
   "main": "index.js",
   "dependencies": {
-    "ol": "^6.5.0"
+    "ol": "^6.5.0",
+    "vue": "^3.0.7"
   },
   "devDependencies": {
     "@types/ol": "^6.4.2",
