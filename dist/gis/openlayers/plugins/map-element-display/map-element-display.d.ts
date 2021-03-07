@@ -21,7 +21,7 @@ export interface IPolygonStyleOptions {
     stroke?: StrokeOptions;
     fill?: FillOptions;
 }
-declare type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions;
+export declare type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions;
 export interface IGeometryStyleOptions {
     pointStyle?: IPointStyleOptions;
     polylineStyle?: IPolylineStyleOptions;
@@ -104,7 +104,7 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
      * @param geometries 几何图形
      * @param styleOptions 样式配置项
      */
-    praseGraphics(geometries: Geometry | Geometry[], styleOptions: StyleOptions): Feature[];
+    parseGraphics(geometries: Geometry | Geometry[], styleOptions: StyleOptions): Feature[];
     /**
      * 解析高亮图元
      * @param geometries 几何图形
@@ -112,4 +112,3 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
      */
     parseHighlightGraphics(geometries: Geometry | Geometry[], styleOptions: StyleOptions): Feature[];
 }
-export {};

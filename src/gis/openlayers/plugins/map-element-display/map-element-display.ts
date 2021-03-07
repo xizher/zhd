@@ -33,7 +33,7 @@ export interface IPolygonStyleOptions {
   fill?: FillOptions
 }
 
-type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions
+export type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions
 
 export interface IGeometryStyleOptions {
   pointStyle?: IPointStyleOptions
@@ -306,7 +306,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param geometries 几何图形
    * @param styleOptions 样式配置项
    */
-  praseGraphics (geometries: Geometry | Geometry[], styleOptions: StyleOptions) : Feature[] {
+  parseGraphics (geometries: Geometry | Geometry[], styleOptions: StyleOptions) : Feature[] {
     const _geometries = Array.isArray(geometries) ? geometries : [geometries]
     return _geometries.map(geometry => {
       let style: Style, options = {}

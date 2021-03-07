@@ -217,7 +217,7 @@ export class MapElementDisplay extends WebMapPlugin {
      * @param geometries 几何图形
      * @param styleOptions 样式配置项
      */
-    praseGraphics(geometries, styleOptions) {
+    parseGraphics(geometries, styleOptions) {
         const _geometries = Array.isArray(geometries) ? geometries : [geometries];
         return _geometries.map(geometry => {
             let style, options = {};
