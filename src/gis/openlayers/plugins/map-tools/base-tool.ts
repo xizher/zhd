@@ -1,3 +1,4 @@
+import { IObject } from '../../../../global/interfaces.global'
 import Observer, { IObserverCallbackParams } from '../../../../observer/observer'
 import { IMap, IView } from '../../web-map/web-map'
 
@@ -7,7 +8,7 @@ export type OnToolActivedReture = boolean
 export type OnToolDeActivedReture = boolean
 
 /** 基础工具类 */
-export class BaseTool<T = {}> extends Observer<T & { // eslint-disable-line @typescript-eslint/ban-types
+export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line @typescript-eslint/ban-types
   'tool-actived': void // 工具打开
   'tool-deactived': void // 工具关闭
 }> {

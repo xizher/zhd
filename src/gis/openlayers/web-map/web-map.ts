@@ -5,6 +5,7 @@ import { baseUtils } from '../../../js-utils/utilities/base-utils'
 import { Observer } from '../../../observer/observer'
 import { Basemap } from '../plugins/basemap/basemap'
 import { MapCursor } from '../plugins/map-cursor/map-cursor'
+import { MapElementDisplay } from '../plugins/map-element-display/map-element-display'
 import { MapTools } from '../plugins/map-tools/map-tools'
 import { IPlugins, WebMapPlugin } from './web-map-plugin'
 
@@ -34,6 +35,7 @@ export class WebMap extends Observer<{
   public basemap?: Basemap
   public mapCursor?: MapCursor
   public mapTools?: MapTools
+  public mapElementDisplay?: MapElementDisplay
 
   //#endregion
 

@@ -1,6 +1,7 @@
 import { Observer } from '../../../observer/observer'
 import { Basemap } from '../plugins/basemap/basemap'
 import { MapCursor } from '../plugins/map-cursor/map-cursor'
+import { MapElementDisplay } from '../plugins/map-element-display/map-element-display'
 import { MapTools } from '../plugins/map-tools/map-tools'
 import { IMap, IView, WebMap } from './web-map'
 
@@ -8,6 +9,7 @@ export interface IPlugins {
   basemap?: Basemap
   mapCursor?: MapCursor
   mapTools?: MapTools
+  mapElementDisplay?: MapElementDisplay
 }
 
 /** WebMap插件类 */

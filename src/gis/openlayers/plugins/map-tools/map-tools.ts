@@ -1,6 +1,7 @@
 import { WebMap } from '../../web-map/web-map'
 import { WebMapPlugin } from '../../web-map/web-map-plugin'
 import { BaseTool } from './base-tool'
+import { DrawTool } from './tools/draw/draw-tool'
 import { ZoomInTool } from './tools/zoom/zoom-in-tool'
 import { ZoomOutTool } from './tools/zoom/zoom-out-tool'
 
@@ -49,6 +50,10 @@ export class MapTools extends WebMapPlugin<{
       .set('default', new BaseTool(this.map, this.view))
       .set('zoom-in', new ZoomInTool(this.map, this.view))
       .set('zoom-out', new ZoomOutTool(this.map, this.view))
+      .set('draw-point', new DrawTool(this.map, this.view, 'point'))
+      .set('draw-line', new DrawTool(this.map, this.view, 'line'))
+      .set('draw-line-faster', new DrawTool(this.map, this.view, 'line-faster'))
+      .set('draw-polyline', new DrawTool(this.map, this.view, 'polyline'))
   }
 
   //#endregion
