@@ -1,12 +1,8 @@
-import { onUnmounted, reactive, ref, watch } from 'vue'
-import { ext } from '../../dist/js-exts'
+import { onUnmounted, reactive, ref, Ref, watch } from 'vue'
+import { ext } from '../../../../src/js-exts'
+import { Basemap } from '../plugins/basemap/basemap'
 
-/**
- *
- * @param { import('../../src/gis/openlayers').Basemap } basemap
- * @returns { [string[], () => void] }
- */
-export function useList (basemap) {
+export function useList (basemap: Basemap) : [string[], () => void] {
   const list = reactive(basemap.basemapItemList)
   function update () {
     ext(list).reset(...basemap.basemapItemList)
@@ -14,12 +10,7 @@ export function useList (basemap) {
   return [list, update]
 }
 
-/**
- *
- * @param { import('../../src/gis/openlayers').Basemap } basemap
- * @returns { import('@vue/reactivity').Ref<string> }
- */
-export function useKey (basemap) {
+export function useKey (basemap: Basemap) : Ref<string> {
   const key = ref(basemap.selectedKey)
   watch(key, k => (k !== basemap.selectedKey) && basemap.selectBasemap(k))
   const handler = basemap.on('change:key', e => key.value = e.key)
@@ -27,12 +18,7 @@ export function useKey (basemap) {
   return key
 }
 
-/**
- *
- * @param { import('../../src/gis/openlayers').Basemap } basemap
- * @returns { import('@vue/reactivity').Ref<string> }
- */
-export function useVisible (basemap) {
+export function useVisible (basemap: Basemap) : Ref<boolean> {
   const visible = ref(basemap.visible)
   watch(visible, v => (v !== basemap.visible) && basemap.setVisible(v))
   const handler = basemap.on('change:visible', e => visible.value = e.visible)
