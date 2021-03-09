@@ -1,3 +1,4 @@
+import { IObject } from '../../../../global/interfaces.global';
 import Observer, { IObserverCallbackParams } from '../../../../observer/observer';
 import { IMap, IView } from '../../web-map/web-map';
 export declare type OnToolActivedParams<T> = IObserverCallbackParams<'tool-actived', T>;
@@ -5,7 +6,7 @@ export declare type OnToolDeActivedParams<T> = IObserverCallbackParams<'tool-dea
 export declare type OnToolActivedReture = boolean;
 export declare type OnToolDeActivedReture = boolean;
 /** 基础工具类 */
-export declare class BaseTool<T = {}> extends Observer<T & {
+export declare class BaseTool<T = IObject> extends Observer<T & {
     'tool-actived': void;
     'tool-deactived': void;
 }> {
