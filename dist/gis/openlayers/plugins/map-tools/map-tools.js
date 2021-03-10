@@ -1,7 +1,11 @@
 import { WebMapPlugin } from '../../web-map/web-map-plugin';
 import { BaseTool } from './base-tool';
 import { DrawTool } from './tools/draw/draw-tool';
+import { MarkClearTool } from './tools/mark/mark-clear-tool';
+import { MarkTool } from './tools/mark/mark-tool';
+import { ZoomInRectTool } from './tools/zoom/zoom-in-rect-tool';
 import { ZoomInTool } from './tools/zoom/zoom-in-tool';
+import { ZoomOutRectTool } from './tools/zoom/zoom-out-rect-tool';
 import { ZoomOutTool } from './tools/zoom/zoom-out-tool';
 /** 地图工具链 */
 export class MapTools extends WebMapPlugin {
@@ -27,8 +31,6 @@ export class MapTools extends WebMapPlugin {
     _init() {
         this._toolPool
             .set('default', new BaseTool(this.map, this.view))
-            .set('zoom-in', new ZoomInTool(this.map, this.view))
-            .set('zoom-out', new ZoomOutTool(this.map, this.view))
             .set('draw-point', new DrawTool(this.map, this.view, 'point'))
             .set('draw-line', new DrawTool(this.map, this.view, 'line'))
             .set('draw-line-faster', new DrawTool(this.map, this.view, 'line-faster'))
@@ -37,7 +39,13 @@ export class MapTools extends WebMapPlugin {
             .set('draw-rectangle', new DrawTool(this.map, this.view, 'rectangle'))
             .set('draw-rectangle-faster', new DrawTool(this.map, this.view, 'rectangle-faster'))
             .set('draw-circle', new DrawTool(this.map, this.view, 'circle'))
-            .set('draw-circle-faster', new DrawTool(this.map, this.view, 'circle-faster'));
+            .set('draw-circle-faster', new DrawTool(this.map, this.view, 'circle-faster'))
+            .set('zoom-in', new ZoomInTool(this.map, this.view))
+            .set('zoom-out', new ZoomOutTool(this.map, this.view))
+            .set('zoom-in-rect', new ZoomInRectTool(this.map, this.view))
+            .set('zoom-out-rect', new ZoomOutRectTool(this.map, this.view))
+            .set('mark', new MarkTool(this.map, this.view))
+            .set('mark-clear', new MarkClearTool(this.map, this.view, this.getTool('mark')));
     }
     //#endregion
     //#region 公有方法

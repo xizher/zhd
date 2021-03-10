@@ -106,6 +106,7 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
     if (!this._actived) {
       return false
     }
+    this._actived = false
     return true
   }
 

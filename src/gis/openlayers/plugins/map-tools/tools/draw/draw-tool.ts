@@ -15,6 +15,7 @@ import { Feature } from 'ol'
 import { Coordinate } from 'ol/coordinate'
 import { ext } from '../../../../../../js-exts'
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
+import { IObject } from '../../../../../../global/interfaces.global'
 
 export type DrawType =
   'point' |
@@ -38,7 +39,7 @@ export type OnDrawClearReture = boolean
 
 
 /** 绘图工具 */
-export class DrawTool extends BaseTool<{
+export class DrawTool<T = IObject> extends BaseTool<T & {
   'draw-start': { coordinate: Coordinate }
   'draw-move': { geometry: Geometry }
   'draw-end': { geometry: Geometry }

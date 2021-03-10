@@ -67,6 +67,7 @@ export class BaseTool extends Observer {
         if (!this._actived) {
             return false;
         }
+        this._actived = false;
         return true;
     }
 }

@@ -6,6 +6,7 @@ import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedPara
 import { Drawer } from './drawer';
 import { Feature } from 'ol';
 import { Coordinate } from 'ol/coordinate';
+import { IObject } from '../../../../../../global/interfaces.global';
 export declare type DrawType = 'point' | 'line' | 'line-faster' | 'polyline' | 'polygon' | 'rectangle' | 'rectangle-faster' | 'circle' | 'circle-faster';
 export declare type OnDrawStartParams<T> = IObserverCallbackParams<'draw-start', T> & {
     coordinate: Coordinate;
@@ -22,7 +23,7 @@ export declare type OnDrawMoveReture = Feature[] | false;
 export declare type OnDrawEndReture = Feature[] | false;
 export declare type OnDrawClearReture = boolean;
 /** 绘图工具 */
-export declare class DrawTool extends BaseTool<{
+export declare class DrawTool<T = IObject> extends BaseTool<T & {
     'draw-start': {
         coordinate: Coordinate;
     };
