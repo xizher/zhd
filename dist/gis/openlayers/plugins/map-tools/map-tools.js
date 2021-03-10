@@ -3,6 +3,7 @@ import { BaseTool } from './base-tool';
 import { DrawTool } from './tools/draw/draw-tool';
 import { MarkClearTool } from './tools/mark/mark-clear-tool';
 import { MarkTool } from './tools/mark/mark-tool';
+import { ZoomHomeTool } from './tools/zoom/zoom-home-tool';
 import { ZoomInRectTool } from './tools/zoom/zoom-in-rect-tool';
 import { ZoomInTool } from './tools/zoom/zoom-in-tool';
 import { ZoomOutRectTool } from './tools/zoom/zoom-out-rect-tool';
@@ -44,6 +45,7 @@ export class MapTools extends WebMapPlugin {
             .set('zoom-out', new ZoomOutTool(this.map, this.view))
             .set('zoom-in-rect', new ZoomInRectTool(this.map, this.view))
             .set('zoom-out-rect', new ZoomOutRectTool(this.map, this.view))
+            .set('zoom-home', new ZoomHomeTool(this.map, this.view))
             .set('mark', new MarkTool(this.map, this.view))
             .set('mark-clear', new MarkClearTool(this.map, this.view, this.getTool('mark')));
     }
