@@ -30,7 +30,7 @@ export declare function createPolygon(coordinates: Coordinate[][], optLayout?: G
  * @param radius 圆半径
  * @param optLayout 配置项
  */
-export declare function createCircle(center: Coordinate, radius: number, optLayout: GeometryLayout): Circle;
+export declare function createCircle(center: Coordinate, radius: number, optLayout?: GeometryLayout): Circle;
 /**
  * 创建范围对象
  * @param bounds 范围坐标集合

@@ -1,6 +1,6 @@
 import Geometry from 'ol/geom/Geometry'
 import { IObserverCallbackParams } from '../../../../../../observer'
-import { createLineString, createPoint } from '../../../../utilities/geom.utilities'
+import { createCircle, createLineString, createPoint, createPolygon } from '../../../../utilities/geom.utilities'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { MapCursorType } from '../../../map-cursor/map-cursor'
 import {
@@ -14,6 +14,7 @@ import { Drawer } from './drawer'
 import { Feature } from 'ol'
 import { Coordinate } from 'ol/coordinate'
 import { ext } from '../../../../../../js-exts'
+import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
 
 export type DrawType =
   'point' |
@@ -302,6 +303,214 @@ export class DrawTool extends BaseTool<{
     }); {
       const remove = () => drawTool.map.un('pointermove', handlerPointermove.listener)
       this._handlerPool['pointermove'] = { remove }
+    }
+  }
+
+  /** 绘制面 */
+  private static '_polygon' (drawTool: DrawTool) {
+    this._clearDrawHandlers()
+    let drawing = false
+    const coordinates: Coordinate[] = []
+    const handlerSingleClick = drawTool.map.on('singleclick', ({ coordinate }) => {
+      coordinates.push(coordinate)
+      if (!drawing) {
+        drawing = true
+        drawTool.fire('draw-start', { coordinate })
+      }
+    }); {
+      const remove = () => drawTool.map.un('singleclick', handlerSingleClick.listener)
+      this._handlerPool['singleclick'] = { remove }
+    }
+    const handlerDbClick = drawTool.map.on('dblclick', e => {
+      if (drawing) {
+        e.stopPropagation()
+        coordinates.push(e.coordinate)
+        const geometry = createPolygon([coordinates])
+        drawing = false
+        ext(coordinates).clear()
+        drawTool.fire('draw-end', { geometry })
+      }
+    }); {
+      const remove = () => drawTool.map.un('dblclick', handlerDbClick.listener)
+      this._handlerPool['dbclick'] = { remove }
+    }
+    const handlerPointermove = drawTool.map.on('pointermove', ({ coordinate }) => {
+      if (drawing) {
+        const geometry = createPolygon([[...coordinates, coordinate]])
+        drawTool.fire('draw-move', { geometry })
+      }
+    }); {
+      const remove = () => drawTool.map.un('pointermove', handlerPointermove.listener)
+      this._handlerPool['pointermove'] = { remove }
+    }
+  }
+
+  /** 绘制矩形 */
+  private static '_rectangle' (drawTool: DrawTool) {
+    this._clearDrawHandlers()
+    let drawing = false, startX: number, startY: number
+    const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
+      if (drawing) {
+        drawing = false
+        const [endX, endY] = coordinate
+        const coordinates = [[
+          [startX, startY], [startX, endY],
+          [endX, endY], [endX, startY],
+        ]]
+        const geometry = createPolygon(coordinates)
+        ;[startX, startY] = [null, null]
+        drawTool.fire('draw-end', { geometry })
+      } else {
+        drawing = true
+        ;[startX, startY] = coordinate
+        drawTool.fire('draw-start', { coordinate })
+      }
+    })
+    const handlerMove = drawTool.map.on('pointermove', e => {
+      if (drawing) {
+        const [endX, endY] = e.coordinate
+        const coordinates = [[
+          [startX, startY], [startX, endY],
+          [endX, endY], [endX, startY],
+        ]]
+        const geometry = createPolygon(coordinates)
+        drawTool.fire('draw-move', { geometry })
+      }
+    })
+    {
+      const remove = () => drawTool.map.un('singleclick', handlerStartAndEnd.listener)
+      this._handlerPool['singleclick'] = { remove }
+    } {
+      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      this._handlerPool['pointermove'] = { remove }
+    }
+  }
+
+  /** 快速绘制矩形 */
+  private static '_rectangle-faster' (drawTool: DrawTool) {
+    this._clearDrawHandlers()
+    let drawing = false, startX: number, startY: number
+    const handlerMove = drawTool.map.on('pointermove', (e) => {
+      if (drawing) {
+        const [endX, endY] = e.coordinate
+        const coordinates = [[
+          [startX, startY], [startX, endY],
+          [endX, endY], [endX, startY],
+        ]]
+        const geometry = createPolygon(coordinates)
+        drawTool.fire('draw-move', { geometry })
+      }
+      e.stopPropagation()
+    })
+    function handlerMousedown (e: MouseEvent) {
+      if (e.button !== 0) {
+        return
+      }
+      drawing = true
+      ;[startX, startY] = drawTool.map.getEventCoordinate(e)
+      drawTool.fire('draw-start', { coordinate: [startX, startY] })
+    }
+    function handlerMouseup (e: MouseEvent) {
+      if (e.button !== 0) {
+        return
+      }
+      drawing = false
+      const [endX, endY] = drawTool.map.getEventCoordinate(e)
+      const coordinates = [[
+        [startX, startY], [startX, endY],
+        [endX, endY], [endX, startY],
+      ]]
+      const geometry = createPolygon(coordinates)
+      drawTool.fire('draw-end', { geometry })
+    }
+    drawTool.map.getTargetElement().addEventListener('mousedown', handlerMousedown)
+    drawTool.map.getTargetElement().addEventListener('mouseup', handlerMouseup)
+    {
+      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      this._handlerPool['pointermove'] = { remove }
+    } {
+      const remove = () => drawTool.map.getTargetElement().removeEventListener('mousedown', handlerMousedown)
+      this._handlerPool['mousedown'] = { remove }
+    } {
+      const remove = () => drawTool.map.getTargetElement().removeEventListener('mouseup', handlerMouseup)
+      this._handlerPool['mouseup'] = { remove }
+    }
+  }
+
+  /** 绘制圆 */
+  private static '_circle' (drawTool: DrawTool) {
+    this._clearDrawHandlers()
+    let drawing = false, startCoordinate: Coordinate | null = null
+    const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
+      if (drawing) {
+        drawing = false
+        const radius = distanceByTwoPoint(startCoordinate as [number, number], coordinate as [number, number])
+        const geometry = createCircle(startCoordinate, radius)
+        startCoordinate = null
+        drawTool.fire('draw-end', { geometry })
+      } else {
+        drawing = true
+        startCoordinate = coordinate
+        drawTool.fire('draw-start', { coordinate })
+      }
+    })
+    const handlerMove = drawTool.map.on('pointermove', e => {
+      if (drawing && startCoordinate) {
+        const radius = distanceByTwoPoint(startCoordinate as [number, number], e.coordinate as [number, number])
+        const geometry = createCircle(startCoordinate, radius)
+        drawTool.fire('draw-move', { geometry })
+      }
+    })
+    {
+      const remove = () => drawTool.map.un('singleclick', handlerStartAndEnd.listener)
+      this._handlerPool['singleclick'] = { remove }
+    } {
+      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      this._handlerPool['pointermove'] = { remove }
+    }
+  }
+
+  /** 快速绘制圆 */
+  private static '_circle-faster' (drawTool: DrawTool) {
+    this._clearDrawHandlers()
+    let drawing = false, startCoordinate: Coordinate | null = null
+    const handlerMove = drawTool.map.on('pointermove', (e) => {
+      if (drawing) {
+        const radius = distanceByTwoPoint(startCoordinate as [number, number], e.coordinate as [number, number])
+        const geometry = createCircle(startCoordinate, radius)
+        drawTool.fire('draw-move', { geometry })
+      }
+      e.stopPropagation()
+    })
+    function handlerMousedown (e: MouseEvent) {
+      if (e.button !== 0) {
+        return
+      }
+      drawing = true
+      startCoordinate = drawTool.map.getEventCoordinate(e)
+      drawTool.fire('draw-start', { coordinate: startCoordinate })
+    }
+    function handlerMouseup (e: MouseEvent) {
+      if (e.button !== 0) {
+        return
+      }
+      drawing = false
+      const coordinate = drawTool.map.getEventCoordinate(e)
+      const radius = distanceByTwoPoint(startCoordinate as [number, number], coordinate as [number, number])
+      const geometry = createCircle(startCoordinate, radius)
+      drawTool.fire('draw-end', { geometry })
+    }
+    drawTool.map.getTargetElement().addEventListener('mousedown', handlerMousedown)
+    drawTool.map.getTargetElement().addEventListener('mouseup', handlerMouseup)
+    {
+      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      this._handlerPool['pointermove'] = { remove }
+    } {
+      const remove = () => drawTool.map.getTargetElement().removeEventListener('mousedown', handlerMousedown)
+      this._handlerPool['mousedown'] = { remove }
+    } {
+      const remove = () => drawTool.map.getTargetElement().removeEventListener('mouseup', handlerMouseup)
+      this._handlerPool['mouseup'] = { remove }
     }
   }
 

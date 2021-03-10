@@ -75,4 +75,14 @@ export declare class DrawTool extends BaseTool<{
     private static '_line-faster';
     /** 绘制多段线 */
     private static '_polyline';
+    /** 绘制面 */
+    private static '_polygon';
+    /** 绘制矩形 */
+    private static '_rectangle';
+    /** 快速绘制矩形 */
+    private static '_rectangle-faster';
+    /** 绘制圆 */
+    private static '_circle';
+    /** 快速绘制圆 */
+    private static '_circle-faster';
 }

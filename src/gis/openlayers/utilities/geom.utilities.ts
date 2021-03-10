@@ -40,7 +40,7 @@ export function createPolygon (coordinates: Coordinate[][], optLayout?: Geometry
  * @param radius 圆半径
  * @param optLayout 配置项
  */
-export function createCircle (center: Coordinate, radius: number, optLayout: GeometryLayout) : Circle {
+export function createCircle (center: Coordinate, radius: number, optLayout?: GeometryLayout) : Circle {
   return new Circle(center, radius, optLayout)
 }
 
