@@ -22,6 +22,11 @@ export declare type OnDrawStartReture = Coordinate | false;
 export declare type OnDrawMoveReture = Feature[] | false;
 export declare type OnDrawEndReture = Feature[] | false;
 export declare type OnDrawClearReture = boolean;
+export interface DrawToolOptions {
+    drawType?: DrawType;
+    cursorType?: MapCursorType;
+    isDrawOnlyOneTarget?: boolean;
+}
 /** 绘图工具 */
 export declare class DrawTool<T = IObject> extends BaseTool<T & {
     'draw-start': {
@@ -41,7 +46,13 @@ export declare class DrawTool<T = IObject> extends BaseTool<T & {
     private _drawType;
     /** 鼠标样式 */
     private _cursorType;
+    /** 是否只绘制单一目标 */
+    private _isDrawOnlyOneTarget;
+    /** 记录当前存在的绘制图元 */
+    private _features;
     get drawer(): Drawer;
+    get isDrawOneTarget(): boolean;
+    set isDrawOneTarget(b: boolean);
     /**
      * 构造绘图工具对象
      * @param map 地图对象
@@ -49,9 +60,11 @@ export declare class DrawTool<T = IObject> extends BaseTool<T & {
      * @param drawType 绘图类型
      * @param cursorType 鼠标类型
      */
-    constructor(map: IMap, view: IView, drawType: DrawType, cursorType?: MapCursorType);
+    constructor(map: IMap, view: IView, options?: DrawToolOptions);
     /** 清理绘制图形 */
     clearDrawed(): this;
+    /** 获取绘制的图元 */
+    getFeatures(): Feature[];
     /** 绘图开始处理事件 */
     onDrawStart(e: OnDrawStartParams<this>): OnDrawStartReture;
     /** 绘图过程处理事件 */

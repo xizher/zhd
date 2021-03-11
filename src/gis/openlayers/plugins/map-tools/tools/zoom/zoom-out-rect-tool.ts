@@ -12,7 +12,10 @@ export class ZoomOutRectTool extends DrawTool {
    * @param view 视图对象
    */
   constructor (map: IMap, view: IView) {
-    super(map, view, 'rectangle-faster', 'zoomin')
+    super(map, view, {
+      drawType: 'rectangle-faster',
+      cursorType: 'zoomout'
+    })
 
     this.drawer.setDrawingStyle({
       polygonStyle: {

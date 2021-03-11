@@ -3,6 +3,7 @@ import { BaseTool } from '../../base-tool';
 import { Drawer } from './drawer';
 import { ext } from '../../../../../../js-exts';
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa';
+import { baseUtils } from '../../../../../../js-utils';
 /** 绘图工具 */
 export class DrawTool extends BaseTool {
     //#endregion
@@ -14,11 +15,18 @@ export class DrawTool extends BaseTool {
      * @param drawType 绘图类型
      * @param cursorType 鼠标类型
      */
-    constructor(map, view, drawType, cursorType = 'draw') {
+    constructor(map, view, options) {
         super(map, view, false);
+        const _options = {
+            cursorType: 'draw',
+            drawType: 'point',
+            isDrawOnlyOneTarget: false
+        };
+        baseUtils.$extend(true, _options, options);
         this._drawer = new Drawer(map.$owner.mapElementDisplay);
-        this._drawType = drawType;
-        this._cursorType = cursorType;
+        this._drawType = _options.drawType;
+        this._cursorType = _options.cursorType;
+        this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget;
         this.on('draw-start', e => this.onDrawStart(e));
         this.on('draw-move', e => this.onDrawMove(e));
         this.on('draw-end', e => this.onDrawEnd(e));
@@ -29,12 +37,24 @@ export class DrawTool extends BaseTool {
     get drawer() {
         return this._drawer;
     }
+    get isDrawOneTarget() {
+        return this._isDrawOnlyOneTarget;
+    }
+    //#endregion
+    //#region setter
+    set isDrawOneTarget(b) {
+        this._isDrawOnlyOneTarget = b;
+    }
     //#endregion
     //#region 公有方法
     /** 清理绘制图形 */
     clearDrawed() {
         this.fire('draw-clear');
         return this;
+    }
+    /** 获取绘制的图元 */
+    getFeatures() {
+        return this._features;
     }
     /** 绘图开始处理事件 */
     onDrawStart(e) {
@@ -56,7 +76,10 @@ export class DrawTool extends BaseTool {
         if (!this.actived) {
             return false;
         }
-        const features = this._drawer.add(e.geometry, {}, true);
+        let features;
+        this._isDrawOnlyOneTarget
+            ? features = this._drawer.set(e.geometry, {}, true)
+            : features = this._drawer.add(e.geometry, {}, true);
         return features;
     }
     /** 绘图清除处理事件 */

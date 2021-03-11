@@ -16,6 +16,7 @@ import { Coordinate } from 'ol/coordinate'
 import { ext } from '../../../../../../js-exts'
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
 import { IObject } from '../../../../../../global/interfaces.global'
+import { baseUtils } from '../../../../../../js-utils'
 
 export type DrawType =
   'point' |
@@ -37,6 +38,12 @@ export type OnDrawMoveReture = Feature[] | false
 export type OnDrawEndReture = Feature[] | false
 export type OnDrawClearReture = boolean
 
+export interface DrawToolOptions {
+  drawType?: DrawType,
+  cursorType?: MapCursorType,
+  isDrawOnlyOneTarget?: boolean
+}
+
 
 /** 绘图工具 */
 export class DrawTool<T = IObject> extends BaseTool<T & {
@@ -57,12 +64,30 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   /** 鼠标样式 */
   private _cursorType: MapCursorType
 
+  /** 是否只绘制单一目标 */
+  private _isDrawOnlyOneTarget: boolean
+
+  /** 记录当前存在的绘制图元 */
+  private _features: Feature[]
+
   //#endregion
 
   //#region getter
 
   get drawer () : Drawer {
     return this._drawer
+  }
+
+  get isDrawOneTarget () : boolean {
+    return this._isDrawOnlyOneTarget
+  }
+
+  //#endregion
+
+  //#region setter
+
+  set isDrawOneTarget (b: boolean) {
+    this._isDrawOnlyOneTarget = b
   }
 
   //#endregion
@@ -76,12 +101,18 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
    * @param drawType 绘图类型
    * @param cursorType 鼠标类型
    */
-  constructor (map: IMap, view:IView, drawType: DrawType, cursorType: MapCursorType = 'draw') {
+  constructor (map: IMap, view:IView, options?: DrawToolOptions) {
     super(map, view, false)
-
+    const _options : DrawToolOptions = {
+      cursorType: 'draw',
+      drawType: 'point',
+      isDrawOnlyOneTarget: false
+    }
+    baseUtils.$extend(true, _options, options)
     this._drawer = new Drawer(map.$owner.mapElementDisplay)
-    this._drawType = drawType
-    this._cursorType = cursorType
+    this._drawType = _options.drawType
+    this._cursorType = _options.cursorType
+    this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget
 
     this.on('draw-start', e => this.onDrawStart(e))
     this.on('draw-move', e => this.onDrawMove(e))
@@ -97,6 +128,11 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   clearDrawed () : this {
     this.fire('draw-clear')
     return this
+  }
+
+  /** 获取绘制的图元 */
+  getFeatures () : Feature[] {
+    return this._features
   }
 
   /** 绘图开始处理事件 */
@@ -119,7 +155,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     if (!this.actived) {
       return false
     }
-    const features = this._drawer.add(e.geometry, {}, true) as Feature[]
+    let features : Feature[]
+    this._isDrawOnlyOneTarget
+      ? features = this._drawer.set(e.geometry, {}, true) as Feature[]
+      : features = this._drawer.add(e.geometry, {}, true) as Feature[]
     return features
   }
   /** 绘图清除处理事件 */

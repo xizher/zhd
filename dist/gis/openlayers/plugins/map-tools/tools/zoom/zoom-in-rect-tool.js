@@ -8,7 +8,10 @@ export class ZoomInRectTool extends DrawTool {
      * @param view 视图对象
      */
     constructor(map, view) {
-        super(map, view, 'rectangle-faster', 'zoomin');
+        super(map, view, {
+            drawType: 'rectangle-faster',
+            cursorType: 'zoomin'
+        });
         this.drawer.setDrawingStyle({
             polygonStyle: {
                 fill: { color: 'rgba(0, 0, 0, 0.5)' },
