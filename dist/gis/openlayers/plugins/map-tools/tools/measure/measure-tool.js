@@ -210,6 +210,9 @@ export class MeasureTool extends BaseTool {
         this._measureType = type;
         this.fire('change:type', { type });
         if (this.actived) {
+            this._feature = null;
+            this.map.removeOverlay(this._measureTooltip);
+            this._createMeasureTooltip();
             this.map.removeInteraction(this._draw);
             this.map.addInteraction(this._createDraw());
         }
@@ -235,7 +238,9 @@ export class MeasureTool extends BaseTool {
         if (!super.onToolDeActived(e)) {
             return false;
         }
+        this._feature = null;
         this.map.removeOverlay(this._helpTooltip);
+        this.map.removeOverlay(this._measureTooltip);
         this.map.removeInteraction(this._draw);
         this.map.un('pointermove', this._handlerMousemove);
         this.map.getViewport().removeEventListener('mouseout', this._handlerMouseout);
