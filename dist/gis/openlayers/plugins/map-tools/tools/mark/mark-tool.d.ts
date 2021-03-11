@@ -9,6 +9,9 @@ export declare type MarkGeometryType = 'Point' | 'LineString' | 'Polygon' | 'Cir
 /** 标记工具类 */
 export declare class MarkTool extends BaseTool<{
     'mark-clear': void;
+    'change:mark-type': {
+        type: MarkGeometryType;
+    };
 }> {
     /** 矢量数据源 */
     private _source;
@@ -24,6 +27,7 @@ export declare class MarkTool extends BaseTool<{
     private _markType;
     get source(): VectorSource;
     get layer(): VectorLayer;
+    get markType(): MarkGeometryType;
     /**
      * 构造标记工具对象
      * @param map 地图对象

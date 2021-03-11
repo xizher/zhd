@@ -26,6 +26,9 @@ export class MarkTool extends BaseTool {
     get layer() {
         return this._vectorLayer;
     }
+    get markType() {
+        return this._markType;
+    }
     //#endregion
     //#region 私有方法
     /** 初始化 */
@@ -57,6 +60,7 @@ export class MarkTool extends BaseTool {
      */
     setMarkType(type) {
         this._markType = type;
+        this.fire('change:mark-type', { type });
         if (this.actived) {
             this.map.removeInteraction(this._draw);
             this.map.addInteraction(this._createDraw());

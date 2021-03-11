@@ -14,6 +14,7 @@ export declare type MarkGeometryType = 'Point' | 'LineString' | 'Polygon' | 'Cir
 /** 标记工具类 */
 export class MarkTool extends BaseTool<{
   'mark-clear': void
+  'change:mark-type': { type: MarkGeometryType }
 }> {
 
   //#region 私有属性
@@ -46,6 +47,10 @@ export class MarkTool extends BaseTool<{
 
   get layer () : VectorLayer {
     return this._vectorLayer
+  }
+
+  get markType () : MarkGeometryType {
+    return this._markType
   }
 
   //#endregion
@@ -102,6 +107,7 @@ export class MarkTool extends BaseTool<{
    */
   setMarkType (type: MarkGeometryType) : this {
     this._markType = type
+    this.fire('change:mark-type', { type })
     if (this.actived) {
       this.map.removeInteraction(this._draw)
       this.map.addInteraction(this._createDraw())
