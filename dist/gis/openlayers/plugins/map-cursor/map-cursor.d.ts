@@ -7,6 +7,7 @@ export declare type MapCursorType = 'default' | 'pan' | 'panning' | 'wait' | 'dr
 }> {
     /** 鼠标样式存储池 */
     private static _MAP_CURSOR_TYPE;
+    private _cursorType;
     /** 构造地图鼠标样式控制对象 */
     constructor();
     /**
@@ -14,4 +15,6 @@ export declare type MapCursorType = 'default' | 'pan' | 'panning' | 'wait' | 'dr
      * @param type 样式
      */
     setMapCursor(type?: MapCursorType): MapCursor;
+    startWaitingCursor(): this;
+    stopWaitingCursor(): this;
 }

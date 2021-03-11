@@ -2,14 +2,16 @@ import { WebMap } from '../../web-map/web-map'
 import { WebMapPlugin } from '../../web-map/web-map-plugin'
 import { BaseTool } from './base-tool'
 import { DrawTool } from './tools/draw/draw-tool'
-import { MarkClearTool } from './tools/mark/mark-clear-tool'
+import { MarkRemoveTool } from './tools/mark/mark-remove-tool'
 import { MarkTool } from './tools/mark/mark-tool'
+import { MeasureRemoveTool } from './tools/measure/measure-remove-tool'
 import { MeasureTool } from './tools/measure/measure-tool'
 import { ZoomHomeTool } from './tools/zoom/zoom-home-tool'
 import { ZoomInRectTool } from './tools/zoom/zoom-in-rect-tool'
 import { ZoomInTool } from './tools/zoom/zoom-in-tool'
 import { ZoomOutRectTool } from './tools/zoom/zoom-out-rect-tool'
 import { ZoomOutTool } from './tools/zoom/zoom-out-tool'
+import { FullscreenTool } from './tools/fullscreen/fullsceen-tool'
 
 /** 地图工具链 */
 export class MapTools extends WebMapPlugin<{
@@ -69,8 +71,10 @@ export class MapTools extends WebMapPlugin<{
       .set('zoom-out-rect', new ZoomOutRectTool(this.map, this.view))
       .set('zoom-home', new ZoomHomeTool(this.map, this.view))
       .set('mark', new MarkTool(this.map, this.view))
-      .set('mark-clear', new MarkClearTool(this.map, this.view, this.getTool('mark')))
+      .set('mark-remove', new MarkRemoveTool(this.map, this.view, this.getTool('mark')))
       .set('measure', new MeasureTool(this.map, this.view))
+      .set('measure-remove', new MeasureRemoveTool(this.map, this.view, this.getTool('measure')))
+      .set('fullscreen', new FullscreenTool(this.map, this.view))
   }
 
   //#endregion

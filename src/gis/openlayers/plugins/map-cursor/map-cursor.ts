@@ -31,6 +31,12 @@ export class MapCursor extends WebMapPlugin<{
 
   //#endregion
 
+  //#region 私有属性
+
+  private _cursorType: MapCursorType = 'default'
+
+  //#endregion
+
   //#region 构造函数
 
   /** 构造地图鼠标样式控制对象 */
@@ -47,7 +53,20 @@ export class MapCursor extends WebMapPlugin<{
    * @param type 样式
    */
   setMapCursor (type: MapCursorType = 'default') : MapCursor {
+    this._cursorType = type
     this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[type.toLowerCase()]
+    return this
+  }
+
+  startWaitingCursor () : this {
+    document.body.style.cursor = 'wait'
+    this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE['wait']
+    return this
+  }
+
+  stopWaitingCursor () : this {
+    document.body.style.cursor = ''
+    this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[this._cursorType]
     return this
   }
 

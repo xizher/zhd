@@ -10,15 +10,16 @@ import VectorLayer from 'ol/layer/Vector'
 import { unByKey } from 'ol/Observable'
 import OverlayPositioning from 'ol/OverlayPositioning'
 import VectorSource from 'ol/source/Vector'
-import { ext } from '../../../../../../js-exts'
 import { createCircleStyle, createFill, createStroke, createStyle } from '../../../../utilities/style.utilities'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
 import './measure-tool.css'
 
+export type MeasureType = 'area' | 'length' | ''
+
 /** 测量工具类 */
 export class MeasureTool extends BaseTool<{
-
+  'change:type': { type: MeasureType }
 }> {
 
   //#region 私有静态属性
@@ -54,7 +55,7 @@ export class MeasureTool extends BaseTool<{
   /** 测量信息层对象 */
   private _measureTooltip: Overlay
 
-  private _measureTooltipPool: Overlay[] = []
+  private _measureTooltipPool: Map<Feature, Overlay> = new Map()
 
   /** 测量矢量数据源 */
   private _source: VectorSource
@@ -66,7 +67,19 @@ export class MeasureTool extends BaseTool<{
   private _draw: Draw
 
   /** 测量方式 */
-  private _measureType: 'area' | 'length' = 'length'
+  private _measureType: MeasureType = 'length'
+
+  //#endregion
+
+  //#region getter
+
+  get type () : MeasureType {
+    return this._measureType
+  }
+
+  get layer () : VectorLayer {
+    return this._vectorLayer
+  }
 
   //#endregion
 
@@ -129,7 +142,6 @@ export class MeasureTool extends BaseTool<{
     this._draw.on('drawstart', event => {
       this._feature = event.feature
       let tooltipCoordinate: Coordinate
-      console.log(event)
       listener = this._feature.getGeometry().on('change', evt => {
         const geometry = evt.target as Geometry
         let output = ''
@@ -147,8 +159,8 @@ export class MeasureTool extends BaseTool<{
     this._draw.on('drawend', () => {
       this._measureTooltipElement.className = 'ol-tooltip ol-tooltip-static'
       this._measureTooltip.setOffset([0, -7])
+      this._measureTooltipPool.set(this._feature, this._measureTooltip)
       this._feature = null
-      this._measureTooltipPool.push(this._measureTooltip)
       this._measureTooltipElement = null
       this._createMeasureTooltip()
       unByKey(listener)
@@ -244,17 +256,34 @@ export class MeasureTool extends BaseTool<{
 
   /** 清理测量信息 */
   clearMeasure () : this {
-    this._measureTooltipPool.forEach(item => {
-      this.map.removeOverlay(item)
+    // this._measureTooltipPool.forEach(item => {
+    //   this.map.removeOverlay(item)
+    // })
+    // ext(this._measureTooltipPool).clear()
+    this._measureTooltipPool.forEach(overlay => {
+      this.map.removeOverlay(overlay)
     })
-    ext(this._measureTooltipPool).clear()
+    this._measureTooltipPool.clear()
     this._source.clear()
     return this
   }
 
+  /**
+   * 移除测量信息
+   * @param feature 测量要素
+   */
+  removeMeasure (feature: Feature) : this {
+    const overlay = this._measureTooltipPool.get(feature)
+    this.map.removeOverlay(overlay)
+    this._source.removeFeature(feature)
+    this._measureTooltipPool.delete(feature)
+    return this
+  }
+
   /** 设置测量类型 */
-  setMeasureType (type: 'area' | 'length') : this {
+  setMeasureType (type: MeasureType) : this {
     this._measureType = type
+    this.fire('change:type', { type })
     if (this.actived) {
       this.map.removeInteraction(this._draw)
       this.map.addInteraction(this._createDraw())
@@ -283,6 +312,7 @@ export class MeasureTool extends BaseTool<{
     if (!super.onToolDeActived(e)) {
       return false
     }
+    this.map.removeOverlay(this._helpTooltip)
     this.map.removeInteraction(this._draw)
     this.map.un('pointermove', this._handlerMousemove)
     this.map.getViewport().removeEventListener('mouseout', this._handlerMouseout)

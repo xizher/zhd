@@ -1,8 +1,15 @@
+import { Feature } from 'ol';
+import VectorLayer from 'ol/layer/Vector';
 import { IMap, IView } from '../../../../web-map/web-map';
 import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
 import './measure-tool.css';
+export declare type MeasureType = 'area' | 'length' | '';
 /** 测量工具类 */
-export declare class MeasureTool extends BaseTool<{}> {
+export declare class MeasureTool extends BaseTool<{
+    'change:type': {
+        type: MeasureType;
+    };
+}> {
     private static _MSG_START_TO_DRAW;
     private static _MSG_CONTIUNE_POLYLINE;
     private static _MSG_CONTIUNE_POLYGON;
@@ -29,6 +36,8 @@ export declare class MeasureTool extends BaseTool<{}> {
     private _draw;
     /** 测量方式 */
     private _measureType;
+    get type(): MeasureType;
+    get layer(): VectorLayer;
     /**
      * 构造测量工具类
      * @param map 地图对象
@@ -56,8 +65,13 @@ export declare class MeasureTool extends BaseTool<{}> {
     private _formatLength;
     /** 清理测量信息 */
     clearMeasure(): this;
+    /**
+     * 移除测量信息
+     * @param feature 测量要素
+     */
+    removeMeasure(feature: Feature): this;
     /** 设置测量类型 */
-    setMeasureType(type: 'area' | 'length'): this;
+    setMeasureType(type: MeasureType): this;
     /** 工具激化处理事件 */
     onToolActived(e: OnToolActivedParams<this>): OnToolActivedReture;
     /** 工具失活处理事件 */

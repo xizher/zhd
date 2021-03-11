@@ -3,7 +3,7 @@ import { BaseTool } from '../../base-tool';
 /**
  * 标记清理工具类
  */
-export class MarkClearTool extends BaseTool {
+export class MarkRemoveTool extends BaseTool {
     //#endregion
     //#region 构造函数
     /**
@@ -31,7 +31,7 @@ export class MarkClearTool extends BaseTool {
         this.map.$owner.mapCursor.setMapCursor(this._cursorType);
         this._handlerMousedown = () => {
             const features = this._select.getFeatures();
-            features.forEach(feat => this._markTool.source.removeFeature(feat));
+            features.forEach(feat => this._markTool.removeMark(feat));
         };
         this.map.getTargetElement().addEventListener('mousedown', this._handlerMousedown);
         this._handlerMousemove = (e) => {

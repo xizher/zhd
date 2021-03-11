@@ -1,8 +1,8 @@
 import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
 import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
 import { IMap, IView } from '../../../../web-map/web-map';
 import { IObserverCallbackParams } from '../../../../../../observer';
+import { Feature } from 'ol';
 export declare type OnMarkClearParams<T> = IObserverCallbackParams<'mark-clear', T>;
 export declare type OnMarkClearReture = boolean;
 export declare type MarkGeometryType = 'Point' | 'LineString' | 'Polygon' | 'Circle';
@@ -25,7 +25,6 @@ export declare class MarkTool extends BaseTool<{
     private _snap;
     /** 标记类型 */
     private _markType;
-    get source(): VectorSource;
     get layer(): VectorLayer;
     get markType(): MarkGeometryType;
     /**
@@ -40,6 +39,11 @@ export declare class MarkTool extends BaseTool<{
     private _createDraw;
     /** 清理标记 */
     clearMark(): this;
+    /**
+     * 清理指定标记
+     * @param feature 标记要素
+     */
+    removeMark(feature: Feature): this;
     /**
      * 设置标记类型
      * @param type 标记类型

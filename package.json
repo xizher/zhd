@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Something JavaScript Modules Code With Hi-Target",
   "main": "index.js",
+  "type": "module",
   "dependencies": {
     "ol": "^6.5.0",
     "vue": "^3.0.7"

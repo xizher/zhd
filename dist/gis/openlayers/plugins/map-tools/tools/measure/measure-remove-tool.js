@@ -1,9 +1,9 @@
 import { Select } from 'ol/interaction';
 import { BaseTool } from '../../base-tool';
 /**
- * 标记清理工具类
+ * 测量清理工具类
  */
-export class MarkClearTool extends BaseTool {
+export class MeasureRemoveTool extends BaseTool {
     //#endregion
     //#region 构造函数
     /**
@@ -11,13 +11,13 @@ export class MarkClearTool extends BaseTool {
      * @param map 地图对象
      * @param view 视图对象
      */
-    constructor(map, view, markTool) {
+    constructor(map, view, measureTool) {
         super(map, view, false);
         /** 鼠标样式 */
         this._cursorType = 'clear';
-        this._markTool = markTool;
+        this._measureTool = measureTool;
         this._select = new Select({
-            layers: [markTool.layer]
+            layers: [measureTool.layer]
         });
     }
     //#endregion
@@ -31,13 +31,13 @@ export class MarkClearTool extends BaseTool {
         this.map.$owner.mapCursor.setMapCursor(this._cursorType);
         this._handlerMousedown = () => {
             const features = this._select.getFeatures();
-            features.forEach(feat => this._markTool.source.removeFeature(feat));
+            features.forEach(feat => this._measureTool.removeMeasure(feat));
         };
         this.map.getTargetElement().addEventListener('mousedown', this._handlerMousedown);
         this._handlerMousemove = (e) => {
             const pixel = this.map.getEventPixel(e);
             const [feature] = this.map.getFeaturesAtPixel(pixel, {
-                layerFilter: layer => layer === this._markTool.layer
+                layerFilter: layer => layer === this._measureTool.layer
             });
             this._select.getFeatures().clear();
             feature && this._select.getFeatures().push(feature);

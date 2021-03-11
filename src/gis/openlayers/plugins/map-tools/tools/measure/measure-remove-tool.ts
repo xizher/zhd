@@ -3,12 +3,12 @@ import { Select } from 'ol/interaction'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { MapCursorType } from '../../../map-cursor/map-cursor'
 import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
-import { MarkTool } from './mark-tool'
+import { MeasureTool } from './measure-tool'
 
 /**
- * 标记清理工具类
+ * 测量清理工具类
  */
-export class MarkClearTool extends BaseTool {
+export class MeasureRemoveTool extends BaseTool {
 
   //#region 私有属性
 
@@ -22,7 +22,7 @@ export class MarkClearTool extends BaseTool {
   private _select: Select
 
   /** 标记工具对象 */
-  private _markTool: MarkTool
+  private _measureTool: MeasureTool
 
   /** 鼠标样式 */
   private _cursorType: MapCursorType = 'clear'
@@ -36,12 +36,12 @@ export class MarkClearTool extends BaseTool {
    * @param map 地图对象
    * @param view 视图对象
    */
-  constructor (map: IMap, view: IView, markTool: MarkTool) {
+  constructor (map: IMap, view: IView, measureTool: MeasureTool) {
     super(map, view, false)
 
-    this._markTool = markTool
+    this._measureTool = measureTool
     this._select = new Select({
-      layers : [markTool.layer]
+      layers : [measureTool.layer]
     })
   }
 
@@ -56,23 +56,18 @@ export class MarkClearTool extends BaseTool {
     }
     this.map.addInteraction(this._select)
     this.map.$owner.mapCursor.setMapCursor(this._cursorType)
-    this._handlerMousedown = (e: MouseEvent) => {
-      const pixel = this.map.getEventPixel(e)
-      const features = this.map.getFeaturesAtPixel(pixel, {
-        layerFilter: layer => layer === this._markTool.layer
-      }) as Feature[]
-      features.forEach(feat => this._markTool.source.removeFeature(feat))
+    this._handlerMousedown = () => {
+      const features = this._select.getFeatures()
+      features.forEach(feat => this._measureTool.removeMeasure(feat))
     }
     this.map.getTargetElement().addEventListener('mousedown', this._handlerMousedown)
     this._handlerMousemove = (e: MouseEvent) => {
       const pixel = this.map.getEventPixel(e)
-      const features = this.map.getFeaturesAtPixel(pixel, {
-        layerFilter: layer => layer === this._markTool.layer
+      const [feature] = this.map.getFeaturesAtPixel(pixel, {
+        layerFilter: layer => layer === this._measureTool.layer
       }) as Feature[]
       this._select.getFeatures().clear()
-      features.forEach(feat => {
-        this._select.getFeatures().push(feat)
-      })
+      feature && this._select.getFeatures().push(feature)
     }
     this.map.getTargetElement().addEventListener('mousemove', this._handlerMousemove)
     return true

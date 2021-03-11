@@ -6,6 +6,9 @@ export class MapCursor extends WebMapPlugin {
     /** 构造地图鼠标样式控制对象 */
     constructor() {
         super('mapCursor');
+        //#endregion
+        //#region 私有属性
+        this._cursorType = 'default';
     }
     //#endregion
     //#region 公有方法
@@ -14,7 +17,18 @@ export class MapCursor extends WebMapPlugin {
      * @param type 样式
      */
     setMapCursor(type = 'default') {
+        this._cursorType = type;
         this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[type.toLowerCase()];
+        return this;
+    }
+    startWaitingCursor() {
+        document.body.style.cursor = 'wait';
+        this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE['wait'];
+        return this;
+    }
+    stopWaitingCursor() {
+        document.body.style.cursor = '';
+        this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[this._cursorType];
         return this;
     }
 }

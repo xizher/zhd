@@ -5,6 +5,7 @@ import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedPara
 import { IMap, IView } from '../../../../web-map/web-map'
 import GeometryType from 'ol/geom/GeometryType'
 import { IObserverCallbackParams } from '../../../../../../observer'
+import { Feature } from 'ol'
 
 export type OnMarkClearParams<T> = IObserverCallbackParams<'mark-clear', T>
 export type OnMarkClearReture = boolean
@@ -40,10 +41,6 @@ export class MarkTool extends BaseTool<{
   //#endregion
 
   //#region getter
-
-  get source () : VectorSource {
-    return this._source
-  }
 
   get layer () : VectorLayer {
     return this._vectorLayer
@@ -98,6 +95,15 @@ export class MarkTool extends BaseTool<{
   /** 清理标记 */
   clearMark () : this {
     this.fire('mark-clear')
+    return this
+  }
+
+  /**
+   * 清理指定标记
+   * @param feature 标记要素
+   */
+  removeMark (feature: Feature) : this {
+    this._source.removeFeature(feature)
     return this
   }
 

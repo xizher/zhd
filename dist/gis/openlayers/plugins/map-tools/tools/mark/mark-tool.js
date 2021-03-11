@@ -20,9 +20,6 @@ export class MarkTool extends BaseTool {
     }
     //#endregion
     //#region getter
-    get source() {
-        return this._source;
-    }
     get layer() {
         return this._vectorLayer;
     }
@@ -52,6 +49,14 @@ export class MarkTool extends BaseTool {
     /** 清理标记 */
     clearMark() {
         this.fire('mark-clear');
+        return this;
+    }
+    /**
+     * 清理指定标记
+     * @param feature 标记要素
+     */
+    removeMark(feature) {
+        this._source.removeFeature(feature);
         return this;
     }
     /**

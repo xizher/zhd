@@ -5,7 +5,6 @@ import { Draw } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import { unByKey } from 'ol/Observable';
 import VectorSource from 'ol/source/Vector';
-import { ext } from '../../../../../../js-exts';
 import { createCircleStyle, createFill, createStroke, createStyle } from '../../../../utilities/style.utilities';
 import { BaseTool } from '../../base-tool';
 import './measure-tool.css';
@@ -20,10 +19,18 @@ export class MeasureTool extends BaseTool {
      */
     constructor(map, view) {
         super(map, view, false);
-        this._measureTooltipPool = [];
+        this._measureTooltipPool = new Map();
         /** 测量方式 */
         this._measureType = 'length';
         this._init();
+    }
+    //#endregion
+    //#region getter
+    get type() {
+        return this._measureType;
+    }
+    get layer() {
+        return this._vectorLayer;
     }
     //#endregion
     //#region 私有方法
@@ -69,7 +76,6 @@ export class MeasureTool extends BaseTool {
         this._draw.on('drawstart', event => {
             this._feature = event.feature;
             let tooltipCoordinate;
-            console.log(event);
             listener = this._feature.getGeometry().on('change', evt => {
                 const geometry = evt.target;
                 let output = '';
@@ -88,8 +94,8 @@ export class MeasureTool extends BaseTool {
         this._draw.on('drawend', () => {
             this._measureTooltipElement.className = 'ol-tooltip ol-tooltip-static';
             this._measureTooltip.setOffset([0, -7]);
+            this._measureTooltipPool.set(this._feature, this._measureTooltip);
             this._feature = null;
-            this._measureTooltipPool.push(this._measureTooltip);
             this._measureTooltipElement = null;
             this._createMeasureTooltip();
             unByKey(listener);
@@ -177,16 +183,32 @@ export class MeasureTool extends BaseTool {
     //#region 公有方法
     /** 清理测量信息 */
     clearMeasure() {
-        this._measureTooltipPool.forEach(item => {
-            this.map.removeOverlay(item);
+        // this._measureTooltipPool.forEach(item => {
+        //   this.map.removeOverlay(item)
+        // })
+        // ext(this._measureTooltipPool).clear()
+        this._measureTooltipPool.forEach(overlay => {
+            this.map.removeOverlay(overlay);
         });
-        ext(this._measureTooltipPool).clear();
+        this._measureTooltipPool.clear();
         this._source.clear();
+        return this;
+    }
+    /**
+     * 移除测量信息
+     * @param feature 测量要素
+     */
+    removeMeasure(feature) {
+        const overlay = this._measureTooltipPool.get(feature);
+        this.map.removeOverlay(overlay);
+        this._source.removeFeature(feature);
+        this._measureTooltipPool.delete(feature);
         return this;
     }
     /** 设置测量类型 */
     setMeasureType(type) {
         this._measureType = type;
+        this.fire('change:type', { type });
         if (this.actived) {
             this.map.removeInteraction(this._draw);
             this.map.addInteraction(this._createDraw());
@@ -213,6 +235,7 @@ export class MeasureTool extends BaseTool {
         if (!super.onToolDeActived(e)) {
             return false;
         }
+        this.map.removeOverlay(this._helpTooltip);
         this.map.removeInteraction(this._draw);
         this.map.un('pointermove', this._handlerMousemove);
         this.map.getViewport().removeEventListener('mouseout', this._handlerMouseout);
