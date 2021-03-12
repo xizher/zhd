@@ -1,0 +1,127 @@
+import VectorSource from 'ol/source/Vector';
+import { baseUtils } from '../../../../js-utils';
+import { createLayerGroup, createTileLayer, createVectorLayer } from '../../utilities/layer.utilities';
+import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import GeoJSON from 'ol/format/GeoJSON';
+import { bbox as bboxStrategy } from 'ol/loadingstrategy';
+import { extend } from 'ol/extent';
+import VectorLayer from 'ol/layer/Vector';
+import TileWMS from 'ol/source/TileWMS';
+import TileLayer from 'ol/layer/Tile';
+import axiosHelper from '../../../../axios-helper/axios-helper';
+import WMSCapabilities from 'ol/format/WMSCapabilities';
+import { transformExtent } from 'ol/proj';
+/** 插件：图层控制类 */
+export class LayerOperation extends WebMapPlugin {
+    //#endregion
+    //#region 构造函数
+    /** 构造图层控制对象 */
+    constructor(options) {
+        super('layerOperation');
+        //#region 私有属性
+        /** 配置项 */
+        this._options = {};
+        /** 图层池 */
+        this._layerPool = new Map();
+        baseUtils.$extend(true, this._options, options);
+    }
+    //#endregion
+    //#region 私有方法
+    /** 初始化 */
+    _init() {
+        this._layerGroup = createLayerGroup();
+        this.map.addLayer(this._layerGroup);
+        this._options.layerItems.forEach(layerItem => {
+            this._initLayer(layerItem);
+        });
+    }
+    /**
+     * 创建图层
+     * @param layerItemOptions 配置项
+     */
+    _initLayer(layerItemOptions) {
+        const type = layerItemOptions.type;
+        switch (type) {
+            case 'wfs':
+                this._initWfsLayer(layerItemOptions);
+                break;
+            case 'wms':
+                this._initWmsLayer(layerItemOptions);
+                break;
+            default:
+                break;
+        }
+    }
+    /** 初始化WFS图层 */
+    _initWfsLayer(layerItemOptions) {
+        const layer = createVectorLayer();
+        const source = new VectorSource({
+            format: new GeoJSON(),
+            url: extent => {
+                return `${layerItemOptions.url}&bbox=${extent.join(',')},EPSG:3857`;
+            },
+            strategy: bboxStrategy
+        });
+        layer.setSource(source);
+        this._layerGroup.getLayers().push(layer);
+        this._layerPool.set(layerItemOptions.name, layer);
+    }
+    /** 初始化WMS图层 */
+    _initWmsLayer(layerItemOptions) {
+        const source = new TileWMS({
+            url: layerItemOptions.url,
+            params: { ...layerItemOptions.params }
+        });
+        const layer = createTileLayer({ source });
+        this._layerGroup.getLayers().push(layer);
+        this._layerPool.set(layerItemOptions.name, layer);
+        const [url] = layer.getSource().getUrls();
+        axiosHelper() // getExtent is undefined, need to set
+            .setUrl(url)
+            .setParams({ 'REQUEST': 'GetCapabilities' })
+            .setParams({ 'outputFormat': 'application/json' })
+            .mountGet()
+            .then((res) => {
+            const wmsCapabilities = new WMSCapabilities().read(res);
+            let extent = wmsCapabilities.Capability.Layer.Layer.find(item => item.Name === layerItemOptions.params['LAYERS'].split(':')[1])?.EX_GeographicBoundingBox; // TODO maybe wrong
+            extent = transformExtent(extent, 'EPSG:4326', this.view.getProjection());
+            layer.setExtent(extent);
+        });
+    }
+    /** 获取指定图层范围 */
+    _getLayerExtent(layer) {
+        if (layer instanceof VectorLayer) {
+            return layer.getSource().getExtent();
+        }
+        if (layer instanceof TileLayer) {
+            return layer.getExtent();
+        }
+    }
+    //#endregion
+    //#region 公有方法
+    /** 安装插件 */
+    installPlugin(webMap) {
+        super.installPlugin(webMap);
+        this._init();
+        return this;
+    }
+    /** 获取所有图层的综合范围 */
+    getFullExtent() {
+        const layers = [...this._layerPool.values()];
+        let extent = null;
+        layers.forEach(lyr => {
+            const newExtent = this._getLayerExtent(lyr);
+            if (extent) {
+                extent = extend(extent, newExtent);
+            }
+            else {
+                extent = newExtent;
+            }
+        });
+        return extent;
+    }
+    /** 通过图层名获取图层对象 */
+    getLayerByName(name) {
+        return this._layerPool.get(name);
+    }
+}

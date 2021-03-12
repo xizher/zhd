@@ -16,7 +16,7 @@ export declare class BufferTool<T> extends BaseTool<T & {
     };
 }> {
     /** 缓冲目标 */
-    private _geometries;
+    private _geometry;
     /** 缓冲结果 */
     private _bufferResult;
     /** 缓冲配置项 */

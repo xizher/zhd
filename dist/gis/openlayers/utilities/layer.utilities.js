@@ -40,3 +40,10 @@ export function createLayerGroup(options = {}) {
 export function createVectorLayer(options = {}) {
     return new VectorLayer({ source: new VectorSource(), ...options });
 }
+/**
+ * 创建Tile图层
+ * @param options 配置项
+ */
+export function createTileLayer(options = {}) {
+    return new TileLayer(options);
+}

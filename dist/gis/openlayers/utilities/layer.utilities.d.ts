@@ -32,3 +32,8 @@ export declare function createLayerGroup(options?: ILayerGroup): LayerGroup;
  * @param options 配置项
  */
 export declare function createVectorLayer(options?: IBaseVectorOptions): VectorLayer;
+/**
+ * 创建Tile图层
+ * @param options 配置项
+ */
+export declare function createTileLayer(options?: IBaseTileOptions): TileLayer;

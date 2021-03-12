@@ -1,4 +1,3 @@
-import { ext } from '../../../../js-exts';
 import { BaseTool } from '../base.tool';
 export class BufferTool extends BaseTool {
     //#endregion
@@ -17,7 +16,7 @@ export class BufferTool extends BaseTool {
         if (!super.onToolReset(e)) {
             return false;
         }
-        ext(this._geometries).clear();
+        this._geometry = null;
         this.fire('change:buffer-targets');
         return true;
     }

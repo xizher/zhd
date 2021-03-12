@@ -55,3 +55,11 @@ export function createLayerGroup (options: ILayerGroup = {}) : LayerGroup {
 export function createVectorLayer (options: IBaseVectorOptions = {}) : VectorLayer {
   return new VectorLayer({ source: new VectorSource(), ...options })
 }
+
+/**
+ * 创建Tile图层
+ * @param options 配置项
+ */
+export function createTileLayer (options: IBaseTileOptions = {}) : TileLayer {
+  return new TileLayer(options)
+}

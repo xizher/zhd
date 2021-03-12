@@ -1,0 +1,169 @@
+import Layer from 'ol/layer/Layer'
+import VectorSource from 'ol/source/Vector'
+import { OgcServerString } from '../../../../global/types.global'
+import { baseUtils } from '../../../../js-utils'
+import { createLayerGroup, createTileLayer, createVectorLayer } from '../../utilities/layer.utilities'
+import { WebMap } from '../../web-map/web-map'
+import { WebMapPlugin } from '../../web-map/web-map-plugin'
+import GeoJSON from 'ol/format/GeoJSON'
+import {bbox as bboxStrategy} from 'ol/loadingstrategy'
+import LayerGroup from 'ol/layer/Group'
+import { extend, Extent } from 'ol/extent'
+import VectorLayer from 'ol/layer/Vector'
+import TileWMS from 'ol/source/TileWMS'
+import { IObject, IWMSCapabilitiesResult } from '../../../../global/interfaces.global'
+import TileLayer from 'ol/layer/Tile'
+import axiosHelper from '../../../../axios-helper/axios-helper'
+import WMSCapabilities from 'ol/format/WMSCapabilities'
+import { transformExtent } from 'ol/proj'
+
+export interface ILayerItemOptions {
+  name?: string
+  type?: OgcServerString
+  url?: string
+  params?: IObject
+}
+
+export interface ILayerOperationOptions {
+  layerItems?: ILayerItemOptions[]
+}
+
+/** 插件：图层控制类 */
+export class LayerOperation extends WebMapPlugin<{
+
+}> {
+
+  //#region 私有属性
+
+  /** 配置项 */
+  private _options: ILayerOperationOptions = {}
+
+  /** 图层池 */
+  private _layerPool: Map<string, Layer> = new Map()
+
+  /** 图层组 */
+  private _layerGroup: LayerGroup
+
+  //#endregion
+
+  //#region 构造函数
+
+  /** 构造图层控制对象 */
+  constructor (options: ILayerOperationOptions) {
+    super('layerOperation')
+    baseUtils.$extend(true, this._options, options)
+  }
+
+  //#endregion
+
+  //#region 私有方法
+
+  /** 初始化 */
+  private _init () {
+    this._layerGroup = createLayerGroup()
+    this.map.addLayer(this._layerGroup)
+    this._options.layerItems.forEach(layerItem => {
+      this._initLayer(layerItem)
+    })
+  }
+
+  /**
+   * 创建图层
+   * @param layerItemOptions 配置项
+   */
+  private _initLayer (layerItemOptions: ILayerItemOptions) {
+    const type = layerItemOptions.type
+    switch (type) {
+      case 'wfs':
+        this._initWfsLayer(layerItemOptions)
+        break
+      case 'wms':
+        this._initWmsLayer(layerItemOptions)
+        break
+      default:
+        break
+    }
+  }
+
+  /** 初始化WFS图层 */
+  private _initWfsLayer (layerItemOptions: ILayerItemOptions) {
+    const layer = createVectorLayer()
+    const source = new VectorSource({
+      format: new GeoJSON(),
+      url: extent => {
+        return `${layerItemOptions.url}&bbox=${extent.join(',')},EPSG:3857`
+      },
+      strategy: bboxStrategy
+    })
+    layer.setSource(source)
+    this._layerGroup.getLayers().push(layer)
+    this._layerPool.set(layerItemOptions.name, layer)
+  }
+
+  /** 初始化WMS图层 */
+  private _initWmsLayer (layerItemOptions: ILayerItemOptions) {
+    const source = new TileWMS({
+      url: layerItemOptions.url,
+      params: { ...layerItemOptions.params }
+    })
+    const layer = createTileLayer({ source })
+    this._layerGroup.getLayers().push(layer)
+    this._layerPool.set(layerItemOptions.name, layer)
+    const [url] = (layer.getSource() as TileWMS).getUrls()
+    axiosHelper() // getExtent is undefined, need to set
+      .setUrl(url)
+      .setParams({ 'REQUEST': 'GetCapabilities' })
+      .setParams({ 'outputFormat': 'application/json' })
+      .mountGet()
+      .then((res: string) => {
+        const wmsCapabilities = new WMSCapabilities().read(res) as IWMSCapabilitiesResult
+        let extent = wmsCapabilities.Capability.Layer.Layer.find(item => item.Name === layerItemOptions.params['LAYERS'].split(':')[1])?.EX_GeographicBoundingBox // TODO maybe wrong
+        extent = transformExtent(extent, 'EPSG:4326', this.view.getProjection())
+        layer.setExtent(extent)
+      })
+  }
+
+  /** 获取指定图层范围 */
+  private _getLayerExtent (layer: Layer) : Extent | null {
+    if (layer instanceof VectorLayer) {
+      return layer.getSource().getExtent()
+    }
+    if (layer instanceof TileLayer) {
+      return layer.getExtent()
+    }
+  }
+
+  //#endregion
+
+  //#region 公有方法
+
+  /** 安装插件 */
+  installPlugin (webMap: WebMap) : this {
+    super.installPlugin(webMap)
+    this._init()
+    return this
+  }
+
+  /** 获取所有图层的综合范围 */
+  getFullExtent () : Extent | null {
+    const layers = [...this._layerPool.values()]
+    let extent : Extent | null = null
+    layers.forEach(lyr => {
+      const newExtent = this._getLayerExtent(lyr)
+      if (extent) {
+        extent = extend(extent, newExtent)
+      } else {
+        extent = newExtent
+      }
+    })
+    return extent
+  }
+
+  /** 通过图层名获取图层对象 */
+  getLayerByName (name: string) : Layer {
+    return this._layerPool.get(name)
+  }
+
+  //#endregion
+
+}

@@ -4,6 +4,7 @@ import View, { ViewOptions } from 'ol/View'
 import { baseUtils } from '../../../js-utils/utilities/base-utils'
 import { Observer } from '../../../observer/observer'
 import { Basemap } from '../plugins/basemap/basemap'
+import { LayerOperation } from '../plugins/layer-operation/layer-operation'
 import { MapCursor } from '../plugins/map-cursor/map-cursor'
 import { MapElementDisplay } from '../plugins/map-element-display/map-element-display'
 import { MapTools } from '../plugins/map-tools/map-tools'
@@ -36,6 +37,7 @@ export class WebMap extends Observer<{
   public mapCursor?: MapCursor
   public mapTools?: MapTools
   public mapElementDisplay?: MapElementDisplay
+  public layerOperation?: LayerOperation
 
   //#endregion
 

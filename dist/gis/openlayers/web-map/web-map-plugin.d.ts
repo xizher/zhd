@@ -1,5 +1,6 @@
 import { Observer } from '../../../observer/observer';
 import { Basemap } from '../plugins/basemap/basemap';
+import { LayerOperation } from '../plugins/layer-operation/layer-operation';
 import { MapCursor } from '../plugins/map-cursor/map-cursor';
 import { MapElementDisplay } from '../plugins/map-element-display/map-element-display';
 import { MapTools } from '../plugins/map-tools/map-tools';
@@ -9,6 +10,7 @@ export interface IPlugins {
     mapCursor?: MapCursor;
     mapTools?: MapTools;
     mapElementDisplay?: MapElementDisplay;
+    layerOperation?: LayerOperation;
 }
 /** WebMap插件类 */
 export declare class WebMapPlugin<T> extends Observer<T> {
