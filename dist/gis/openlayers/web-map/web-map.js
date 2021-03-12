@@ -64,6 +64,8 @@ export class WebMap extends Observer {
      */
     mount() {
         this._map.setTarget(this._targetDiv);
+        this.basemap && this.basemap.reSortLayer();
+        this.mapElementDisplay && this.mapElementDisplay.reSortLayer();
         return this;
     }
 }

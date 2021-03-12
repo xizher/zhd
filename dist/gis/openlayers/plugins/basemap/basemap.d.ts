@@ -47,6 +47,8 @@ export declare class Basemap extends WebMapPlugin<{
     private _createGeoQDiTu;
     /** 创建Gaode底图项 */
     private _createHGaoDeDiTu;
+    /** 重新设置图层位置 */
+    reSortLayer(): this;
     /**
      * 安装插件
      * @param webMap WebMap对象

@@ -218,6 +218,13 @@ export class MapElementDisplay extends WebMapPlugin<{
 
   //#region 公有方法
 
+  /** 重新设置图层位置 */
+  reSortLayer () : this {
+    this.map.getLayers().remove(this._layerGroup)
+    this.map.addLayer(this._layerGroup)
+    return this
+  }
+
   /** 重写插件安装方法 */
   installPlugin (webMap: WebMap) : this {
     super.installPlugin(webMap)

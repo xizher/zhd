@@ -127,6 +127,8 @@ export class WebMap extends Observer<{
    */
   public mount () : WebMap {
     this._map.setTarget(this._targetDiv)
+    this.basemap && this.basemap.reSortLayer()
+    this.mapElementDisplay && this.mapElementDisplay.reSortLayer()
     return this
   }
 

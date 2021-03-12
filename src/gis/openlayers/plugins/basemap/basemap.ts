@@ -151,6 +151,13 @@ export class Basemap extends WebMapPlugin<{
 
   //#region 公有方法
 
+  /** 重新设置图层位置 */
+  reSortLayer () : this {
+    this.map.getLayers().remove(this._layerGroup)
+    this.map.getLayers().insertAt(0, this._layerGroup)
+    return this
+  }
+
   /**
    * 安装插件
    * @param webMap WebMap对象

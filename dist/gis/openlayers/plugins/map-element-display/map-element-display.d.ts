@@ -61,6 +61,8 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
     private _createPolygonStyle;
     /** 初始化 */
     private _init;
+    /** 重新设置图层位置 */
+    reSortLayer(): this;
     /** 重写插件安装方法 */
     installPlugin(webMap: WebMap): this;
     /**
