@@ -28,7 +28,10 @@ export function useType(mapTools) {
             mapTools.activedKey !== TOOL_NAME && mapTools.setMapTool(TOOL_NAME);
         }
     });
-    return [type, ['area', 'length']];
+    return [type, [
+            { name: 'area', alias: '面积' },
+            { name: 'length', alias: '长度' },
+        ]];
 }
 export function useClear(mapTools) {
     const measureTool = mapTools.getTool(TOOL_NAME);

@@ -1,7 +1,12 @@
 import { onUnmounted, ref, watch } from 'vue';
 function useMark(mapTools) {
     const markTool = mapTools.getTool('mark');
-    const typeList = ['Point', 'LineString', 'Polygon', 'Circle'];
+    const typeList = [
+        { name: 'Point', alias: '点' },
+        { name: 'LineString', alias: '线' },
+        { name: 'Polygon', alias: '面' },
+        { name: 'Circle', alias: '圆' }
+    ];
     const selectedType = ref(mapTools.activedKey === 'mark' ? markTool.markType : '');
     const handler = mapTools.on('change', e => {
         if (e.currentKey !== 'mark') {

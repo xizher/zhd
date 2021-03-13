@@ -31,7 +31,7 @@ export class LayerOperation extends WebMapPlugin {
     _init() {
         this._layerGroup = createLayerGroup();
         this.map.addLayer(this._layerGroup);
-        this._options.layerItems.forEach(layerItem => {
+        this._options.layerItems?.forEach(layerItem => {
             this._initLayer(layerItem);
         });
     }
