@@ -16,7 +16,7 @@ export function useEnabled (mapTools: MapTools) : Ref<boolean> {
   return enabled
 }
 
-export function useType (mapTools: MapTools) : [Ref<MeasureType>, MeasureType[]] {
+export function useType (mapTools: MapTools) : [Ref<MeasureType>, { name: MeasureType, alias: string }[]] {
   const measureTool = mapTools.getTool(TOOL_NAME) as MeasureTool
   const type = ref(mapTools.activedKey === 'mark' ? measureTool.type : '')
   const handler = measureTool.on('change:type', e => type.value = e.type)
@@ -33,7 +33,10 @@ export function useType (mapTools: MapTools) : [Ref<MeasureType>, MeasureType[]]
       mapTools.activedKey !== TOOL_NAME && mapTools.setMapTool(TOOL_NAME)
     }
   })
-  return [type, ['area', 'length']]
+  return [type, [
+    { name: 'area', alias: '面积' },
+    { name: 'length', alias: '长度' },
+  ]]
 }
 
 export function useClear (mapTools: MapTools) : () => void {

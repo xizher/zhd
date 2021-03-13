@@ -2,9 +2,14 @@ import { onUnmounted, Ref, ref, watch } from 'vue'
 import { MapTools } from '../plugins/map-tools/map-tools'
 import { MarkGeometryType, MarkTool } from '../plugins/map-tools/tools/mark/mark-tool'
 
-function useMark (mapTools: MapTools) : [Ref<string>, string[]] {
+function useMark (mapTools: MapTools) : [Ref<string>, { name: string, alias: string }[]] {
   const markTool = mapTools.getTool('mark') as MarkTool
-  const typeList = ['Point', 'LineString', 'Polygon', 'Circle']
+  const typeList = [
+    { name: 'Point', alias: '点' },
+    { name: 'LineString', alias: '线' },
+    { name: 'Polygon', alias: '面' },
+    { name: 'Circle', alias: '圆' }
+  ]
   const selectedType = ref(mapTools.activedKey === 'mark' ? markTool.markType : '')
   const handler = mapTools.on('change', e => {
     if (e.currentKey !== 'mark') {
