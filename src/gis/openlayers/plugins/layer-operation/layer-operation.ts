@@ -31,7 +31,7 @@ export interface ILayerOperationOptions {
 export interface ILayerItem {
   id: string
   name: string
-  target: Layer
+  // target: Layer
   visible: boolean
   opacity: number
   level: number
@@ -80,7 +80,7 @@ export class LayerOperation extends WebMapPlugin<{
       pool.set(options.name, {
         id: baseUtils.createGuid(),
         name: options.name,
-        target: layer,
+        // target: layer,
         visible: layer.getVisible(),
         opacity: layer.getOpacity(),
         level: this._getLayerLevel(layer),

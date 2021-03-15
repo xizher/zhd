@@ -16,7 +16,6 @@ export interface ILayerOperationOptions {
 export interface ILayerItem {
     id: string;
     name: string;
-    target: Layer;
     visible: boolean;
     opacity: number;
     level: number;

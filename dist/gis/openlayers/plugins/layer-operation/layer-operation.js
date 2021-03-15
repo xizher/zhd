@@ -33,7 +33,7 @@ export class LayerOperation extends WebMapPlugin {
             pool.set(options.name, {
                 id: baseUtils.createGuid(),
                 name: options.name,
-                target: layer,
+                // target: layer,
                 visible: layer.getVisible(),
                 opacity: layer.getOpacity(),
                 level: this._getLayerLevel(layer),
