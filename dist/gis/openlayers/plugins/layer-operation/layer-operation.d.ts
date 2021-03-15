@@ -9,6 +9,7 @@ export interface ILayerItemOptions {
     type?: OgcServerString;
     url?: string;
     params?: IObject;
+    visible?: boolean;
 }
 export interface ILayerOperationOptions {
     layerItems?: ILayerItemOptions[];

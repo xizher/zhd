@@ -22,6 +22,7 @@ export interface ILayerItemOptions {
   type?: OgcServerString
   url?: string
   params?: IObject
+  visible?: boolean
 }
 
 export interface ILayerOperationOptions {
@@ -131,7 +132,9 @@ export class LayerOperation extends WebMapPlugin<{
 
   /** 初始化WFS图层 */
   private _initWfsLayer (layerItemOptions: ILayerItemOptions) {
-    const layer = createVectorLayer()
+    const layer = createVectorLayer({
+      visible: layerItemOptions.visible
+    })
     const source = new VectorSource({
       format: new GeoJSON(),
       url: extent => {
@@ -150,7 +153,7 @@ export class LayerOperation extends WebMapPlugin<{
       url: layerItemOptions.url,
       params: { ...layerItemOptions.params }
     })
-    const layer = createTileLayer({ source })
+    const layer = createTileLayer({ source, visible: layerItemOptions.visible })
     this._layerGroup.getLayers().push(layer)
     this._layerPool.set(layerItemOptions.name, [layer, layerItemOptions])
     const [url] = (layer.getSource() as TileWMS).getUrls()
