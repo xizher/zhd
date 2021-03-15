@@ -8,6 +8,8 @@ export class ClipTool extends BaseTool {
      */
     constructor(webMap) {
         super(webMap);
+        /** 裁剪结果 */
+        this._resultFeatures = [];
     }
     //#endregion
     //#region 构造函数
@@ -19,11 +21,15 @@ export class ClipTool extends BaseTool {
         this._clipGeom = geometry;
         return this;
     }
+    getResult() {
+        return this._resultFeatures;
+    }
     /** 工具执行时触发事件 */
     onToolExecuting(e) {
         if (!super.onToolExecuting(e)) {
             return false;
         }
+        this._resultFeatures = [];
         let polygon = turf.polygon(this._clipGeom.getCoordinates()[0]); // eslint-disable-line
         polygon = turf.toWgs84(polygon);
         this._features.forEach(feat => {

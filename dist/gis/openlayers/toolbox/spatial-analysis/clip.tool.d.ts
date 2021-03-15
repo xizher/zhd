@@ -12,6 +12,7 @@ export declare class ClipTool extends BaseTool<{}> {
     private _resultFeatures;
     setTarget(features: Feature[]): this;
     setClipGeometry(geometry: Geometry): this;
+    getResult(): Feature[];
     /**
      * 构造裁剪工具对象
      * @param webMap WebMap

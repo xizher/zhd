@@ -18,7 +18,7 @@ export class ClipTool extends BaseTool<{
   private _clipGeom: Geometry
 
   /** 裁剪结果 */
-  private _resultFeatures: Feature[]
+  private _resultFeatures: Feature[] = []
 
   //#endregion
 
@@ -34,6 +34,10 @@ export class ClipTool extends BaseTool<{
     return this
   }
 
+  getResult () : Feature[] {
+    return this._resultFeatures
+  }
+
   /**
    * 构造裁剪工具对象
    * @param webMap WebMap
@@ -47,6 +51,7 @@ export class ClipTool extends BaseTool<{
     if (!super.onToolExecuting(e)) {
       return false
     }
+    this._resultFeatures = []
     let polygon = turf.polygon((this._clipGeom as any).getCoordinates()[0]) // eslint-disable-line
     polygon = turf.toWgs84(polygon)
     this._features.forEach(feat => {
