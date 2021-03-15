@@ -300,7 +300,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param features 图元
    */
   setHighlight (features: Feature | Feature[]) : this {
-    return this.clearHighlight().add(features)
+    return this.clearHighlight().addHighlight(features)
   }
 
   /** 清空所有图元 */

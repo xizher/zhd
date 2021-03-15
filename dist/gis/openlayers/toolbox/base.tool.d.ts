@@ -1,4 +1,3 @@
-import { IObject } from '../../../global/interfaces.global';
 import { IObserverCallbackParams, Observer } from '../../../observer';
 import { WebMap } from '../web-map/web-map';
 export declare type OnToolResetParams<T> = IObserverCallbackParams<'tool-reset', T>;
@@ -8,7 +7,7 @@ export declare type OnToolResetReture = boolean;
 export declare type OnToolExecutingReture = boolean;
 export declare type OnToolDoneReture = boolean;
 /** 执行动作工具（弃用） */
-export declare class BaseTool<T = IObject> extends Observer<T & {
+export declare class BaseTool<T> extends Observer<T & {
     'tool-reset': void;
     'tool-executing': void;
     'tool-done': void;
@@ -23,7 +22,7 @@ export declare class BaseTool<T = IObject> extends Observer<T & {
     /** 重置工具 */
     resetTool(): this;
     /** 执行工具 */
-    executeTool(): this;
+    execute(): this;
     /** 完成执行工具 */
     doneTool(): this;
     /** 工具重置触发事件 */

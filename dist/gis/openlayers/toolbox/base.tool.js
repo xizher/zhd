@@ -23,7 +23,7 @@ export class BaseTool extends Observer {
         return this;
     }
     /** 执行工具 */
-    executeTool() {
+    execute() {
         this.fire('tool-executing');
         return this;
     }

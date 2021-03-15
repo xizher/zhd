@@ -4,6 +4,7 @@
   "description": "Something JavaScript Modules Code With Hi-Target",
   "main": "index.js",
   "dependencies": {
+    "@turf/turf": "^6.3.0",
     "ol": "^6.5.0",
     "vue": "^3.0.7"
   },

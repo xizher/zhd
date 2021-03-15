@@ -10,7 +10,7 @@ export type OnToolExecutingReture = boolean
 export type OnToolDoneReture = boolean
 
 /** 执行动作工具（弃用） */
-export class BaseTool<T = IObject> extends Observer<T & {
+export class BaseTool<T> extends Observer<T & {
   'tool-reset': void
   'tool-executing': void
   'tool-done': void
@@ -48,7 +48,7 @@ export class BaseTool<T = IObject> extends Observer<T & {
   }
 
   /** 执行工具 */
-  executeTool () : this {
+  execute () : this {
     this.fire('tool-executing')
     return this
   }
