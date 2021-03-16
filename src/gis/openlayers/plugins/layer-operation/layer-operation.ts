@@ -16,6 +16,7 @@ import TileLayer from 'ol/layer/Tile'
 import axiosHelper from '../../../../axios-helper/axios-helper'
 import WMSCapabilities from 'ol/format/WMSCapabilities'
 import { transformExtent } from 'ol/proj'
+import { createStyle2, createUniqueStyle, IStyleOptions, IUniqueStyleOptions } from '../../utilities/style.utilities'
 
 export interface ILayerItemOptions {
   name?: string
@@ -23,6 +24,7 @@ export interface ILayerItemOptions {
   url?: string
   params?: IObject
   visible?: boolean
+  style?: IStyleOptions | IUniqueStyleOptions// eslint-disable-line
 }
 
 export interface ILayerOperationOptions {
@@ -143,6 +145,11 @@ export class LayerOperation extends WebMapPlugin<{
       strategy: bboxStrategy
     })
     layer.setSource(source)
+    if (layerItemOptions.style) {
+      (layerItemOptions.style as IUniqueStyleOptions).uniqueField
+        ? layer.setStyle(createUniqueStyle((layerItemOptions.style as IUniqueStyleOptions)))
+        : layer.setStyle(createStyle2(layerItemOptions.style as IStyleOptions))
+    }
     this._layerGroup.getLayers().push(layer)
     this._layerPool.set(layerItemOptions.name, [layer, layerItemOptions])
   }

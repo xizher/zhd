@@ -11,6 +11,7 @@ import TileLayer from 'ol/layer/Tile';
 import axiosHelper from '../../../../axios-helper/axios-helper';
 import WMSCapabilities from 'ol/format/WMSCapabilities';
 import { transformExtent } from 'ol/proj';
+import { createStyle2, createUniqueStyle } from '../../utilities/style.utilities';
 /** 插件：图层控制类 */
 export class LayerOperation extends WebMapPlugin {
     //#endregion
@@ -82,6 +83,11 @@ export class LayerOperation extends WebMapPlugin {
             strategy: bboxStrategy
         });
         layer.setSource(source);
+        if (layerItemOptions.style) {
+            layerItemOptions.style.uniqueField
+                ? layer.setStyle(createUniqueStyle(layerItemOptions.style))
+                : layer.setStyle(createStyle2(layerItemOptions.style));
+        }
         this._layerGroup.getLayers().push(layer);
         this._layerPool.set(layerItemOptions.name, [layer, layerItemOptions]);
     }

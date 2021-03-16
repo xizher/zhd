@@ -4,12 +4,14 @@ import { WebMap } from '../../web-map/web-map';
 import { WebMapPlugin } from '../../web-map/web-map-plugin';
 import { Extent } from 'ol/extent';
 import { IObject } from '../../../../global/interfaces.global';
+import { IStyleOptions, IUniqueStyleOptions } from '../../utilities/style.utilities';
 export interface ILayerItemOptions {
     name?: string;
     type?: OgcServerString;
     url?: string;
     params?: IObject;
     visible?: boolean;
+    style?: IStyleOptions | IUniqueStyleOptions;
 }
 export interface ILayerOperationOptions {
     layerItems?: ILayerItemOptions[];

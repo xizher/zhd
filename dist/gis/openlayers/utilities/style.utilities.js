@@ -1,4 +1,3 @@
-// import { Fill, Stroke, Style } from 'ol/style'
 import CircleStyle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import IconStyle from 'ol/style/Icon';
@@ -38,6 +37,9 @@ export function createFill(options) {
  * @param options 配置项
  */
 export function createStyle2(options) {
+    if (typeof options === 'function') {
+        return options;
+    }
     let image, fill, stroke;
     if (options.image) {
         switch (options.image.styleType) {
@@ -65,4 +67,15 @@ export function createStyle2(options) {
         stroke = createStroke(options.stroke);
     }
     return new Style({ image, fill, stroke });
+}
+/** 创建唯一值样式渲染 */
+export function createUniqueStyle(options) {
+    return (feature) => {
+        const value = feature.getProperties()[options.uniqueField];
+        const styleOptions = options.items.find(item => item.value === value)?.style;
+        if (styleOptions) {
+            return createStyle2(styleOptions);
+        }
+        return null;
+    };
 }

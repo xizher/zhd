@@ -3,7 +3,7 @@ import Fill, { Options as FillOptions } from 'ol/style/Fill';
 import { Options as IconStyleOptions } from 'ol/style/Icon';
 import { Options as RegularShapeStyleOptions } from 'ol/style/RegularShape';
 import Stroke, { Options as StrokeOptions } from 'ol/style/Stroke';
-import Style, { Options as StyleOptions } from 'ol/style/Style';
+import Style, { Options as StyleOptions, StyleFunction } from 'ol/style/Style';
 /**
  * 创建圆样式
  * @param options 配置项
@@ -41,8 +41,14 @@ export interface IStyleOptions {
     fill?: FillOptions;
     stroke?: StrokeOptions;
 }
-/**
- * 创建样式
- * @param options 配置项
- */
+export declare function createStyle2(options: StyleFunction): StyleFunction;
 export declare function createStyle2(options: IStyleOptions): Style;
+export interface IUniqueStyleOptions {
+    uniqueField: string;
+    items?: {
+        value: any;
+        style: IStyleOptions;
+    }[];
+}
+/** 创建唯一值样式渲染 */
+export declare function createUniqueStyle(options: IUniqueStyleOptions): StyleFunction;
