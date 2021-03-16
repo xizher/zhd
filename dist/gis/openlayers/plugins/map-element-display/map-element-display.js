@@ -1,5 +1,5 @@
 import { WebMapPlugin } from '../../web-map/web-map-plugin';
-import { createCircleStyle, createFill, createStroke, createStyle } from '../../utilities/style.utilities';
+import { createStyle2 } from '../../utilities/style.utilities';
 import { createLayerGroup, createVectorLayer } from '../../utilities/layer.utilities';
 import { createCollection, createFeature } from '../../utilities/base.utilities';
 import { baseUtils } from '../../../../js-utils/index';
@@ -80,54 +80,19 @@ export class MapElementDisplay extends WebMapPlugin {
         const { graphicsStyle: gStyle, highlightStyle: hStyle } = this._styleOptions;
         return {
             graphicsStyle: {
-                pointStyle: this._createPointStyle(gStyle.pointStyle),
-                polylineStyle: this._createPolylineStyle(gStyle.polylineStyle),
-                polygonStyle: this._createPolygonStyle(gStyle.polygonStyle),
+                pointStyle: createStyle2(gStyle.pointStyle),
+                polylineStyle: createStyle2(gStyle.polylineStyle),
+                polygonStyle: createStyle2(gStyle.polygonStyle),
             },
             highlightStyle: {
-                pointStyle: this._createPointStyle(hStyle.pointStyle),
-                polylineStyle: this._createPolylineStyle(hStyle.polylineStyle),
-                polygonStyle: this._createPolygonStyle(hStyle.polygonStyle),
+                pointStyle: createStyle2(hStyle.pointStyle),
+                polylineStyle: createStyle2(hStyle.polylineStyle),
+                polygonStyle: createStyle2(hStyle.polygonStyle),
             },
         };
     }
     //#endregion
     //#region 私有方法
-    /**
-     * 创建点样式
-     * @param options 配置项
-     */
-    _createPointStyle(options) {
-        let image;
-        const imageOptions = options.image;
-        switch (imageOptions.styleType) {
-            case 'circle':
-                image = createCircleStyle({
-                    fill: createFill(imageOptions.fill),
-                    stroke: createStroke(imageOptions.stroke),
-                    radius: imageOptions.radius
-                });
-                break;
-            default:
-                break;
-        }
-        return createStyle({ image });
-    }
-    /**
-     * 创建线样式
-     * @param options 配置项
-     */
-    _createPolylineStyle(options) {
-        return createStyle({
-            stroke: createStroke(options.stroke)
-        });
-    }
-    _createPolygonStyle(options) {
-        return createStyle({
-            stroke: createStroke(options.stroke),
-            fill: createFill(options.fill)
-        });
-    }
     /** 初始化 */
     _init() {
         this._layerGroup = createLayerGroup();
@@ -231,19 +196,19 @@ export class MapElementDisplay extends WebMapPlugin {
                 case 'Point':
                     options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.pointStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPointStyle(options);
+                    style = createStyle2(options);
                     break;
                 case 'LineString':
                 case 'MultiLineString':
                     options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.polylineStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPolylineStyle(options);
+                    style = createStyle2(options);
                     break;
                 case 'Polygon':
                 case 'Circle':
                     options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.polygonStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPolygonStyle(options);
+                    style = createStyle2(options);
                     break;
                 default:
                     break;
@@ -264,18 +229,18 @@ export class MapElementDisplay extends WebMapPlugin {
                 case 'Point':
                     options = baseUtils.deepCopy(this._styleOptions.highlightStyle.pointStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPointStyle(options);
+                    style = createStyle2(options);
                     break;
                 case 'LineString':
                 case 'MultiLineString':
                     options = baseUtils.deepCopy(this._styleOptions.highlightStyle.polylineStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPolylineStyle(options);
+                    style = createStyle2(options);
                     break;
                 case 'Polygon':
                     options = baseUtils.deepCopy(this._styleOptions.highlightStyle.polygonStyle);
                     baseUtils.$extend(true, options, styleOptions);
-                    style = this._createPolygonStyle(options);
+                    style = createStyle2(options);
                     break;
                 default:
                     break;

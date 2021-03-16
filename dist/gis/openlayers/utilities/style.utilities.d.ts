@@ -1,5 +1,7 @@
 import CircleStyle, { Options as CircleStyleOptions } from 'ol/style/Circle';
 import Fill, { Options as FillOptions } from 'ol/style/Fill';
+import { Options as IconStyleOptions } from 'ol/style/Icon';
+import { Options as RegularShapeStyleOptions } from 'ol/style/RegularShape';
 import Stroke, { Options as StrokeOptions } from 'ol/style/Stroke';
 import Style, { Options as StyleOptions } from 'ol/style/Style';
 /**
@@ -22,3 +24,25 @@ export declare function createStroke(options: StrokeOptions): Stroke;
  * @param options 配置项
  */
 export declare function createFill(options: FillOptions): Fill;
+export interface ICircleStyleOptions {
+    styleType?: 'circle';
+    fill?: FillOptions;
+    stroke?: StrokeOptions;
+    radius?: number;
+}
+export interface IIconStyleOptions extends IconStyleOptions {
+    styleType?: 'icon';
+}
+export interface IRegularShapeStyleOptions extends RegularShapeStyleOptions {
+    styleType?: 'regular-shape';
+}
+export interface IStyleOptions {
+    image?: ICircleStyleOptions | IIconStyleOptions | IRegularShapeStyleOptions;
+    fill?: FillOptions;
+    stroke?: StrokeOptions;
+}
+/**
+ * 创建样式
+ * @param options 配置项
+ */
+export declare function createStyle2(options: IStyleOptions): Style;

@@ -1,11 +1,8 @@
-import { Options as StrokeOptions } from 'ol/style/Stroke'
-import { Options as FillOptions } from 'ol/style/Fill'
 import { WebMapPlugin } from '../../web-map/web-map-plugin'
 import LayerGroup from 'ol/layer/Group'
 import VectorLayer from 'ol/layer/Vector'
 import Style from 'ol/style/Style'
-import { createCircleStyle, createFill, createStroke, createStyle } from '../../utilities/style.utilities'
-import ImageStyle from 'ol/style/Image'
+import { createStyle2, IStyleOptions } from '../../utilities/style.utilities'
 import { createLayerGroup, createVectorLayer } from '../../utilities/layer.utilities'
 import { createCollection, createFeature } from '../../utilities/base.utilities'
 import { WebMap } from '../../web-map/web-map'
@@ -13,32 +10,10 @@ import { Feature } from 'ol'
 import Geometry from 'ol/geom/Geometry'
 import { baseUtils } from '../../../../js-utils/index'
 
-export interface ICircleStyle {
-  styleType?: 'circle'
-  fill?: FillOptions
-  stroke?: StrokeOptions
-  radius?: number
-}
-
-export interface IPointStyleOptions {
-  image?: ICircleStyle
-}
-
-export interface IPolylineStyleOptions {
-  stroke?: StrokeOptions
-}
-
-export interface IPolygonStyleOptions {
-  stroke?: StrokeOptions
-  fill?: FillOptions
-}
-
-export type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions
-
 export interface IGeometryStyleOptions {
-  pointStyle?: IPointStyleOptions
-  polylineStyle?: IPolylineStyleOptions
-  polygonStyle?: IPolygonStyleOptions
+  pointStyle?: IStyleOptions
+  polylineStyle?: IStyleOptions
+  polygonStyle?: IStyleOptions
 }
 
 export interface IGeometryStyle {
@@ -141,14 +116,14 @@ export class MapElementDisplay extends WebMapPlugin<{
     const { graphicsStyle: gStyle, highlightStyle: hStyle } = this._styleOptions
     return {
       graphicsStyle: {
-        pointStyle: this._createPointStyle(gStyle.pointStyle),
-        polylineStyle: this._createPolylineStyle(gStyle.polylineStyle),
-        polygonStyle: this._createPolygonStyle(gStyle.polygonStyle),
+        pointStyle: createStyle2(gStyle.pointStyle),
+        polylineStyle: createStyle2(gStyle.polylineStyle),
+        polygonStyle: createStyle2(gStyle.polygonStyle),
       },
       highlightStyle: {
-        pointStyle: this._createPointStyle(hStyle.pointStyle),
-        polylineStyle: this._createPolylineStyle(hStyle.polylineStyle),
-        polygonStyle: this._createPolygonStyle(hStyle.polygonStyle),
+        pointStyle: createStyle2(hStyle.pointStyle),
+        polylineStyle: createStyle2(hStyle.polylineStyle),
+        polygonStyle: createStyle2(hStyle.polygonStyle),
       },
     }
   }
@@ -165,44 +140,6 @@ export class MapElementDisplay extends WebMapPlugin<{
   //#endregion
 
   //#region 私有方法
-
-  /**
-   * 创建点样式
-   * @param options 配置项
-   */
-  private _createPointStyle (options: IPointStyleOptions) : Style {
-    let image: ImageStyle
-    const imageOptions = options.image
-    switch (imageOptions.styleType) {
-      case 'circle':
-        image = createCircleStyle({
-          fill: createFill(imageOptions.fill),
-          stroke: createStroke(imageOptions.stroke),
-          radius: imageOptions.radius
-        })
-        break
-      default:
-        break
-    }
-    return createStyle({ image })
-  }
-
-  /**
-   * 创建线样式
-   * @param options 配置项
-   */
-  private _createPolylineStyle (options: IPolylineStyleOptions) : Style {
-    return createStyle({
-      stroke: createStroke(options.stroke)
-    })
-  }
-
-  private _createPolygonStyle (options: IPolygonStyleOptions) : Style {
-    return createStyle({
-      stroke: createStroke(options.stroke),
-      fill: createFill(options.fill)
-    })
-  }
 
   /** 初始化 */
   private _init () : this {
@@ -313,7 +250,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param geometries 几何图形
    * @param styleOptions 样式配置项
    */
-  parseGraphics (geometries: Geometry | Geometry[], styleOptions: StyleOptions) : Feature[] {
+  parseGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
     const _geometries = Array.isArray(geometries) ? geometries : [geometries]
     return _geometries.map(geometry => {
       let style: Style, options = {}
@@ -321,19 +258,19 @@ export class MapElementDisplay extends WebMapPlugin<{
         case 'Point':
           options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.pointStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPointStyle(options)
+          style = createStyle2(options)
           break
         case 'LineString':
         case 'MultiLineString':
           options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.polylineStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPolylineStyle(options)
+          style = createStyle2(options)
           break
         case 'Polygon':
         case 'Circle':
           options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.polygonStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPolygonStyle(options)
+          style = createStyle2(options)
           break
         default:
           break
@@ -347,7 +284,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param geometries 几何图形
    * @param styleOptions 样式配置项
    */
-  parseHighlightGraphics (geometries: Geometry | Geometry[], styleOptions: StyleOptions) : Feature[] {
+  parseHighlightGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
     const _geometries = Array.isArray(geometries) ? geometries : [geometries]
     return _geometries.map(geometry => {
       let style: Style, options = {}
@@ -355,18 +292,18 @@ export class MapElementDisplay extends WebMapPlugin<{
         case 'Point':
           options = baseUtils.deepCopy(this._styleOptions.highlightStyle.pointStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPointStyle(options)
+          style = createStyle2(options)
           break
         case 'LineString':
         case 'MultiLineString':
           options = baseUtils.deepCopy(this._styleOptions.highlightStyle.polylineStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPolylineStyle(options)
+          style = createStyle2(options)
           break
         case 'Polygon':
           options = baseUtils.deepCopy(this._styleOptions.highlightStyle.polygonStyle)
           baseUtils.$extend(true, options, styleOptions)
-          style = this._createPolygonStyle(options)
+          style = createStyle2(options)
           break
         default:
           break

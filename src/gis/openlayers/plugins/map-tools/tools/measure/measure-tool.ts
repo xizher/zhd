@@ -10,7 +10,7 @@ import VectorLayer from 'ol/layer/Vector'
 import { unByKey } from 'ol/Observable'
 import OverlayPositioning from 'ol/OverlayPositioning'
 import VectorSource from 'ol/source/Vector'
-import { createCircleStyle, createFill, createStroke, createStyle } from '../../../../utilities/style.utilities'
+import { createStyle2 } from '../../../../utilities/style.utilities'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
 import './measure-tool.css'
@@ -103,16 +103,17 @@ export class MeasureTool extends BaseTool<{
     this._source = new VectorSource()
     this._vectorLayer = new VectorLayer({
       source: this._source,
-      style: createStyle({
-        fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-        stroke: createStroke({
+      style: createStyle2({
+        fill: { color: 'rgba(255, 255, 255, 0.2)' },
+        stroke: {
           color: '#ffcc33',
           width: 2,
-        }),
-        image: createCircleStyle({
+        },
+        image: {
+          styleType: 'circle',
           radius: 7,
-          fill: createFill({ color: '#ffcc33', })
-        }),
+          fill: { color: '#ffcc33', }
+        },
       }),
     })
     this._createMousemoveHandler()
@@ -124,18 +125,19 @@ export class MeasureTool extends BaseTool<{
     this._draw = new Draw({
       source: this._source,
       type: (this._measureType === 'area' ? 'Polygon' : 'LineString') as GeometryType,
-      style: createStyle({
-        fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-        stroke: createStroke({
+      style: createStyle2({
+        fill: { color: 'rgba(255, 255, 255, 0.2)' },
+        stroke: {
           color: 'rgba(0, 0, 0, 0.5)',
           lineDash: [10, 10],
           width: 2,
-        }),
-        image: createCircleStyle({
+        },
+        image: {
+          styleType: 'circle',
           radius: 5,
-          stroke: createStroke({ color: 'rgba(0, 0, 0, 0.7)' }),
-          fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-        }),
+          stroke: { color: 'rgba(0, 0, 0, 0.7)' },
+          fill: { color: 'rgba(255, 255, 255, 0.2)' },
+        },
       }),
     })
     let listener: EventsKey

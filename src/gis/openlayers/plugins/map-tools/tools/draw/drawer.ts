@@ -1,7 +1,8 @@
 import Feature from 'ol/Feature'
 import Geometry from 'ol/geom/Geometry'
 import { baseUtils } from '../../../../../../js-utils/index'
-import { IGeometryStyleOptions, MapElementDisplay, StyleOptions } from '../../../map-element-display/map-element-display'
+import { IStyleOptions } from '../../../../utilities/style.utilities'
+import { IGeometryStyleOptions, MapElementDisplay } from '../../../map-element-display/map-element-display'
 
 /** 绘制器类 */
 export class Drawer {
@@ -99,7 +100,7 @@ export class Drawer {
    * @param geometries
    * @param styleOptions
    */
-  private _matchStyle (geometries: Geometry | Geometry[], styleOptions: IGeometryStyleOptions) : StyleOptions {
+  private _matchStyle (geometries: Geometry | Geometry[], styleOptions: IGeometryStyleOptions) : IStyleOptions {
     const type = Array.isArray(geometries)
       ? geometries[0].getType()
       : geometries.getType()

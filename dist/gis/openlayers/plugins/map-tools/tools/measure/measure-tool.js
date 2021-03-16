@@ -5,7 +5,7 @@ import { Draw } from 'ol/interaction';
 import VectorLayer from 'ol/layer/Vector';
 import { unByKey } from 'ol/Observable';
 import VectorSource from 'ol/source/Vector';
-import { createCircleStyle, createFill, createStroke, createStyle } from '../../../../utilities/style.utilities';
+import { createStyle2 } from '../../../../utilities/style.utilities';
 import { BaseTool } from '../../base-tool';
 import './measure-tool.css';
 /** 测量工具类 */
@@ -38,16 +38,17 @@ export class MeasureTool extends BaseTool {
         this._source = new VectorSource();
         this._vectorLayer = new VectorLayer({
             source: this._source,
-            style: createStyle({
-                fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-                stroke: createStroke({
+            style: createStyle2({
+                fill: { color: 'rgba(255, 255, 255, 0.2)' },
+                stroke: {
                     color: '#ffcc33',
                     width: 2,
-                }),
-                image: createCircleStyle({
+                },
+                image: {
+                    styleType: 'circle',
                     radius: 7,
-                    fill: createFill({ color: '#ffcc33', })
-                }),
+                    fill: { color: '#ffcc33', }
+                },
             }),
         });
         this._createMousemoveHandler();
@@ -58,18 +59,19 @@ export class MeasureTool extends BaseTool {
         this._draw = new Draw({
             source: this._source,
             type: (this._measureType === 'area' ? 'Polygon' : 'LineString'),
-            style: createStyle({
-                fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-                stroke: createStroke({
+            style: createStyle2({
+                fill: { color: 'rgba(255, 255, 255, 0.2)' },
+                stroke: {
                     color: 'rgba(0, 0, 0, 0.5)',
                     lineDash: [10, 10],
                     width: 2,
-                }),
-                image: createCircleStyle({
+                },
+                image: {
+                    styleType: 'circle',
                     radius: 5,
-                    stroke: createStroke({ color: 'rgba(0, 0, 0, 0.7)' }),
-                    fill: createFill({ color: 'rgba(255, 255, 255, 0.2)' }),
-                }),
+                    stroke: { color: 'rgba(0, 0, 0, 0.7)' },
+                    fill: { color: 'rgba(255, 255, 255, 0.2)' },
+                },
             }),
         });
         let listener;

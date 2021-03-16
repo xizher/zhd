@@ -1,31 +1,13 @@
-import { Options as StrokeOptions } from 'ol/style/Stroke';
-import { Options as FillOptions } from 'ol/style/Fill';
 import { WebMapPlugin } from '../../web-map/web-map-plugin';
 import Style from 'ol/style/Style';
+import { IStyleOptions } from '../../utilities/style.utilities';
 import { WebMap } from '../../web-map/web-map';
 import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
-export interface ICircleStyle {
-    styleType?: 'circle';
-    fill?: FillOptions;
-    stroke?: StrokeOptions;
-    radius?: number;
-}
-export interface IPointStyleOptions {
-    image?: ICircleStyle;
-}
-export interface IPolylineStyleOptions {
-    stroke?: StrokeOptions;
-}
-export interface IPolygonStyleOptions {
-    stroke?: StrokeOptions;
-    fill?: FillOptions;
-}
-export declare type StyleOptions = IPointStyleOptions | IPolylineStyleOptions | IPolygonStyleOptions;
 export interface IGeometryStyleOptions {
-    pointStyle?: IPointStyleOptions;
-    polylineStyle?: IPolylineStyleOptions;
-    polygonStyle?: IPolygonStyleOptions;
+    pointStyle?: IStyleOptions;
+    polylineStyle?: IStyleOptions;
+    polygonStyle?: IStyleOptions;
 }
 export interface IGeometryStyle {
     pointStyle: Style;
@@ -48,17 +30,6 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
     };
     /** 构造图元控制对象 */
     constructor();
-    /**
-     * 创建点样式
-     * @param options 配置项
-     */
-    private _createPointStyle;
-    /**
-     * 创建线样式
-     * @param options 配置项
-     */
-    private _createPolylineStyle;
-    private _createPolygonStyle;
     /** 初始化 */
     private _init;
     /** 重新设置图层位置 */
@@ -106,11 +77,11 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
      * @param geometries 几何图形
      * @param styleOptions 样式配置项
      */
-    parseGraphics(geometries: Geometry | Geometry[], styleOptions: StyleOptions): Feature[];
+    parseGraphics(geometries: Geometry | Geometry[], styleOptions: IStyleOptions): Feature[];
     /**
      * 解析高亮图元
      * @param geometries 几何图形
      * @param styleOptions 样式配置项
      */
-    parseHighlightGraphics(geometries: Geometry | Geometry[], styleOptions: StyleOptions): Feature[];
+    parseHighlightGraphics(geometries: Geometry | Geometry[], styleOptions: IStyleOptions): Feature[];
 }
