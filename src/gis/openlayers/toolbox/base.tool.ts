@@ -22,6 +22,14 @@ export class BaseTool<T> extends Observer<T & {
 
   //#endregion
 
+  //#region getter
+
+  get webMap () : WebMap {
+    return this._webMap
+  }
+
+  //#endregion
+
   //#region 构造函数
 
   /**

@@ -59,7 +59,7 @@ export class MapElementDisplay extends WebMapPlugin {
                 polylineStyle: {
                     stroke: {
                         color: 'rgba(0, 255, 255, 0.8)',
-                        width: 1
+                        width: 2
                     }
                 },
                 polygonStyle: {
@@ -234,6 +234,7 @@ export class MapElementDisplay extends WebMapPlugin {
                     style = this._createPointStyle(options);
                     break;
                 case 'LineString':
+                case 'MultiLineString':
                     options = baseUtils.deepCopy(this._styleOptions.graphicsStyle.polylineStyle);
                     baseUtils.$extend(true, options, styleOptions);
                     style = this._createPolylineStyle(options);
@@ -266,6 +267,7 @@ export class MapElementDisplay extends WebMapPlugin {
                     style = this._createPointStyle(options);
                     break;
                 case 'LineString':
+                case 'MultiLineString':
                     options = baseUtils.deepCopy(this._styleOptions.highlightStyle.polylineStyle);
                     baseUtils.$extend(true, options, styleOptions);
                     style = this._createPolylineStyle(options);

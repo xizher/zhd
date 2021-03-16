@@ -16,6 +16,11 @@ export class BaseTool extends Observer {
         this.on('tool-done', e => this.onToolDone(e));
     }
     //#endregion
+    //#region getter
+    get webMap() {
+        return this._webMap;
+    }
+    //#endregion
     //#region 公有方法
     /** 重置工具 */
     resetTool() {

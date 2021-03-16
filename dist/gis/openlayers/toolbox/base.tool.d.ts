@@ -13,6 +13,7 @@ export declare class BaseTool<T> extends Observer<T & {
     'tool-done': void;
 }> {
     private _webMap;
+    get webMap(): WebMap;
     /**
      * 构造执行动作工具对象
      * @param map 地图对象
