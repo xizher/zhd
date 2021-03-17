@@ -157,7 +157,10 @@ export class Basemap extends WebMapPlugin<{
   }
 
   setVisible (visible: boolean) : this {
-    this._layerGroup.forEach(item => item.show = visible)
+    this._visible = visible
+    ;[...this._basemapItemPool.values()].forEach(
+      item => item.forEach(lyr => lyr.show = visible)
+    )
     this.fire('change:visible', { visible })
     return this
   }

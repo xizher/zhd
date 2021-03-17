@@ -3,14 +3,21 @@ import {
   Color,
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
-import { WebMapPlugin } from './web-map-plugin'
+import Basemap from '../plugins/basemap/basemap'
+import { IPlugins, WebMapPlugin } from './web-map-plugin'
 
 export interface IViewer extends Viewer {
   $owner: WebMap
 }
 
 /** WebGIS应用程式类 */
-export class WebMap {
+export class WebMap implements IPlugins {
+
+  //#region 插件
+
+  public basemap?: Basemap
+
+  //#endregion
 
   //#region 私有属性
 

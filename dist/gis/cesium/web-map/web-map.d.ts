@@ -1,10 +1,12 @@
 import { Viewer } from 'cesium';
-import { WebMapPlugin } from './web-map-plugin';
+import Basemap from '../plugins/basemap/basemap';
+import { IPlugins, WebMapPlugin } from './web-map-plugin';
 export interface IViewer extends Viewer {
     $owner: WebMap;
 }
 /** WebGIS应用程式类 */
-export declare class WebMap {
+export declare class WebMap implements IPlugins {
+    basemap?: Basemap;
     /** 容器Id */
     private _container;
     /** 视图对象 */
