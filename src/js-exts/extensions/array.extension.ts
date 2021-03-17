@@ -19,7 +19,7 @@ export interface IArrayExtension<T> {
    * @param value 移除的值
    * @param removeMany 是否移除所有，默认为否
    */
-  removeValue (value: T, removeMany: true | false) : void
+  removeValue (value: T, removeMany?: true | false) : void
   /**
    * 数组去重
    */

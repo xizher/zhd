@@ -1,7 +1,7 @@
 import { computed } from 'vue';
-const loadSet = new Set();
-const loadState = computed(() => {
-    for (const item of loadSet) {
+const loadedSet = new Set();
+const loadingState = computed(() => {
+    for (const item of loadedSet) {
         if (!item.value) {
             return true;
         }
@@ -9,8 +9,11 @@ const loadState = computed(() => {
     return false;
 });
 export function useLinkIn(boolRef) {
-    loadSet.add(boolRef);
+    loadedSet.add(boolRef);
 }
 export function useloadingState() {
-    return loadState;
+    return loadingState;
+}
+export function useUnLink(boolRef) {
+    loadedSet.delete(boolRef);
 }
