@@ -61,4 +61,14 @@ export declare const baseUtils: {
     }): T_4 & {
         cancle(): void;
     };
+    /**
+     * 加载css
+     * @param cssUrl CSS路径
+     */
+    loadCss(cssUrl: string): void;
+    /**
+     * 加载js
+     * @param jsUrl JS路径
+     */
+    loadJs(jsUrl: string): void;
 };

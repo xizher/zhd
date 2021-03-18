@@ -192,5 +192,26 @@ export const baseUtils = {
             handle = null;
         };
         return throttled; // eslint-disable-line @typescript-eslint/no-explicit-any
-    }
+    },
+    /**
+     * 加载css
+     * @param cssUrl CSS路径
+     */
+    loadCss(cssUrl) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = cssUrl;
+        link.media = 'all';
+        document.head.appendChild(link);
+    },
+    /**
+     * 加载js
+     * @param jsUrl JS路径
+     */
+    loadJs(jsUrl) {
+        const script = document.createElement('script');
+        script.src = jsUrl;
+        document.head.appendChild(script);
+    },
 };
