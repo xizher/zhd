@@ -16,6 +16,9 @@ export class WebMapPlugin extends Observer {
     get viewer() {
         return this._viewer;
     }
+    get entities() {
+        return this._entities;
+    }
     get pluginName() {
         return this._pluginName;
     }
@@ -27,6 +30,7 @@ export class WebMapPlugin extends Observer {
      */
     installPlugin(webMap) {
         this._viewer = webMap.viewer;
+        this._entities = webMap.entities;
         return this;
     }
 }

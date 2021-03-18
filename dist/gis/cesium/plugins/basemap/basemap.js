@@ -103,7 +103,8 @@ export class Basemap extends WebMapPlugin {
     //#endregion
     //#region 公有方法
     selectBasemap(key) {
-        this._layerGroup.forEach(item => this.viewer.imageryLayers.remove(item));
+        this._selectedKey = key;
+        this._layerGroup.forEach(item => this.viewer.imageryLayers.remove(item, false));
         const layers = this._basemapItemPool.get(key);
         if (layers) {
             this._layerGroup = layers;

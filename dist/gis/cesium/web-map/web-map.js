@@ -37,6 +37,9 @@ export class WebMap {
     get viewer() {
         return this._viewer;
     }
+    get entities() {
+        return this._entities;
+    }
     //#endregion
     //#region 私有方法
     /** 初始化 */
@@ -48,6 +51,7 @@ export class WebMap {
         this._viewer = Object.assign(new Viewer(this._container, this._options), { $owner: this });
         this._viewer.imageryLayers.removeAll();
         this._viewer.scene.globe.baseColor = new Color(0, 0, 0, 0);
+        this._entities = Object.assign(this._viewer.entities, { $owner: this });
     }
     //#endregion
     //#region 公有方法

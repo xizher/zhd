@@ -1,12 +1,17 @@
 import {
   Viewer,
   Color,
+  EntityCollection,
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 import Basemap from '../plugins/basemap/basemap'
 import { IPlugins, WebMapPlugin } from './web-map-plugin'
 
 export interface IViewer extends Viewer {
+  $owner: WebMap
+}
+
+export interface IEntities extends EntityCollection {
   $owner: WebMap
 }
 
@@ -26,6 +31,9 @@ export class WebMap implements IPlugins {
 
   /** 视图对象 */
   private _viewer: IViewer
+
+  /** 实体对象 */
+  private _entities: IEntities
 
   /** 配置项 */
   private _options: Viewer.ConstructorOptions = {
@@ -55,6 +63,10 @@ export class WebMap implements IPlugins {
     return this._viewer
   }
 
+  get entities () : IEntities {
+    return this._entities
+  }
+
   //#endregion
 
   //#region 构造函数
@@ -82,6 +94,8 @@ export class WebMap implements IPlugins {
     this._viewer = Object.assign(new Viewer(this._container, this._options), { $owner: this })
     this._viewer.imageryLayers.removeAll()
     this._viewer.scene.globe.baseColor = new Color(0, 0, 0, 0)
+
+    this._entities = Object.assign(this._viewer.entities, { $owner: this })
   }
 
   //#endregion

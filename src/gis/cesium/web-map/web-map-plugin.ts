@@ -1,6 +1,6 @@
 import { Observer } from '../../../observer'
 import Basemap from '../plugins/basemap/basemap'
-import { IViewer, WebMap } from './web-map'
+import { IEntities, IViewer, WebMap } from './web-map'
 
 export interface IPlugins {
   basemap?: Basemap
@@ -14,6 +14,9 @@ export class WebMapPlugin<T> extends Observer<T> {
   /** 视图对象 */
   private _viewer: IViewer
 
+  /** 实体对象 */
+  private _entities: IEntities
+
   /** 插件名 */
   private _pluginName: string
 
@@ -23,6 +26,10 @@ export class WebMapPlugin<T> extends Observer<T> {
 
   get viewer () : IViewer {
     return this._viewer
+  }
+
+  get entities () : IEntities {
+    return this._entities
   }
 
   get pluginName () : string {
@@ -52,6 +59,7 @@ export class WebMapPlugin<T> extends Observer<T> {
    */
   installPlugin (webMap: WebMap) : this {
     this._viewer = webMap.viewer
+    this._entities = webMap.entities
     return this
   }
 

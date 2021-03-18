@@ -1,6 +1,6 @@
 import { Observer } from '../../../observer';
 import Basemap from '../plugins/basemap/basemap';
-import { IViewer, WebMap } from './web-map';
+import { IEntities, IViewer, WebMap } from './web-map';
 export interface IPlugins {
     basemap?: Basemap;
 }
@@ -8,9 +8,12 @@ export interface IPlugins {
 export declare class WebMapPlugin<T> extends Observer<T> {
     /** 视图对象 */
     private _viewer;
+    /** 实体对象 */
+    private _entities;
     /** 插件名 */
     private _pluginName;
     get viewer(): IViewer;
+    get entities(): IEntities;
     get pluginName(): string;
     /**
      * 构造WebMap插件
