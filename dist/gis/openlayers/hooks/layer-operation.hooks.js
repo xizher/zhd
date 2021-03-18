@@ -1,5 +1,4 @@
-import { reactive } from '@vue/reactivity';
-import { computed, onUnmounted, watch } from '@vue/runtime-core';
+import { reactive, computed, onUnmounted, watch } from 'vue';
 export function useLayerList(layerOperation) {
     const layerList = reactive([...(layerOperation.layerPool.values())]);
     for (let i = 0; i < layerList.length; i++) {
@@ -36,4 +35,8 @@ export function useLayerList(layerOperation) {
     }
     const layerFormatList = computed(() => layerList.sort((i, j) => j.level - i.level));
     return [layerList, layerFormatList];
+}
+export function useLayerAttributes(layerOperation, layerName) {
+    const attributes = layerOperation.getAttributes(layerName);
+    return attributes;
 }

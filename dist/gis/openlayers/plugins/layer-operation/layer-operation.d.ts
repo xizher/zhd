@@ -74,7 +74,7 @@ export declare class LayerOperation extends WebMapPlugin<{
     /** 获取所有图层的综合范围 */
     getFullExtent(): Extent | null;
     /** 通过图层名获取图层对象 */
-    getLayerByName(name: string): Layer;
+    getLayerByName(name: string): Layer | null;
     /**
      * 设置图层可见性
      * @param name 图层名
@@ -87,5 +87,22 @@ export declare class LayerOperation extends WebMapPlugin<{
      * @param opacity 不可透明度
      */
     setLayerOpacity(name: string, opacity: number): this;
+    /**
+     * 设置图层层级
+     * @param name 图层名
+     * @param level 图层层级
+     */
     setLayerLevel(name: string, level: number): this;
+    /**
+     * 缩放至图层
+     * @param name 图层名
+     */
+    zoomToLayer(name: string): this;
+    /**
+     * 获取图层属性
+     * @param name 图层名
+     */
+    getAttributes<T extends {
+        [key: string]: any;
+    }>(name: string): T[] | null;
 }

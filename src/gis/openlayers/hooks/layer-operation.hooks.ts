@@ -1,5 +1,4 @@
-import { ComputedRef, reactive } from '@vue/reactivity'
-import { computed, onUnmounted, watch } from '@vue/runtime-core'
+import { ComputedRef, reactive, computed, onUnmounted, watch } from 'vue'
 import { ILayerItem, LayerOperation } from '../plugins/layer-operation/layer-operation'
 
 
@@ -38,4 +37,9 @@ export function useLayerList (layerOperation: LayerOperation)
   }
   const layerFormatList = computed(() => layerList.sort((i, j) => j.level - i.level))
   return [layerList, layerFormatList]
+}
+
+export function useLayerAttributes<T> (layerOperation: LayerOperation, layerName: string) : T[] {
+  const attributes = layerOperation.getAttributes <T> (layerName)
+  return attributes
 }

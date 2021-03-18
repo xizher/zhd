@@ -160,6 +160,9 @@ export class LayerOperation extends WebMapPlugin {
     }
     /** 通过图层名获取图层对象 */
     getLayerByName(name) {
+        if (!this._layerPool.has(name)) {
+            return null;
+        }
         const [layer] = this._layerPool.get(name);
         return layer;
     }
@@ -170,6 +173,9 @@ export class LayerOperation extends WebMapPlugin {
      */
     setLayerVisible(name, visible = true) {
         const layer = this.getLayerByName(name);
+        if (!layer) {
+            return;
+        }
         layer.setVisible(visible);
         this.fire('change:visible', {
             layerName: name, visible, layer
@@ -183,19 +189,64 @@ export class LayerOperation extends WebMapPlugin {
      */
     setLayerOpacity(name, opacity) {
         const layer = this.getLayerByName(name);
+        if (!layer) {
+            return;
+        }
         layer.setOpacity(opacity);
         this.fire('change:opacity', {
             layerName: name, opacity, layer
         });
         return this;
     }
+    /**
+     * 设置图层层级
+     * @param name 图层名
+     * @param level 图层层级
+     */
     setLayerLevel(name, level) {
         const layer = this.getLayerByName(name);
+        if (!layer) {
+            return;
+        }
         this._layerGroup.getLayers().remove(layer);
         this._layerGroup.getLayers().insertAt(level, layer);
         this.fire('change:level', {
             layerName: name, layer, level
         });
         return this;
+    }
+    /**
+     * 缩放至图层
+     * @param name 图层名
+     */
+    zoomToLayer(name) {
+        const layer = this.getLayerByName(name);
+        if (!layer) {
+            return;
+        }
+        const extent = this._getLayerExtent(layer);
+        if (extent) {
+            this.view.fit(extent, { duration: 500 });
+        }
+        return this;
+    }
+    /**
+     * 获取图层属性
+     * @param name 图层名
+     */
+    getAttributes(name) {
+        const [layer, options] = this._layerPool.get(name);
+        if (!layer) {
+            return null;
+        }
+        if (options.type !== 'wfs') {
+            return null;
+        }
+        return layer.getSource().getFeatures().map((feat, index) => {
+            const props = feat.getProperties();
+            delete props.geometry;
+            props.$index = index;
+            return props;
+        });
     }
 }
