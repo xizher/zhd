@@ -1,5 +1,4 @@
-import { reactive, ToRefs, toRefs } from '@vue/reactivity'
-import { computed, onUnmounted } from '@vue/runtime-core'
+import { reactive, ToRefs, toRefs, computed, onUnmounted } from 'vue'
 import { transform } from 'ol/proj'
 import { WebMap } from '../web-map/web-map'
 

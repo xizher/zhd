@@ -1,4 +1,4 @@
-import { ToRefs } from '@vue/reactivity';
+import { ToRefs } from 'vue';
 import { WebMap } from '../web-map/web-map';
 export interface IMouseCoordinateOptions {
     xyRound?: number;

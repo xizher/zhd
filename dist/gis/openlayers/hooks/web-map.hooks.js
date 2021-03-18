@@ -1,5 +1,4 @@
-import { reactive, toRefs } from '@vue/reactivity';
-import { computed, onUnmounted } from '@vue/runtime-core';
+import { reactive, toRefs, computed, onUnmounted } from 'vue';
 import { transform } from 'ol/proj';
 export function useMouseCoordinate(webMap, options = {
     xyRound: 6, lonlatRound: 3
