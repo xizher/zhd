@@ -8,6 +8,7 @@ import {
   UrlTemplateImageryProvider,
   BoxGraphics,
   Cartesian3,
+  Cartesian2,
   CylinderGraphics,
   EllipseGraphics,
   Entity,
@@ -18,6 +19,8 @@ import {
   PolygonHierarchy,
   Rectangle,
   GeographicProjection,
+  Ellipsoid,
+  Math as CesiumMath,
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 
@@ -30,9 +33,12 @@ interface ISupermap {
   ImageryProvider: typeof ImageryProvider
   UrlTemplateImageryProvider: typeof UrlTemplateImageryProvider
   Cartesian3: typeof Cartesian3
+  Cartesian2: typeof Cartesian2
   Rectangle: typeof Rectangle
   PolygonHierarchy: typeof PolygonHierarchy
   GeographicProjection: typeof GeographicProjection
+  Ellipsoid: typeof Ellipsoid
+  Math: typeof CesiumMath
 }
 
 export namespace $Supermap {

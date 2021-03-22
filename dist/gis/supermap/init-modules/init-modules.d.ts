@@ -1,4 +1,4 @@
-import { Viewer, Color, EntityCollection, ImageryLayer, ImageryProvider, UrlTemplateImageryProvider, BoxGraphics, Cartesian3, CylinderGraphics, EllipseGraphics, Entity, MaterialProperty, PolygonGraphics, PositionProperty, RectangleGraphics, PolygonHierarchy, Rectangle, GeographicProjection } from 'cesium';
+import { Viewer, Color, EntityCollection, ImageryLayer, ImageryProvider, UrlTemplateImageryProvider, BoxGraphics, Cartesian3, Cartesian2, CylinderGraphics, EllipseGraphics, Entity, MaterialProperty, PolygonGraphics, PositionProperty, RectangleGraphics, PolygonHierarchy, Rectangle, GeographicProjection, Ellipsoid, Math as CesiumMath } from 'cesium';
 interface ISupermap {
     Viewer: typeof Viewer;
     Color: typeof Color;
@@ -8,9 +8,12 @@ interface ISupermap {
     ImageryProvider: typeof ImageryProvider;
     UrlTemplateImageryProvider: typeof UrlTemplateImageryProvider;
     Cartesian3: typeof Cartesian3;
+    Cartesian2: typeof Cartesian2;
     Rectangle: typeof Rectangle;
     PolygonHierarchy: typeof PolygonHierarchy;
     GeographicProjection: typeof GeographicProjection;
+    Ellipsoid: typeof Ellipsoid;
+    Math: typeof CesiumMath;
 }
 export declare namespace $Supermap {
     type __Viewer = Viewer;
