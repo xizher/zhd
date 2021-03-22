@@ -139,9 +139,7 @@ export class LayerOperation extends WebMapPlugin<{
     })
     const source = new VectorSource({
       format: new GeoJSON(),
-      url: extent => {
-        return `${layerItemOptions.url}&bbox=${extent.join(',')},EPSG:3857`
-      },
+      url: layerItemOptions.url,
       strategy: bboxStrategy
     })
     layer.setSource(source)
@@ -321,6 +319,7 @@ export class LayerOperation extends WebMapPlugin<{
         const props = feat.getProperties()
         delete props.geometry
         props.$index = index
+        props.$id = feat.getId()
         return props
       }
     ) as T[]
