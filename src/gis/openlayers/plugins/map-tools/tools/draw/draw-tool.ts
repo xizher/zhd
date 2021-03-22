@@ -17,6 +17,7 @@ import { ext } from '../../../../../../js-exts'
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
 import { IObject } from '../../../../../../global/interfaces.global'
 import { baseUtils } from '../../../../../../js-utils'
+import { unByKey } from 'ol/Observable'
 
 export type DrawType =
   'point' |
@@ -230,7 +231,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
       drawTool.fire('draw-start', { coordinate })
       drawTool.fire('draw-end', { geometry })
     })
-    const remove = () => drawTool.map.un('singleclick', handler.listener)
+    const remove = () => unByKey(handler)
     this._handlerPool['singleclick'] = { remove }
   }
 
@@ -257,10 +258,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
       }
     })
     {
-      const remove = () => drawTool.map.un('singleclick', handlerStartAndEnd.listener)
+      const remove = () => unByKey(handlerStartAndEnd)
       this._handlerPool['singleclick'] = { remove }
     } {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     }
   }
@@ -296,7 +297,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     drawTool.map.getTargetElement().addEventListener('mousedown', handlerMousedown)
     drawTool.map.getTargetElement().addEventListener('mouseup', handlerMouseup)
     {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     } {
       const remove = () => drawTool.map.getTargetElement().removeEventListener('mousedown', handlerMousedown)
@@ -332,7 +333,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
         drawTool.fire('draw-end', { geometry })
       }
     }); {
-      const remove = () => drawTool.map.un('dblclick', handlerDbClick.listener)
+      const remove = () => unByKey(handlerDbClick)
       this._handlerPool['dbclick'] = { remove }
     }
     const handlerPointermove = drawTool.map.on('pointermove', ({ coordinate }) => {
@@ -341,7 +342,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
         drawTool.fire('draw-move', { geometry })
       }
     }); {
-      const remove = () => drawTool.map.un('pointermove', handlerPointermove.listener)
+      const remove = () => unByKey(handlerPointermove)
       this._handlerPool['pointermove'] = { remove }
     }
   }
@@ -358,7 +359,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
         drawTool.fire('draw-start', { coordinate })
       }
     }); {
-      const remove = () => drawTool.map.un('singleclick', handlerSingleClick.listener)
+      const remove = () => unByKey(handlerSingleClick)
       this._handlerPool['singleclick'] = { remove }
     }
     const handlerDbClick = drawTool.map.on('dblclick', e => {
@@ -371,7 +372,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
         drawTool.fire('draw-end', { geometry })
       }
     }); {
-      const remove = () => drawTool.map.un('dblclick', handlerDbClick.listener)
+      const remove = () => unByKey(handlerDbClick)
       this._handlerPool['dbclick'] = { remove }
     }
     const handlerPointermove = drawTool.map.on('pointermove', ({ coordinate }) => {
@@ -380,7 +381,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
         drawTool.fire('draw-move', { geometry })
       }
     }); {
-      const remove = () => drawTool.map.un('pointermove', handlerPointermove.listener)
+      const remove = () => unByKey(handlerPointermove)
       this._handlerPool['pointermove'] = { remove }
     }
   }
@@ -418,10 +419,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
       }
     })
     {
-      const remove = () => drawTool.map.un('singleclick', handlerStartAndEnd.listener)
+      const remove = () => unByKey(handlerStartAndEnd)
       this._handlerPool['singleclick'] = { remove }
     } {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     }
   }
@@ -466,7 +467,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     drawTool.map.getTargetElement().addEventListener('mousedown', handlerMousedown)
     drawTool.map.getTargetElement().addEventListener('mouseup', handlerMouseup)
     {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     } {
       const remove = () => drawTool.map.getTargetElement().removeEventListener('mousedown', handlerMousedown)
@@ -502,10 +503,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
       }
     })
     {
-      const remove = () => drawTool.map.un('singleclick', handlerStartAndEnd.listener)
+      const remove = () => unByKey(handlerStartAndEnd)
       this._handlerPool['singleclick'] = { remove }
     } {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     }
   }
@@ -543,7 +544,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     drawTool.map.getTargetElement().addEventListener('mousedown', handlerMousedown)
     drawTool.map.getTargetElement().addEventListener('mouseup', handlerMouseup)
     {
-      const remove = () => drawTool.map.un('pointermove', handlerMove.listener)
+      const remove = () => unByKey(handlerMove)
       this._handlerPool['pointermove'] = { remove }
     } {
       const remove = () => drawTool.map.getTargetElement().removeEventListener('mousedown', handlerMousedown)
