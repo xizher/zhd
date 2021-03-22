@@ -13,6 +13,7 @@ import { ZoomOutTool } from './tools/zoom/zoom-out-tool';
 import { FullscreenTool } from './tools/fullscreen/fullsceen-tool';
 import { FullmapTool } from './tools/zoom/fullmap-tool';
 import { ClearTool } from './tools/clear/clear-tool';
+import { HitTestTool } from './tools/hit-test/hit-test-tool';
 /** 地图工具链 */
 export class MapTools extends WebMapPlugin {
     //#endregion
@@ -57,7 +58,8 @@ export class MapTools extends WebMapPlugin {
             .set('measure-remove', new MeasureRemoveTool(this.map, this.view, this.getTool('measure')))
             .set('fullscreen', new FullscreenTool(this.map, this.view))
             .set('fullmap', new FullmapTool(this.map, this.view))
-            .set('clear', new ClearTool(this.map, this.view));
+            .set('clear', new ClearTool(this.map, this.view))
+            .set('hit-test', new HitTestTool(this.map, this.view));
     }
     //#endregion
     //#region 公有方法
