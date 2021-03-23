@@ -2,11 +2,10 @@ import { Feature } from 'ol'
 import Geometry from 'ol/geom/Geometry'
 import { WebMap } from '../../web-map/web-map'
 import { BaseTool, OnToolDoneParams, OnToolDoneReture, OnToolExecutingParams, OnToolExecutingReture } from '../base.tool'
-import * as turf from '@turf/turf'
 import trufHelper from '../../truf-helper/truf-helper'
 
-/** 裁剪工具类 */
-export class ClipTool extends BaseTool<{
+/** 交集工具类 */
+export class IntersectsTool extends BaseTool<{
 
 }> {
 
@@ -59,11 +58,11 @@ export class ClipTool extends BaseTool<{
     }
     this.clearResult()
     let polygon = trufHelper.createGeoJSON(this._clipGeom)
-    polygon = turf.toWgs84(polygon)
+    polygon = trufHelper.toWgs84(polygon)
     this._features.forEach(feat => {
       let geojson = trufHelper.createGeoJSON(feat)
-      geojson = turf.toWgs84(geojson)
-      const intersection = (turf as any).booleanIntersects(geojson, polygon) // eslint-disable-line
+      geojson = trufHelper.toWgs84(geojson)
+      const intersection = trufHelper.booleanIntersects(geojson, polygon) // eslint-disable-line
       if (intersection) {
         this._resultFeatures.push(feat)
       }

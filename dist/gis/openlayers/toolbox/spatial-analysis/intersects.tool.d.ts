@@ -2,7 +2,7 @@ import { Feature } from 'ol';
 import Geometry from 'ol/geom/Geometry';
 import { WebMap } from '../../web-map/web-map';
 import { BaseTool, OnToolDoneParams, OnToolDoneReture, OnToolExecutingParams, OnToolExecutingReture } from '../base.tool';
-/** 裁剪工具类 */
+/** 交集工具类 */
 export declare class IntersectsTool extends BaseTool<{}> {
     /** 裁剪对象 */
     private _features;

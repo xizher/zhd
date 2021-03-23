@@ -1,7 +1,6 @@
 import { BaseTool } from '../base.tool';
-import * as turf from '@turf/turf';
 import trufHelper from '../../truf-helper/truf-helper';
-/** 裁剪工具类 */
+/** 交集工具类 */
 export class IntersectsTool extends BaseTool {
     /**
      * 构造裁剪工具对象
@@ -36,11 +35,11 @@ export class IntersectsTool extends BaseTool {
         }
         this.clearResult();
         let polygon = trufHelper.createGeoJSON(this._clipGeom);
-        polygon = turf.toWgs84(polygon);
+        polygon = trufHelper.toWgs84(polygon);
         this._features.forEach(feat => {
             let geojson = trufHelper.createGeoJSON(feat);
-            geojson = turf.toWgs84(geojson);
-            const intersection = turf.booleanIntersects(geojson, polygon); // eslint-disable-line
+            geojson = trufHelper.toWgs84(geojson);
+            const intersection = trufHelper.booleanIntersects(geojson, polygon); // eslint-disable-line
             if (intersection) {
                 this._resultFeatures.push(feat);
             }

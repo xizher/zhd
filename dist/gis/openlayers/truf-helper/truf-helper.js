@@ -1,4 +1,7 @@
-import { lineString, multiLineString, multiPoint, multiPolygon, point, polygon } from '@turf/turf';
+import { lineString, multiLineString, multiPoint, multiPolygon, point, polygon, toWgs84, 
+// eslint-disable-next-line
+// @ts-ignore
+booleanIntersects } from '@turf/turf';
 import { Feature as OlFeature } from 'ol';
 export const trufHelper = {
     createGeoJSON(feature) {
@@ -34,6 +37,12 @@ export const trufHelper = {
                 break;
         }
         return ret;
+    },
+    toWgs84(geojson) {
+        return toWgs84(geojson);
+    },
+    booleanIntersects(geojson, anotherGeojson) {
+        return booleanIntersects(geojson, anotherGeojson);
     }
 };
 export default trufHelper;

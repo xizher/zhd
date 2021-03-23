@@ -13,24 +13,29 @@ import {
   point,
   Point,
   polygon,
-  Polygon
+  Polygon,
+  toWgs84,
+  // eslint-disable-next-line
+  // @ts-ignore
+  booleanIntersects
 } from '@turf/turf'
 import { Feature as OlFeature } from 'ol'
 import { Coordinate as OlCoordinate } from 'ol/coordinate'
 import { Geometry as OlGeometry } from 'ol/geom'
 
+type TurfGeoJSON = Feature
+| FeatureCollection
+| GeometryCollection
+| LineString
+| MultiLineString
+| MultiPoint
+| MultiPolygon
+| Point
+| Polygon
+
 export const trufHelper = {
   createGeoJSON (feature: OlFeature | OlGeometry)
-    : Feature
-    | FeatureCollection
-    | GeometryCollection
-    | LineString
-    | MultiLineString
-    | MultiPoint
-    | MultiPolygon
-    | Point
-    | Polygon
-    | null {
+    : TurfGeoJSON | null {
     let geom : OlGeometry & { getCoordinates () : OlCoordinate | OlCoordinate[] | OlCoordinate[][] | OlCoordinate[][][] }
     if (feature instanceof OlFeature) {
       geom = feature.getGeometry() as OlGeometry & { getCoordinates () : OlCoordinate | OlCoordinate[] | OlCoordinate[][] | OlCoordinate[][][] }
@@ -62,6 +67,12 @@ export const trufHelper = {
         break
     }
     return ret
+  },
+  toWgs84 (geojson: TurfGeoJSON) : TurfGeoJSON {
+    return toWgs84(geojson)
+  },
+  booleanIntersects (geojson: TurfGeoJSON, anotherGeojson: TurfGeoJSON) : boolean {
+    return booleanIntersects(geojson, anotherGeojson)
   }
 }
 
