@@ -1,5 +1,6 @@
 import { reactive, toRefs, computed, onUnmounted } from 'vue';
 import { transform } from 'ol/proj';
+import { baseUtils } from '../../../js-utils';
 export function useMouseCoordinate(webMap, options = {
     xyRound: 6, lonlatRound: 3
 }) {
@@ -24,11 +25,11 @@ export function useMouseCoordinate(webMap, options = {
             return `${lonStr},${latStr}`;
         })
     });
-    const handler = webMap.map.on('pointermove', ({ coordinate }) => {
+    const handler = webMap.map.on('pointermove', baseUtils.throttle(({ coordinate }) => {
         const [x, y] = coordinate;
         state.coordinateX = x;
         state.coordinateY = y;
-    });
+    }, 250));
     onUnmounted(() => webMap.map.un('pointermove', handler.listener));
     return toRefs(state);
 }
