@@ -21,6 +21,9 @@ import {
   GeographicProjection,
   Ellipsoid,
   Math as CesiumMath,
+  Cesium3DTileset,
+  Cartographic,
+  Matrix4,
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 
@@ -39,6 +42,9 @@ interface ISupermap {
   GeographicProjection: typeof GeographicProjection
   Ellipsoid: typeof Ellipsoid
   Math: typeof CesiumMath
+  Cesium3DTileset: typeof Cesium3DTileset
+  Cartographic: typeof Cartographic
+  Matrix4: typeof Matrix4
 }
 
 export namespace $Supermap {
@@ -79,6 +85,7 @@ export namespace $Supermap {
   }
   export type __PolygonHierarchy = PolygonHierarchy
   export type __Rectangle = Rectangle
+  export type __Cesium3DTileset = Cesium3DTileset
 }
 
 let Supermap: ISupermap = null

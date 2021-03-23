@@ -1,4 +1,4 @@
-import { Viewer, Color, EntityCollection, ImageryLayer, ImageryProvider, UrlTemplateImageryProvider, BoxGraphics, Cartesian3, Cartesian2, CylinderGraphics, EllipseGraphics, Entity, MaterialProperty, PolygonGraphics, PositionProperty, RectangleGraphics, PolygonHierarchy, Rectangle, GeographicProjection, Ellipsoid, Math as CesiumMath } from 'cesium';
+import { Viewer, Color, EntityCollection, ImageryLayer, ImageryProvider, UrlTemplateImageryProvider, BoxGraphics, Cartesian3, Cartesian2, CylinderGraphics, EllipseGraphics, Entity, MaterialProperty, PolygonGraphics, PositionProperty, RectangleGraphics, PolygonHierarchy, Rectangle, GeographicProjection, Ellipsoid, Math as CesiumMath, Cesium3DTileset, Cartographic, Matrix4 } from 'cesium';
 interface ISupermap {
     Viewer: typeof Viewer;
     Color: typeof Color;
@@ -14,6 +14,9 @@ interface ISupermap {
     GeographicProjection: typeof GeographicProjection;
     Ellipsoid: typeof Ellipsoid;
     Math: typeof CesiumMath;
+    Cesium3DTileset: typeof Cesium3DTileset;
+    Cartographic: typeof Cartographic;
+    Matrix4: typeof Matrix4;
 }
 export declare namespace $Supermap {
     type __Viewer = Viewer;
@@ -53,6 +56,7 @@ export declare namespace $Supermap {
     }
     type __PolygonHierarchy = PolygonHierarchy;
     type __Rectangle = Rectangle;
+    type __Cesium3DTileset = Cesium3DTileset;
 }
 declare let Supermap: ISupermap;
 export { Supermap };
