@@ -1,8 +1,14 @@
 import { Observer } from '../../../observer';
 import Basemap from '../plugins/basemap/basemap';
+import Map3dTile from '../plugins/map-3d-tile/map-3d-tile';
+import { MapCamera } from '../plugins/map-camera/map-camera';
+import { MapEntities } from '../plugins/map-entities/map-entities';
 import { IEntities, IViewer, WebMap } from './web-map';
 export interface IPlugins {
     basemap?: Basemap;
+    map3dTile?: Map3dTile;
+    mapEntities?: MapEntities;
+    mapCamera?: MapCamera;
 }
 /** WebMap插件类 */
 export declare class WebMapPlugin<T> extends Observer<T> {

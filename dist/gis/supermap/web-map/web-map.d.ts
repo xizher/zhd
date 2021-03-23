@@ -1,6 +1,9 @@
 import { $Supermap } from '../init-modules/init-modules';
 import Basemap from '../plugins/basemap/basemap';
 import WebMapPlugin, { IPlugins } from './web-map-plugin';
+import Map3dTile from '../plugins/map-3d-tile/map-3d-tile';
+import { MapCamera } from '../plugins/map-camera/map-camera';
+import { MapEntities } from '../plugins/map-entities/map-entities';
 export interface IViewer extends $Supermap.__Viewer {
     $owner: WebMap;
 }
@@ -10,6 +13,9 @@ export interface IEntities extends $Supermap.__EntityCollection {
 /** WebGIS应用程式类 */
 export declare class WebMap implements IPlugins {
     basemap?: Basemap;
+    map3dTile?: Map3dTile;
+    mapCamera?: MapCamera;
+    mapEntities?: MapEntities;
     /** 容器Id */
     private _container;
     /** 视图对象 */

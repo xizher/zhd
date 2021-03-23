@@ -16,6 +16,11 @@ export class Map3dTile extends WebMapPlugin {
         baseUtils.$extend(true, this._options, options);
     }
     //#endregion
+    //#region getter
+    get tilesetNames() {
+        return [...this._tilesetPool.keys()];
+    }
+    //#endregion
     //#region 私有方法
     _init() {
         this._options.tilesetItems.forEach(item => this._createTileset(item));

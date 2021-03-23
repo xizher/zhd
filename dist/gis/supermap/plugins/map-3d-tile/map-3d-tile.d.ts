@@ -21,6 +21,7 @@ export declare class Map3dTile extends WebMapPlugin<{
     private _tilesetPool;
     /** 配置项 */
     private _options;
+    get tilesetNames(): string[];
     constructor(options: IMap3dTileOptions);
     private _init;
     private _createTileset;

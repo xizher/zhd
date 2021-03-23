@@ -34,6 +34,14 @@ export class Map3dTile extends WebMapPlugin<{
 
   //#endregion
 
+  //#region getter
+
+  get tilesetNames () : string[] {
+    return [...this._tilesetPool.keys()]
+  }
+
+  //#endregion
+
   //#region 构造函数
 
   constructor (options: IMap3dTileOptions) {
