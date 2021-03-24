@@ -36,7 +36,7 @@ export class Basemap extends WebMapPlugin {
         };
         /** 配置项 */
         this._options = {
-            key: '彩色地图',
+            key: '天地图矢量',
             visible: true
         };
         /** 底图项池 */

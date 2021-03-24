@@ -41,6 +41,9 @@ export class WebMap {
     get entities() {
         return this._entities;
     }
+    get camera() {
+        return this._camera;
+    }
     //#endregion
     //#region 私有方法
     /** 初始化 */
@@ -53,6 +56,7 @@ export class WebMap {
         this._viewer.imageryLayers.removeAll();
         this._viewer.scene.globe.baseColor = new Supermap.Color(0, 0, 0, 0);
         this._entities = Object.assign(this._viewer.entities, { $owner: this });
+        this._camera = Object.assign(this._viewer.camera, { $owner: this });
     }
     //#endregion
     //#region 公有方法

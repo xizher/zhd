@@ -47,7 +47,7 @@ export class Basemap extends WebMapPlugin<{
 
   /** 配置项 */
   private _options: IBasemapOptions = {
-    key: '彩色地图',
+    key: '天地图矢量',
     visible: true
   }
 

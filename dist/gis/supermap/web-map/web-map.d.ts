@@ -11,6 +11,9 @@ export interface IViewer extends $Supermap.__Viewer {
 export interface IEntities extends $Supermap.__EntityCollection {
     $owner: WebMap;
 }
+export interface ICamera extends $Supermap.__Camera {
+    $owner: WebMap;
+}
 /** WebGIS应用程式类 */
 export declare class WebMap implements IPlugins {
     basemap?: Basemap;
@@ -24,10 +27,13 @@ export declare class WebMap implements IPlugins {
     private _viewer;
     /** 实体对象 */
     private _entities;
+    /** 相机对象 */
+    private _camera;
     /** 配置项 */
     private _options;
     get viewer(): IViewer;
     get entities(): IEntities;
+    get camera(): ICamera;
     /**
      * 构造WebGIS应用城市类
      * @param container 容器Id

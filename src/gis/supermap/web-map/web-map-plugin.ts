@@ -4,7 +4,7 @@ import Map3dTile from '../plugins/map-3d-tile/map-3d-tile'
 import { MapCamera } from '../plugins/map-camera/map-camera'
 import { MapEntities } from '../plugins/map-entities/map-entities'
 import MapTools from '../plugins/map-tools/map-tools'
-import { IEntities, IViewer, WebMap } from './web-map'
+import { ICamera, IEntities, IViewer, WebMap } from './web-map'
 
 export interface IPlugins {
   basemap?: Basemap
@@ -25,6 +25,8 @@ export class WebMapPlugin<T> extends Observer<T> {
   /** 实体对象 */
   private _entities: IEntities
 
+  private _camera: ICamera
+
   /** 插件名 */
   private _pluginName: string
 
@@ -38,6 +40,10 @@ export class WebMapPlugin<T> extends Observer<T> {
 
   get entities () : IEntities {
     return this._entities
+  }
+
+  get camera () : ICamera {
+    return this._camera
   }
 
   get pluginName () : string {
@@ -68,6 +74,7 @@ export class WebMapPlugin<T> extends Observer<T> {
   installPlugin (webMap: WebMap) : this {
     this._viewer = webMap.viewer
     this._entities = webMap.entities
+    this._camera = webMap.camera
     return this
   }
 

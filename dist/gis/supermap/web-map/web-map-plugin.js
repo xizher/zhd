@@ -19,6 +19,9 @@ export class WebMapPlugin extends Observer {
     get entities() {
         return this._entities;
     }
+    get camera() {
+        return this._camera;
+    }
     get pluginName() {
         return this._pluginName;
     }
@@ -31,6 +34,7 @@ export class WebMapPlugin extends Observer {
     installPlugin(webMap) {
         this._viewer = webMap.viewer;
         this._entities = webMap.entities;
+        this._camera = webMap.camera;
         return this;
     }
 }

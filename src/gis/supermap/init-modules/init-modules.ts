@@ -24,6 +24,7 @@ import {
   Cesium3DTileset,
   Cartographic,
   Matrix4,
+  Camera
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 
@@ -53,6 +54,7 @@ interface ISupermap {
     DVH: any
   }
   /* eslint-enable-line */
+  Camera: typeof Camera
 }
 
 export namespace $Supermap {
@@ -94,6 +96,7 @@ export namespace $Supermap {
   export type __PolygonHierarchy = PolygonHierarchy
   export type __Rectangle = Rectangle
   export type __Cesium3DTileset = Cesium3DTileset
+  export type __Camera = Camera
 }
 
 let Supermap: ISupermap = null

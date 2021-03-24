@@ -1,3 +1,4 @@
+import { getHeight } from 'ol/extent'
 import { Supermap } from '../../init-modules/init-modules'
 import WebMapPlugin from '../../web-map/web-map-plugin'
 
@@ -17,7 +18,7 @@ export class MapCamera extends WebMapPlugin<{
   //#region 公有方法
 
   getCameraLonLat () : [number, number] {
-    const result = this.viewer.camera.pickEllipsoid(new Supermap.Cartesian3(this.viewer.canvas.clientWidth / 2, this.viewer.canvas.clientHeight / 2))
+    const result = this.camera.pickEllipsoid(new Supermap.Cartesian3(this.viewer.canvas.clientWidth / 2, this.viewer.canvas.clientHeight / 2))
     const curPosition = Supermap.Ellipsoid.WGS84.cartesianToCartographic(result)
     const lon = curPosition.longitude * 180 / Math.PI
     const lat = curPosition.latitude * 180 / Math.PI
@@ -26,7 +27,7 @@ export class MapCamera extends WebMapPlugin<{
 
   getCameraHeight () : number {
     const { ellipsoid } = this.viewer.scene.globe
-    return ellipsoid.cartesianToCartographic(this.viewer.camera.position).height
+    return ellipsoid.cartesianToCartographic(this.camera.position).height
   }
 
   getCameraExtent () : { lonMin: number, latMin: number, lonMax: number, latMax: number, height: number } {
@@ -34,8 +35,8 @@ export class MapCamera extends WebMapPlugin<{
     const { scene } = this.viewer
     const { ellipsoid } = scene.globe
     const { canvas } = scene
-    const car3Lt = this.viewer.camera.pickEllipsoid(new Supermap.Cartesian2(0, 0), ellipsoid)
-    const car3Rb = this.viewer.camera.pickEllipsoid(new Supermap.Cartesian2(canvas.width, canvas.height), ellipsoid)
+    const car3Lt = this.camera.pickEllipsoid(new Supermap.Cartesian2(0, 0), ellipsoid)
+    const car3Rb = this.camera.pickEllipsoid(new Supermap.Cartesian2(canvas.width, canvas.height), ellipsoid)
     if (car3Lt && car3Rb) {
       const cartoLt = ellipsoid.cartesianToCartographic(car3Lt)
       const cartoRb = ellipsoid.cartesianToCartographic(car3Rb)
@@ -48,7 +49,7 @@ export class MapCamera extends WebMapPlugin<{
       let yIndex = 0
       do {
         yIndex <= canvas.height ? yIndex += 10 : canvas.height
-        car3Lt2 = this.viewer.camera.pickEllipsoid(new Supermap.Cartesian2(0, yIndex), ellipsoid)
+        car3Lt2 = this.camera.pickEllipsoid(new Supermap.Cartesian2(0, yIndex), ellipsoid)
       } while (!car3Lt2)
       const cartoLt2 = ellipsoid.cartesianToCartographic(car3Lt2)
       const cartoRb2 = ellipsoid.cartesianToCartographic(car3Rb)
@@ -57,9 +58,20 @@ export class MapCamera extends WebMapPlugin<{
       extent.lonMax = Supermap.Math.toDegrees(cartoRb2.longitude)
       extent.latMin = Supermap.Math.toDegrees(cartoRb2.latitude)
     }
-    extent.height = Math.ceil(this.viewer.camera.positionCartographic.height)
+    extent.height = Math.ceil(this.camera.positionCartographic.height)
     return extent
   }
+
+  zoomTo (lon: number, lat: number, height?: number, callback?: () => void) : this {
+    const _hegith = height ?? this.getCameraHeight()
+    this.camera.flyTo({
+      destination: Supermap.Cartesian3.fromDegrees(lon, lat, _hegith),
+      duration: .3,
+      complete: callback
+    })
+    return this
+  }
+
   //#endregion
 
 

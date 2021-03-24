@@ -11,4 +11,5 @@ export declare class MapCamera extends WebMapPlugin<{}> {
         latMax: number;
         height: number;
     };
+    zoomTo(lon: number, lat: number, height?: number, callback?: () => void): this;
 }

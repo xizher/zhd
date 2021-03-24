@@ -18,6 +18,10 @@ export interface IEntities extends $Supermap.__EntityCollection {
   $owner: WebMap
 }
 
+export interface ICamera extends $Supermap.__Camera {
+  $owner: WebMap
+}
+
 /** WebGIS应用程式类 */
 export class WebMap implements IPlugins {
 
@@ -41,6 +45,9 @@ export class WebMap implements IPlugins {
 
   /** 实体对象 */
   private _entities: IEntities
+
+  /** 相机对象 */
+  private _camera: ICamera
 
   /** 配置项 */
   private _options: $Supermap.__Viewer.__ConstructorOptions = {
@@ -75,6 +82,10 @@ export class WebMap implements IPlugins {
     return this._entities
   }
 
+  get camera () : ICamera {
+    return this._camera
+  }
+
   //#endregion
 
   //#region 构造函数
@@ -104,6 +115,7 @@ export class WebMap implements IPlugins {
     this._viewer.scene.globe.baseColor = new Supermap.Color(0, 0, 0, 0)
 
     this._entities = Object.assign(this._viewer.entities, { $owner: this })
+    this._camera = Object.assign(this._viewer.camera, { $owner: this })
   }
 
   //#endregion
