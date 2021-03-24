@@ -45,6 +45,14 @@ interface ISupermap {
   Cesium3DTileset: typeof Cesium3DTileset
   Cartographic: typeof Cartographic
   Matrix4: typeof Matrix4
+  /* eslint-disable */
+  MeasureHandler: any
+  MeasureMode: {
+    Distance: any
+    Area: any
+    DVH: any
+  }
+  /* eslint-enable-line */
 }
 
 export namespace $Supermap {
@@ -105,7 +113,6 @@ export function initModules (cssUrl: string, jsUrl: string) : Promise<void> {
         // @ts-ignore
         window.Supermap = window.Cesium
         Supermap = window.Cesium as any // eslint-disable-line
-        delete window.Cesium
         clearInterval(handler)
         resolve()
       }

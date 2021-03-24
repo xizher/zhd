@@ -3,6 +3,7 @@ import Basemap from '../plugins/basemap/basemap'
 import Map3dTile from '../plugins/map-3d-tile/map-3d-tile'
 import { MapCamera } from '../plugins/map-camera/map-camera'
 import { MapEntities } from '../plugins/map-entities/map-entities'
+import MapTools from '../plugins/map-tools/map-tools'
 import { IEntities, IViewer, WebMap } from './web-map'
 
 export interface IPlugins {
@@ -10,6 +11,7 @@ export interface IPlugins {
   map3dTile?: Map3dTile
   mapEntities?: MapEntities
   mapCamera?: MapCamera
+  mapTools?: MapTools
 }
 
 /** WebMap插件类 */

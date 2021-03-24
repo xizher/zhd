@@ -4,6 +4,7 @@ import WebMapPlugin, { IPlugins } from './web-map-plugin';
 import Map3dTile from '../plugins/map-3d-tile/map-3d-tile';
 import { MapCamera } from '../plugins/map-camera/map-camera';
 import { MapEntities } from '../plugins/map-entities/map-entities';
+import MapTools from '../plugins/map-tools/map-tools';
 export interface IViewer extends $Supermap.__Viewer {
     $owner: WebMap;
 }
@@ -16,6 +17,7 @@ export declare class WebMap implements IPlugins {
     map3dTile?: Map3dTile;
     mapCamera?: MapCamera;
     mapEntities?: MapEntities;
+    mapTools?: MapTools;
     /** 容器Id */
     private _container;
     /** 视图对象 */

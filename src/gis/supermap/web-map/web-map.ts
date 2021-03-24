@@ -8,6 +8,7 @@ import WebMapPlugin, { IPlugins } from './web-map-plugin'
 import Map3dTile from '../plugins/map-3d-tile/map-3d-tile'
 import { MapCamera } from '../plugins/map-camera/map-camera'
 import { MapEntities } from '../plugins/map-entities/map-entities'
+import MapTools from '../plugins/map-tools/map-tools'
 
 export interface IViewer extends $Supermap.__Viewer {
   $owner: WebMap
@@ -26,6 +27,7 @@ export class WebMap implements IPlugins {
   public map3dTile?: Map3dTile
   public mapCamera?: MapCamera
   public mapEntities?: MapEntities
+  public mapTools?: MapTools
 
   //#endregion
 

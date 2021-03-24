@@ -11,7 +11,6 @@ export function initModules(cssUrl, jsUrl) {
                 // @ts-ignore
                 window.Supermap = window.Cesium;
                 Supermap = window.Cesium; // eslint-disable-line
-                delete window.Cesium;
                 clearInterval(handler);
                 resolve();
             }

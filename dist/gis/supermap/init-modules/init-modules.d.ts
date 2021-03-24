@@ -17,6 +17,12 @@ interface ISupermap {
     Cesium3DTileset: typeof Cesium3DTileset;
     Cartographic: typeof Cartographic;
     Matrix4: typeof Matrix4;
+    MeasureHandler: any;
+    MeasureMode: {
+        Distance: any;
+        Area: any;
+        DVH: any;
+    };
 }
 export declare namespace $Supermap {
     type __Viewer = Viewer;
