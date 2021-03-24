@@ -6,7 +6,14 @@ export declare enum ClampModeType {
 }
 export declare type MeasureType = 'distance' | 'area' | 'height';
 /** 测量工具 */
-export declare class MeasureTool extends BaseTool<{}> {
+export declare class MeasureTool extends BaseTool<{
+    'change:type': {
+        type: MeasureType;
+    };
+    'change:mode': {
+        mode: ClampModeType;
+    };
+}> {
     /** 量算方式 */
     private _clampMode;
     /** 测量类型 */
@@ -14,6 +21,8 @@ export declare class MeasureTool extends BaseTool<{}> {
     private _distanceHandler;
     private _areaHandler;
     private _heightHandler;
+    get measureType(): MeasureType;
+    get clampMode(): ClampModeType;
     /** 构造测量工具对象 */
     constructor(viewer: IViewer, entities: IEntities);
     private _init;

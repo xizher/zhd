@@ -10,7 +10,12 @@ export type MeasureType = 'distance' | 'area' | 'height'
 
 /** 测量工具 */
 export class MeasureTool extends BaseTool<{
-
+  'change:type': {
+    type: MeasureType
+  }
+  'change:mode': {
+    mode: ClampModeType
+  }
 }> {
 
   //#region 私有方法
@@ -26,6 +31,18 @@ export class MeasureTool extends BaseTool<{
   private _areaHandler = null
 
   private _heightHandler = null
+
+  //#endregion
+
+  //#region getter
+
+  get measureType () : MeasureType {
+    return this._measureType
+  }
+
+  get clampMode () : ClampModeType {
+    return this._clampMode
+  }
 
   //#endregion
 
@@ -60,7 +77,6 @@ export class MeasureTool extends BaseTool<{
       this._distanceHandler.disLabel.text = `距离:${distance}`
     })
     this._distanceHandler.activeEvt.addEventListener(isActive => {
-      console.log(isActive)
       if (isActive) {
         /* eslint-disable @typescript-eslint/no-explicit-any */
         (this.viewer as any).enableCursorStyle = false
@@ -183,12 +199,14 @@ export class MeasureTool extends BaseTool<{
   /** 设置量算方式 */
   setClampMode (mode: ClampModeType) : this {
     this._clampMode = mode
+    this.fire('change:mode', { mode })
     return this._updateClampMode()
   }
 
   /** 设置测量类型 */
   setMeasureType (type: MeasureType) : this {
     this._measureType = type
+    this.fire('change:type', { type })
     if (this.actived) {
       this._activeMeasure()
     }

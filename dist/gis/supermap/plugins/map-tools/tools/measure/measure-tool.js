@@ -23,6 +23,14 @@ export class MeasureTool extends BaseTool {
         this._init();
     }
     //#endregion
+    //#region getter
+    get measureType() {
+        return this._measureType;
+    }
+    get clampMode() {
+        return this._clampMode;
+    }
+    //#endregion
     //#region 私有方法
     _init() {
         this
@@ -38,7 +46,6 @@ export class MeasureTool extends BaseTool {
             this._distanceHandler.disLabel.text = `距离:${distance}`;
         });
         this._distanceHandler.activeEvt.addEventListener(isActive => {
-            console.log(isActive);
             if (isActive) {
                 /* eslint-disable @typescript-eslint/no-explicit-any */
                 this.viewer.enableCursorStyle = false;
@@ -148,11 +155,13 @@ export class MeasureTool extends BaseTool {
     /** 设置量算方式 */
     setClampMode(mode) {
         this._clampMode = mode;
+        this.fire('change:mode', { mode });
         return this._updateClampMode();
     }
     /** 设置测量类型 */
     setMeasureType(type) {
         this._measureType = type;
+        this.fire('change:type', { type });
         if (this.actived) {
             this._activeMeasure();
         }
