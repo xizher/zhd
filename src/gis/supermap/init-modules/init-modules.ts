@@ -24,7 +24,8 @@ import {
   Cesium3DTileset,
   Cartographic,
   Matrix4,
-  Camera
+  Camera,
+  GeoJsonDataSource,
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 
@@ -55,6 +56,7 @@ interface ISupermap {
   }
   /* eslint-enable-line */
   Camera: typeof Camera
+  GeoJsonDataSource: typeof GeoJsonDataSource
 }
 
 export namespace $Supermap {
