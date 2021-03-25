@@ -55,7 +55,7 @@ export class MapCamera extends WebMapPlugin {
         const _hegith = height ?? this.getCameraHeight();
         this.camera.flyTo({
             destination: Supermap.Cartesian3.fromDegrees(lon, lat, _hegith),
-            duration: .3,
+            duration: 0,
             complete: callback
         });
         return this;
