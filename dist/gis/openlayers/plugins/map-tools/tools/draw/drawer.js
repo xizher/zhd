@@ -189,3 +189,4 @@ export class Drawer {
         return this;
     }
 }
+export default Drawer;

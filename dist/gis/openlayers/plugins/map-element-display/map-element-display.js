@@ -1,8 +1,14 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import WebMapPlugin from '../../web-map/web-map-plugin';
 import { createStyle2 } from '../../utilities/style.utilities';
 import { createLayerGroup, createVectorLayer } from '../../utilities/layer.utilities';
 import { createCollection, createFeature } from '../../utilities/base.utilities';
-import { baseUtils } from '../../../../js-utils/index';
+import { baseUtils, descriptorUtils } from '../../../../js-utils/index';
 /** 插件：图元控制类 */
 export class MapElementDisplay extends WebMapPlugin {
     //#endregion
@@ -100,12 +106,13 @@ export class MapElementDisplay extends WebMapPlugin {
         this._highlightLayer = createVectorLayer();
         this._layerGroup.setLayers(createCollection([this._graphicsLayer, this._highlightLayer]));
         this.map.addLayer(this._layerGroup);
+        this.map.$owner.on('loaded', this.reSortLayers);
         return this;
     }
     //#endregion
     //#region 公有方法
     /** 重新设置图层位置 */
-    reSortLayer() {
+    reSortLayers() {
         this.map.getLayers().remove(this._layerGroup);
         this.map.addLayer(this._layerGroup);
         return this;
@@ -249,3 +256,7 @@ export class MapElementDisplay extends WebMapPlugin {
         });
     }
 }
+__decorate([
+    descriptorUtils.AutoBind
+], MapElementDisplay.prototype, "reSortLayers", null);
+export default MapElementDisplay;

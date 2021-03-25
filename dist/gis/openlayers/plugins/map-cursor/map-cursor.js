@@ -1,4 +1,4 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 /** 插件：地图鼠标样式控制类 */ // TODO undo 样式记忆
 export class MapCursor extends WebMapPlugin {
     //#endregion
@@ -44,3 +44,4 @@ MapCursor._MAP_CURSOR_TYPE = {
     zoomout: 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABYklEQVQ4T5XSv0tVcRjH8dedHFxETSIJWsJBiESEUkOaXFsUcakmQcSfNTipe6SD08VVBIUimmwxHAQHdfKC0uigEAX9A8lz+R44Ho5c/W7n+3zP+3k+z+dTcfM8wSSe4SUucYwzLBfe1j8ruct3WEczjnCAAPbiEQ7xogjJAK+wn4qv8bPwcA6f8QtP87UAtKcRWwsTFZuNYBsBW8uKAfiEBYxip0xn7m4T43iIq2wHe2hCf4Ofo/wGXzGMHxngHzYwnwD/S0AryYUW/MXHNHndhVhMWBUS4pTale6f4yTJ2Mom+II+PL6DhFmsogvnGWAp0auYaAC5QCe6UcsHKcYZyy+nBBTSolmc0yS5lk9i2NKBmCSCtJtCM4j3qWv4HwmNPNQheUCQ48HMLTKm8AcxbRaqahEQ/z5I3XrwO6U0nJpOErLA1SWVAW7bYxu+YQCRi6Fw4j6AAId9b7GI7/hwDSbJQ5LqoLCkAAAAAElFTkSuQmCC), default',
     clear: 'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABBElEQVQ4T9XTvyvFURjH8df9AwwGo9xMYjDwB7gDg4WVIjbJzWzCZpTFYCALm1KUpOwoNhYGk00xGAw6Ot/b6Xbu91s2p07nR5/zfs7znM+pqW7TuMJHTlqrON/EDg6w+BfABtZxjcb/AXRhJF53LElhM+7d471IJ1fEBeyXFPcOo2WAonBlD9QKnLtBD4YwGMcw/8ZDW/8NkANsY7XCHwN46gQ4w2QFYAqnnQAvqCeAL7yhL9nbwloOMIELPEdxPx5xgzm8ohfHmMkBDqMwpHEbPXCOE+zhEuM4wmw7YAm7MXLwQjBT+Ezz6MZyBKwgmO2zAAxHQVq38HmCC0NL58W6pf0BEUUzEdQNGPUAAAAASUVORK5CYII=), default',
 };
+export default MapCursor;

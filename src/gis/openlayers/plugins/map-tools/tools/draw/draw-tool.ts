@@ -3,20 +3,19 @@ import { IObserverCallbackParams } from '../../../../../../observer'
 import { createCircle, createLineString, createPoint, createPolygon } from '../../../../utilities/geom.utilities'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { MapCursorType } from '../../../map-cursor/map-cursor'
-import {
-  BaseTool,
+import BaseTool, {
   OnToolActivedParams,
   OnToolActivedReture,
   OnToolDeActivedParams,
   OnToolDeActivedReture
 } from '../../base-tool'
-import { Drawer } from './drawer'
+import Drawer from './drawer'
 import { Feature } from 'ol'
 import { Coordinate } from 'ol/coordinate'
 import { ext } from '../../../../../../js-exts'
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
 import { IObject } from '../../../../../../global/interfaces.global'
-import { baseUtils } from '../../../../../../js-utils'
+import { baseUtils, descriptorUtils } from '../../../../../../js-utils'
 import { unByKey } from 'ol/Observable'
 
 export type DrawType =
@@ -115,10 +114,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     this._cursorType = _options.cursorType
     this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget
 
-    this.on('draw-start', e => this.onDrawStart(e))
-    this.on('draw-move', e => this.onDrawMove(e))
-    this.on('draw-end', e => this.onDrawEnd(e))
-    this.on('draw-clear', e => this.onDrawClear(e))
+    this.on('draw-start', this.onDrawStart)
+    this.on('draw-move', this.onDrawMove)
+    this.on('draw-end', this.onDrawEnd)
+    this.on('draw-clear', this.onDrawClear)
   }
 
   //#endregion
@@ -126,25 +125,27 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   //#region 公有方法
 
   /** 清理绘制图形 */
-  clearDrawed () : this {
+  public clearDrawed () : this {
     this.fire('draw-clear')
     return this
   }
 
   /** 获取绘制的图元 */
-  getFeatures () : Feature[] {
+  public getFeatures () : Feature[] {
     return this._features
   }
 
   /** 绘图开始处理事件 */
-  onDrawStart (e: OnDrawStartParams<this>) : OnDrawStartReture {
+  @descriptorUtils.AutoBind
+  public onDrawStart (e: OnDrawStartParams<this>) : OnDrawStartReture {
     if (!this.actived) {
       return false
     }
     return e.coordinate
   }
   /** 绘图过程处理事件 */
-  onDrawMove (e: OnDrawMoveParams<this>) : OnDrawMoveReture {
+  @descriptorUtils.AutoBind
+  public onDrawMove (e: OnDrawMoveParams<this>) : OnDrawMoveReture {
     if (!this.actived) {
       return false
     }
@@ -152,7 +153,8 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     return features
   }
   /** 绘图结束处理事件 */
-  onDrawEnd (e: OnDrawEndParams<this>) : OnDrawEndReture {
+  @descriptorUtils.AutoBind
+  public onDrawEnd (e: OnDrawEndParams<this>) : OnDrawEndReture {
     if (!this.actived) {
       return false
     }
@@ -163,7 +165,8 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     return features
   }
   /** 绘图清除处理事件 */
-  onDrawClear (e: OnDrawClearParams<this>) : OnDrawClearReture { // eslint-disable-line @typescript-eslint/no-unused-vars
+  @descriptorUtils.AutoBind
+  public onDrawClear (e: OnDrawClearParams<this>) : OnDrawClearReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     this._drawer.clear()
     if (!this.actived) {
       return false
@@ -187,7 +190,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
       return false
     }
     this.map.$owner.mapCursor.setMapCursor('default')
-    DrawTool._clearDrawHandlers()
+    DrawTool._ClearDrawHandlers()
     return true
   }
 
@@ -213,7 +216,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   //#region 私有静态方法
 
   /** 清理绘制动作响应事件 */
-  private static _clearDrawHandlers () {
+  private static _ClearDrawHandlers () {
     Object.entries(this._handlerPool).forEach(([key, item]) => {
       if (item) {
         item.remove()
@@ -224,8 +227,8 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   }
 
   /** 绘制点 */
-  private static _point (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+  private static '_point' (drawTool: DrawTool) {
+    this._ClearDrawHandlers()
     const handler = drawTool.map.on('singleclick', ({ coordinate }) => {
       const geometry = createPoint(coordinate)
       drawTool.fire('draw-start', { coordinate })
@@ -237,7 +240,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 绘制直线段 */
   private static '_line' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startCoordinate: Coordinate | null = null
     const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
       if (drawing) {
@@ -268,7 +271,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 快速绘制直线段 */
   private static '_line-faster' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startCoordinate: Coordinate | null = null
     const handlerMove = drawTool.map.on('pointermove', (e) => {
       if (drawing) {
@@ -310,7 +313,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 绘制多段线 */
   private static '_polyline' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false
     const coordinates: Coordinate[] = []
     const handlerSingleClick = drawTool.map.on('singleclick', ({ coordinate }) => {
@@ -349,7 +352,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 绘制面 */
   private static '_polygon' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false
     const coordinates: Coordinate[] = []
     const handlerSingleClick = drawTool.map.on('singleclick', ({ coordinate }) => {
@@ -388,7 +391,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 绘制矩形 */
   private static '_rectangle' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startX: number, startY: number
     const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
       if (drawing) {
@@ -429,7 +432,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 快速绘制矩形 */
   private static '_rectangle-faster' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startX: number, startY: number
     const handlerMove = drawTool.map.on('pointermove', (e) => {
       if (drawing) {
@@ -480,7 +483,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 绘制圆 */
   private static '_circle' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startCoordinate: Coordinate | null = null
     const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
       if (drawing) {
@@ -513,7 +516,7 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
 
   /** 快速绘制圆 */
   private static '_circle-faster' (drawTool: DrawTool) {
-    this._clearDrawHandlers()
+    this._ClearDrawHandlers()
     let drawing = false, startCoordinate: Coordinate | null = null
     const handlerMove = drawTool.map.on('pointermove', (e) => {
       if (drawing) {
@@ -558,3 +561,5 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   //#endregion
 
 }
+
+export default DrawTool

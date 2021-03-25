@@ -1,5 +1,5 @@
 import VectorLayer from 'ol/layer/Vector';
-import { DrawTool } from '../draw/draw-tool';
+import DrawTool from '../draw/draw-tool';
 /**
  * HitTest工具类
  */
@@ -44,3 +44,4 @@ export class HitTestTool extends DrawTool {
         return features;
     }
 }
+export default HitTestTool;

@@ -1,4 +1,4 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 export declare type MapCursorType = 'default' | 'pan' | 'panning' | 'wait' | 'draw' | 'zoomin' | 'zoomout' | 'clear';
 /** 插件：地图鼠标样式控制类 */ export declare class MapCursor extends WebMapPlugin<{
     'change': {
@@ -18,3 +18,4 @@ export declare type MapCursorType = 'default' | 'pan' | 'panning' | 'wait' | 'dr
     startWaitingCursor(): this;
     stopWaitingCursor(): this;
 }
+export default MapCursor;

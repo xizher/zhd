@@ -1,4 +1,5 @@
 import { IObject } from '../../../../global/interfaces.global'
+import { descriptorUtils } from '../../../../js-utils'
 import Observer, { IObserverCallbackParams } from '../../../../observer/observer'
 import { IMap, IView } from '../../web-map/web-map'
 
@@ -63,8 +64,8 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
     this._view = view
     this._isOnceTool = isOnceTool
 
-    this.on('tool-actived', e => this.onToolActived(e))
-    this.on('tool-deactived', e => this.onToolDeActived(e))
+    this.on('tool-actived', this.onToolActived)
+    this.on('tool-deactived', this.onToolDeActived)
   }
 
   //#endregion
@@ -72,7 +73,7 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   //#region 公有方法
 
   /** 激活工具 */
-  active () : this {
+  public active () : this {
     if (this._actived) {
       return this
     }
@@ -85,7 +86,7 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   }
 
   /** 接触工具激活状态 */
-  deactive () : this {
+  public deactive () : this {
     if (!this._actived) {
       return this
     }
@@ -94,7 +95,8 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   }
 
   /** 工具激化处理事件 */
-  onToolActived (e: OnToolActivedParams<this>) : OnToolActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
+  @descriptorUtils.AutoBind
+  public onToolActived (e: OnToolActivedParams<this>) : OnToolActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!this._actived) {
       return false
     }
@@ -102,7 +104,8 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   }
 
   /** 工具失活处理事件 */
-  onToolDeActived (e: OnToolDeActivedParams<this>) : OnToolDeActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
+  @descriptorUtils.AutoBind
+  public onToolDeActived (e: OnToolDeActivedParams<this>) : OnToolDeActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!this._actived) {
       return false
     }
@@ -113,3 +116,5 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   //#endregion
 
 }
+
+export default BaseTool

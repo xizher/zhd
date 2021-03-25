@@ -1,5 +1,5 @@
 import { Select } from 'ol/interaction';
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /**
  * 标记清理工具类
  */
@@ -57,3 +57,4 @@ export class MarkRemoveTool extends BaseTool {
         return true;
     }
 }
+export default MarkRemoveTool;

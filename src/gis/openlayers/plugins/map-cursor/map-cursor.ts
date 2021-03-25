@@ -1,4 +1,4 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin'
+import WebMapPlugin from '../../web-map/web-map-plugin'
 
 export type MapCursorType =
 'default' |
@@ -52,19 +52,19 @@ export class MapCursor extends WebMapPlugin<{
    * 设置鼠标样式
    * @param type 样式
    */
-  setMapCursor (type: MapCursorType = 'default') : MapCursor {
+  public setMapCursor (type: MapCursorType = 'default') : MapCursor {
     this._cursorType = type
     this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[type.toLowerCase()]
     return this
   }
 
-  startWaitingCursor () : this {
+  public startWaitingCursor () : this {
     document.body.style.cursor = 'wait'
     this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE['wait']
     return this
   }
 
-  stopWaitingCursor () : this {
+  public stopWaitingCursor () : this {
     document.body.style.cursor = ''
     this.map.getTargetElement().style.cursor = MapCursor._MAP_CURSOR_TYPE[this._cursorType]
     return this
@@ -73,3 +73,5 @@ export class MapCursor extends WebMapPlugin<{
   //#endregion
 
 }
+
+export default MapCursor

@@ -3,12 +3,12 @@ import { MapOptions } from 'ol/PluggableMap'
 import View, { ViewOptions } from 'ol/View'
 import { baseUtils } from '../../../js-utils/utilities/base-utils'
 import { Observer } from '../../../observer/observer'
-import { Basemap } from '../plugins/basemap/basemap'
-import { LayerOperation } from '../plugins/layer-operation/layer-operation'
-import { MapCursor } from '../plugins/map-cursor/map-cursor'
-import { MapElementDisplay } from '../plugins/map-element-display/map-element-display'
-import { MapTools } from '../plugins/map-tools/map-tools'
-import { IPlugins, WebMapPlugin } from './web-map-plugin'
+import Basemap from '../plugins/basemap/basemap'
+import LayerOperation from '../plugins/layer-operation/layer-operation'
+import MapCursor from '../plugins/map-cursor/map-cursor'
+import MapElementDisplay from '../plugins/map-element-display/map-element-display'
+import MapTools from '../plugins/map-tools/map-tools'
+import WebMapPlugin from './web-map-plugin'
 
 /** 地图接口 */
 export interface IMap extends OLMap {
@@ -29,7 +29,7 @@ export interface IWebMapOptions {
 /** WebMap类 */
 export class WebMap extends Observer<{
   'loaded': void
-}> implements IPlugins {
+}> {
 
   //#region 公有属性（插件对象）
 
@@ -127,8 +127,6 @@ export class WebMap extends Observer<{
    */
   public mount () : WebMap {
     this._map.setTarget(this._targetDiv)
-    this.basemap && this.basemap.reSortLayer()
-    this.mapElementDisplay && this.mapElementDisplay.reSortLayer()
     this.fire('loaded')
     return this
   }
@@ -136,3 +134,5 @@ export class WebMap extends Observer<{
   //#endregion
 
 }
+
+export default WebMap

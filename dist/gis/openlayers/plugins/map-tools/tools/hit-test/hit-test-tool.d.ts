@@ -1,6 +1,6 @@
 import Layer from 'ol/layer/Layer';
 import { IMap, IView } from '../../../../web-map/web-map';
-import { DrawTool, OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool';
+import DrawTool, { OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool';
 /**
  * HitTest工具类
  */
@@ -12,3 +12,4 @@ export declare class HitTestTool extends DrawTool<{}> {
     /** 绘制结束处理事件 */
     onDrawEnd(event: OnDrawEndParams<this>): OnDrawEndReture;
 }
+export default HitTestTool;

@@ -1,7 +1,13 @@
-import { baseUtils } from '../../../../js-utils/index';
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { baseUtils, descriptorUtils } from '../../../../js-utils/index';
 import { createCollection } from '../../utilities/base.utilities';
 import { createLayerGroup, createOSMLayer, createXYZLayer } from '../../utilities/layer.utilities';
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 /** 底图类 */
 export class Basemap extends WebMapPlugin {
     //#endregion
@@ -10,10 +16,7 @@ export class Basemap extends WebMapPlugin {
      * 构造底图插件对象
      * @param options 配置项
      */
-    constructor(options = {
-        key: '彩色地图',
-        visible: true
-    }) {
+    constructor(options = {}) {
         super('basemap');
         //#region 私有对象
         /** 天地图秘钥 */
@@ -46,6 +49,10 @@ export class Basemap extends WebMapPlugin {
         };
         /** 底图项池 */
         this._basemapItemPool = new Map();
+        //#endregion
+        //#region 私有静态属性
+        /** 异常：无对应Key值底图项 */
+        this._NoKeyInBasemapItemsException = '当前key值无对应底图项';
         baseUtils.$extend(true, this._options, options);
         this._selectedKey = this._options.key;
         this._visible = this._options.visible;
@@ -67,6 +74,7 @@ export class Basemap extends WebMapPlugin {
     _init() {
         this._layerGroup = createLayerGroup({ visible: this._visible });
         this.map.getLayers().insertAt(0, this._layerGroup);
+        this.map.$owner.on('loaded', this.reSortLayers);
         return this
             ._createTianDiTu()
             ._createGeoQDiTu()
@@ -103,8 +111,8 @@ export class Basemap extends WebMapPlugin {
     }
     //#endregion
     //#region 公有方法
-    /** 重新设置图层位置 */
-    reSortLayer() {
+    /** 重新设置底图图层位置 */
+    reSortLayers() {
         this.map.getLayers().remove(this._layerGroup);
         this.map.getLayers().insertAt(0, this._layerGroup);
         return this;
@@ -123,7 +131,10 @@ export class Basemap extends WebMapPlugin {
      * @param key 底图项Key
      */
     selectBasemap(key) {
-        if (this._basemapItemPool.has(key)) {
+        if (!this._basemapItemPool.has(key)) {
+            console.warn(this._NoKeyInBasemapItemsException, key);
+        }
+        else {
             this._layerGroup.setLayers(this._basemapItemPool.get(key));
             this._selectedKey = key;
             this.fire('change:key', { key });
@@ -161,3 +172,7 @@ export class Basemap extends WebMapPlugin {
             .selectBasemap(key);
     }
 }
+__decorate([
+    descriptorUtils.AutoBind
+], Basemap.prototype, "reSortLayers", null);
+export default Basemap;

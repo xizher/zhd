@@ -1,4 +1,4 @@
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /**
  * 返回起始位置工具类
  */
@@ -42,3 +42,4 @@ export class ZoomHomeTool extends BaseTool {
         return true;
     }
 }
+export default ZoomHomeTool;

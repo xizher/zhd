@@ -1,7 +1,7 @@
 import Layer from 'ol/layer/Layer';
 import { OgcServerString } from '../../../../global/types.global';
-import { WebMap } from '../../web-map/web-map';
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMap from '../../web-map/web-map';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 import { Extent } from 'ol/extent';
 import { IObject } from '../../../../global/interfaces.global';
 import { IStyleOptions, IUniqueStyleOptions } from '../../utilities/style.utilities';
@@ -106,3 +106,4 @@ export declare class LayerOperation extends WebMapPlugin<{
         [key: string]: any;
     }>(name: string): T[] | null;
 }
+export default LayerOperation;

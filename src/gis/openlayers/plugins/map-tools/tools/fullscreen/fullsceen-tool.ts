@@ -1,5 +1,5 @@
 import { IMap, IView } from '../../../../web-map/web-map'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture } from '../../base-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture } from '../../base-tool'
 
 /** 全屏工具类 */
 export class FullscreenTool extends BaseTool<{
@@ -50,3 +50,5 @@ export class FullscreenTool extends BaseTool<{
   //#endregion
 
 }
+
+export default FullscreenTool

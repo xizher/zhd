@@ -1,4 +1,4 @@
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /**
  * 清理图元工具类
  */
@@ -23,3 +23,4 @@ export class ClearTool extends BaseTool {
         return true;
     }
 }
+export default ClearTool;

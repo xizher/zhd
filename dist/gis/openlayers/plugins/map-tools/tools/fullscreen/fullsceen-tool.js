@@ -1,4 +1,4 @@
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /** 全屏工具类 */
 export class FullscreenTool extends BaseTool {
     //#region 构造函数
@@ -35,3 +35,4 @@ export class FullscreenTool extends BaseTool {
         return true;
     }
 }
+export default FullscreenTool;

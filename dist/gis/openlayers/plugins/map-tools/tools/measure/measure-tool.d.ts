@@ -1,7 +1,7 @@
 import { Feature } from 'ol';
 import VectorLayer from 'ol/layer/Vector';
 import { IMap, IView } from '../../../../web-map/web-map';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
 import './measure-tool.css';
 export declare type MeasureType = 'area' | 'length' | '';
 /** 测量工具类 */
@@ -77,3 +77,4 @@ export declare class MeasureTool extends BaseTool<{
     /** 工具失活处理事件 */
     onToolDeActived(e: OnToolDeActivedParams<this>): OnToolDeActivedReture;
 }
+export default MeasureTool;

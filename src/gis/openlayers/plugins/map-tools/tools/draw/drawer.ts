@@ -222,3 +222,5 @@ export class Drawer {
   //#endregion
 
 }
+
+export default Drawer

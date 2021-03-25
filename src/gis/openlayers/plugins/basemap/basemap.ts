@@ -1,15 +1,15 @@
 import { Collection } from 'ol'
 import BaseLayer from 'ol/layer/Base'
 import LayerGroup from 'ol/layer/Group'
-import { baseUtils } from '../../../../js-utils/index'
+import { baseUtils, descriptorUtils } from '../../../../js-utils/index'
 import { createCollection } from '../../utilities/base.utilities'
 import { createLayerGroup, createOSMLayer, createXYZLayer } from '../../utilities/layer.utilities'
-import { WebMap } from '../../web-map/web-map'
-import { WebMapPlugin } from '../../web-map/web-map-plugin'
+import WebMap from '../../web-map/web-map'
+import WebMapPlugin from '../../web-map/web-map-plugin'
 
 export interface IBasemapOptions {
-  key: string
-  visible: boolean
+  key?: string
+  visible?: boolean
 }
 
 /** 底图类 */
@@ -89,10 +89,7 @@ export class Basemap extends WebMapPlugin<{
    * 构造底图插件对象
    * @param options 配置项
    */
-  constructor (options: IBasemapOptions = {
-    key: '彩色地图',
-    visible: true
-  }) {
+  constructor (options: IBasemapOptions = {}) {
     super('basemap')
     baseUtils.$extend(true, this._options, options)
     this._selectedKey = this._options.key
@@ -104,9 +101,10 @@ export class Basemap extends WebMapPlugin<{
   //#region 私有方法
 
   /** 初始化 */
-  private _init () : Basemap {
+  private _init () : this {
     this._layerGroup = createLayerGroup({ visible: this._visible })
     this.map.getLayers().insertAt(0, this._layerGroup)
+    this.map.$owner.on('loaded', this.reSortLayers)
     return this
       ._createTianDiTu()
       ._createGeoQDiTu()
@@ -116,7 +114,7 @@ export class Basemap extends WebMapPlugin<{
   }
 
   /** 创建天地图底图项 */
-  private _createTianDiTu () : Basemap {
+  private _createTianDiTu () : this {
     const createTianDiTuItem = (name: string) => {
       this.createCustomBasemap(`天地图${name}`, createXYZLayer(this._tianDiTuUrls[`${name}底图`]))
       this.createCustomBasemap(`天地图${name}含注记`, [
@@ -130,7 +128,7 @@ export class Basemap extends WebMapPlugin<{
   }
 
   /** 创建GeoQ底图项 */
-  private _createGeoQDiTu () : Basemap {
+  private _createGeoQDiTu () : this {
     Object.entries(this._geoqUrls).forEach(
       ([key, url]) => this._basemapItemPool.set(key.toLowerCase(), createCollection([createXYZLayer(url)]))
     )
@@ -138,7 +136,7 @@ export class Basemap extends WebMapPlugin<{
   }
 
   /** 创建Gaode底图项 */
-  private _createHGaoDeDiTu () : Basemap {
+  private _createHGaoDeDiTu () : this {
     this.createCustomBasemap(`高德影像`, createXYZLayer(this._gaodeUrls['影像底图']))
     this.createCustomBasemap(`高德影像含注记`, [
       createXYZLayer(this._gaodeUrls['影像底图']),
@@ -151,8 +149,9 @@ export class Basemap extends WebMapPlugin<{
 
   //#region 公有方法
 
-  /** 重新设置图层位置 */
-  reSortLayer () : this {
+  /** 重新设置底图图层位置 */
+  @descriptorUtils.AutoBind
+  public reSortLayers () : this {
     this.map.getLayers().remove(this._layerGroup)
     this.map.getLayers().insertAt(0, this._layerGroup)
     return this
@@ -162,7 +161,7 @@ export class Basemap extends WebMapPlugin<{
    * 安装插件
    * @param webMap WebMap对象
    */
-  installPlugin (webMap: WebMap) : Basemap {
+  public installPlugin (webMap: WebMap) : this {
     super.installPlugin(webMap)
     this._init()
     return this
@@ -172,8 +171,10 @@ export class Basemap extends WebMapPlugin<{
    * 选择底图项
    * @param key 底图项Key
    */
-  selectBasemap (key: string) : Basemap {
-    if (this._basemapItemPool.has(key)) {
+  public selectBasemap (key: string) : this {
+    if (!this._basemapItemPool.has(key)) {
+      console.warn(this._NoKeyInBasemapItemsException, key)
+    } else {
       this._layerGroup.setLayers(this._basemapItemPool.get(key))
       this._selectedKey = key
       this.fire('change:key', { key })
@@ -185,7 +186,7 @@ export class Basemap extends WebMapPlugin<{
    * 设置底图可见性
    * @param visible 可见性
    */
-  setVisible (visible: boolean) : Basemap {
+  public setVisible (visible: boolean) : this {
     this._visible = visible
     this._layerGroup.setVisible(visible)
     this.fire('change:visible', { visible })
@@ -197,7 +198,7 @@ export class Basemap extends WebMapPlugin<{
    * @param key 底图项Key
    * @param layers 图层
    */
-  createCustomBasemap (key: string, layers: BaseLayer | BaseLayer[]) : Basemap {
+  public createCustomBasemap (key: string, layers: BaseLayer | BaseLayer[]) : this {
     const _layers = Array.isArray(layers) ? layers : [layers]
     this._basemapItemPool.set(key.toLowerCase(), createCollection(_layers))
     return this
@@ -208,7 +209,7 @@ export class Basemap extends WebMapPlugin<{
    * @param key 底图项Key
    * @param layers 图层
    */
-  createCustomBasemapAndSelect (key:string, layers:BaseLayer | BaseLayer[]) : Basemap {
+  public createCustomBasemapAndSelect (key: string, layers: BaseLayer | BaseLayer[]) : this {
     return this
       .createCustomBasemap(key, layers)
       .selectBasemap(key)
@@ -216,4 +217,13 @@ export class Basemap extends WebMapPlugin<{
 
   //#endregion
 
+  //#region 私有静态属性
+
+  /** 异常：无对应Key值底图项 */
+  private _NoKeyInBasemapItemsException = '当前key值无对应底图项'
+
+  //#endregion
+
 }
+
+export default Basemap

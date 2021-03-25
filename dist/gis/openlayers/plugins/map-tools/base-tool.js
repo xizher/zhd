@@ -1,3 +1,10 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+import { descriptorUtils } from '../../../../js-utils';
 import Observer from '../../../../observer/observer';
 /** 基础工具类 */
 export class BaseTool extends Observer {
@@ -16,8 +23,8 @@ export class BaseTool extends Observer {
         this._map = map;
         this._view = view;
         this._isOnceTool = isOnceTool;
-        this.on('tool-actived', e => this.onToolActived(e));
-        this.on('tool-deactived', e => this.onToolDeActived(e));
+        this.on('tool-actived', this.onToolActived);
+        this.on('tool-deactived', this.onToolDeActived);
     }
     //#endregion
     //#region getter
@@ -71,3 +78,10 @@ export class BaseTool extends Observer {
         return true;
     }
 }
+__decorate([
+    descriptorUtils.AutoBind
+], BaseTool.prototype, "onToolActived", null);
+__decorate([
+    descriptorUtils.AutoBind
+], BaseTool.prototype, "onToolDeActived", null);
+export default BaseTool;

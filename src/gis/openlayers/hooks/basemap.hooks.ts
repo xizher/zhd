@@ -2,7 +2,12 @@ import { onUnmounted, reactive, ref, Ref, watch } from 'vue'
 import { ext } from '../../../../src/js-exts'
 import { Basemap } from '../plugins/basemap/basemap'
 
-export function useList (basemap: Basemap) : [string[], () => void] {
+/**
+ * 底图可选项列表钩子
+ * @param basemap 底图控制插件对象
+ */
+export function useList (basemap: Basemap)
+  : [string[], () => void] {
   const list = reactive(basemap.basemapItemList)
   function update () {
     ext(list).reset(...basemap.basemapItemList)
@@ -10,7 +15,12 @@ export function useList (basemap: Basemap) : [string[], () => void] {
   return [list, update]
 }
 
-export function useKey (basemap: Basemap) : Ref<string> {
+/**
+ * 底图当前显示项对应Key值钩子
+ * @param basemap 底图控制插件对象
+ */
+export function useKey (basemap: Basemap)
+  : Ref<string> {
   const key = ref(basemap.selectedKey)
   watch(key, k => (k !== basemap.selectedKey) && basemap.selectBasemap(k))
   const handler = basemap.on('change:key', e => key.value = e.key)
@@ -18,10 +28,27 @@ export function useKey (basemap: Basemap) : Ref<string> {
   return key
 }
 
-export function useVisible (basemap: Basemap) : Ref<boolean> {
+/**
+ * 底图可见性钩子
+ * @param basemap 底图控制插件对象
+ */
+export function useVisible (basemap: Basemap)
+  : Ref<boolean> {
   const visible = ref(basemap.visible)
   watch(visible, v => (v !== basemap.visible) && basemap.setVisible(v))
   const handler = basemap.on('change:visible', e => visible.value = e.visible)
   onUnmounted(() => handler.remove())
   return visible
+}
+
+/**
+ * 底图钩子
+ * @param basemap 底图控制插件对象
+ */
+export default function (basemap: Basemap)
+  : [Ref<string>, Ref<boolean>, string[], () => void] {
+  const [list, update] = useList(basemap)
+  const key = useKey(basemap)
+  const visible = useVisible(basemap)
+  return [key, visible, list, update]
 }

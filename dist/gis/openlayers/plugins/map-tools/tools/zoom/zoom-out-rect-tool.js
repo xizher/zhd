@@ -1,4 +1,4 @@
-import { DrawTool } from '../draw/draw-tool';
+import DrawTool from '../draw/draw-tool';
 /** 拉框缩小工具类 */
 export class ZoomOutRectTool extends DrawTool {
     //#region 构造函数
@@ -42,3 +42,4 @@ export class ZoomOutRectTool extends DrawTool {
         return result;
     }
 }
+export default ZoomOutRectTool;

@@ -1,4 +1,8 @@
 import { reactive, computed, onUnmounted, watch } from 'vue';
+/**
+ * 图层列表钩子
+ * @param layerOperation 图层控制插件对象
+ */
 export function useLayerList(layerOperation) {
     const layerList = reactive([...(layerOperation.layerPool.values())]);
     for (let i = 0; i < layerList.length; i++) {
@@ -36,6 +40,11 @@ export function useLayerList(layerOperation) {
     const layerFormatList = computed(() => layerList.sort((i, j) => j.level - i.level));
     return [layerList, layerFormatList];
 }
+/**
+ * 指定图层属性表钩子
+ * @param layerOperation 图层控制插件对象
+ * @param layerName 图层名
+ */
 export function useLayerAttributes(layerOperation, layerName) {
     const attributes = layerOperation.getAttributes(layerName);
     return attributes;

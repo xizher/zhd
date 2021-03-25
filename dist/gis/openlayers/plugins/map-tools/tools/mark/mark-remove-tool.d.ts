@@ -1,6 +1,6 @@
 import { IMap, IView } from '../../../../web-map/web-map';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
-import { MarkTool } from './mark-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
+import MarkTool from './mark-tool';
 /**
  * 标记清理工具类
  */
@@ -26,3 +26,4 @@ export declare class MarkRemoveTool extends BaseTool {
     /** 工具失活处理事件 */
     onToolDeActived(e: OnToolDeActivedParams<this>): OnToolDeActivedReture;
 }
+export default MarkRemoveTool;

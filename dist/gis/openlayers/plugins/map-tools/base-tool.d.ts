@@ -38,3 +38,4 @@ export declare class BaseTool<T = IObject> extends Observer<T & {
     /** 工具失活处理事件 */
     onToolDeActived(e: OnToolDeActivedParams<this>): OnToolDeActivedReture;
 }
+export default BaseTool;

@@ -58,3 +58,4 @@ export declare class Drawer {
     /** 清理过程图形 */
     clearTemp(): this;
 }
+export default Drawer;

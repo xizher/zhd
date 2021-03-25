@@ -1,4 +1,4 @@
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /**
  * 放大工具类
  */
@@ -26,3 +26,4 @@ export class ZoomInTool extends BaseTool {
         return true;
     }
 }
+export default ZoomInTool;

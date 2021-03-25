@@ -1,7 +1,7 @@
 import VectorSource from 'ol/source/Vector';
 import { baseUtils } from '../../../../js-utils';
 import { createLayerGroup, createTileLayer, createVectorLayer } from '../../utilities/layer.utilities';
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 import GeoJSON from 'ol/format/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { extend } from 'ol/extent';
@@ -249,3 +249,4 @@ export class LayerOperation extends WebMapPlugin {
         });
     }
 }
+export default LayerOperation;

@@ -1,4 +1,4 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 import Style from 'ol/style/Style';
 import { IStyleOptions } from '../../utilities/style.utilities';
 import { WebMap } from '../../web-map/web-map';
@@ -33,7 +33,7 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
     /** 初始化 */
     private _init;
     /** 重新设置图层位置 */
-    reSortLayer(): this;
+    reSortLayers(): this;
     /** 重写插件安装方法 */
     installPlugin(webMap: WebMap): this;
     /**
@@ -85,3 +85,4 @@ export declare class MapElementDisplay extends WebMapPlugin<{}> {
      */
     parseHighlightGraphics(geometries: Geometry | Geometry[], styleOptions: IStyleOptions): Feature[];
 }
+export default MapElementDisplay;

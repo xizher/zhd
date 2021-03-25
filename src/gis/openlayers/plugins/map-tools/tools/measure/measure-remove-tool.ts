@@ -2,8 +2,8 @@ import { Feature } from 'ol'
 import { Select } from 'ol/interaction'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { MapCursorType } from '../../../map-cursor/map-cursor'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
-import { MeasureTool } from './measure-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
+import MeasureTool from './measure-tool'
 
 /**
  * 测量清理工具类
@@ -88,3 +88,5 @@ export class MeasureRemoveTool extends BaseTool {
   //#endregion
 
 }
+
+export default MeasureRemoveTool

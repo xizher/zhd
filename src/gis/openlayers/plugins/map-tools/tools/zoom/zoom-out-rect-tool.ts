@@ -1,5 +1,5 @@
 import { IMap, IView } from '../../../../web-map/web-map'
-import { DrawTool, OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool'
+import DrawTool, { OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool'
 
 /** 拉框缩小工具类 */
 export class ZoomOutRectTool extends DrawTool {
@@ -53,3 +53,5 @@ export class ZoomOutRectTool extends DrawTool {
   //#endregion
 
 }
+
+export default ZoomOutRectTool

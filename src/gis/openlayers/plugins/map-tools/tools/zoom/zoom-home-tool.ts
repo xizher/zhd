@@ -1,7 +1,7 @@
 import { Coordinate } from 'ol/coordinate'
 import { Extent } from 'ol/extent'
 import { IMap, IView } from '../../../../web-map/web-map'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture } from '../../base-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture } from '../../base-tool'
 
 export type ICenterZoom = {
   center: Coordinate | [number | number]
@@ -64,3 +64,5 @@ export class ZoomHomeTool extends BaseTool {
   //#endregion
 
 }
+
+export default ZoomHomeTool

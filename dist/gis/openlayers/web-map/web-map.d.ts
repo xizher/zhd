@@ -2,12 +2,12 @@ import OLMap from 'ol/Map';
 import { MapOptions } from 'ol/PluggableMap';
 import View, { ViewOptions } from 'ol/View';
 import { Observer } from '../../../observer/observer';
-import { Basemap } from '../plugins/basemap/basemap';
-import { LayerOperation } from '../plugins/layer-operation/layer-operation';
-import { MapCursor } from '../plugins/map-cursor/map-cursor';
-import { MapElementDisplay } from '../plugins/map-element-display/map-element-display';
-import { MapTools } from '../plugins/map-tools/map-tools';
-import { IPlugins, WebMapPlugin } from './web-map-plugin';
+import Basemap from '../plugins/basemap/basemap';
+import LayerOperation from '../plugins/layer-operation/layer-operation';
+import MapCursor from '../plugins/map-cursor/map-cursor';
+import MapElementDisplay from '../plugins/map-element-display/map-element-display';
+import MapTools from '../plugins/map-tools/map-tools';
+import WebMapPlugin from './web-map-plugin';
 /** 地图接口 */
 export interface IMap extends OLMap {
     $owner: WebMap;
@@ -24,7 +24,7 @@ export interface IWebMapOptions {
 /** WebMap类 */
 export declare class WebMap extends Observer<{
     'loaded': void;
-}> implements IPlugins {
+}> {
     basemap?: Basemap;
     mapCursor?: MapCursor;
     mapTools?: MapTools;
@@ -59,3 +59,4 @@ export declare class WebMap extends Observer<{
      */
     mount(): WebMap;
 }
+export default WebMap;

@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Modify, Draw, Snap } from 'ol/interaction';
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 /** 标记工具类 */
 export class MarkTool extends BaseTool {
     //#endregion
@@ -106,3 +106,4 @@ export class MarkTool extends BaseTool {
         return true;
     }
 }
+export default MarkTool;

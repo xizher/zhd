@@ -1,5 +1,5 @@
 import VectorLayer from 'ol/layer/Vector';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
 import { IMap, IView } from '../../../../web-map/web-map';
 import { IObserverCallbackParams } from '../../../../../../observer';
 import { Feature } from 'ol';
@@ -56,3 +56,4 @@ export declare class MarkTool extends BaseTool<{
     /** 清理注记处理事件 */
     onMarkClear(e: OnMarkClearParams<this>): OnMarkClearReture;
 }
+export default MarkTool;

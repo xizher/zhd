@@ -3,7 +3,7 @@ import { Point } from 'ol/geom'
 import Layer from 'ol/layer/Layer'
 import VectorLayer from 'ol/layer/Vector'
 import { IMap, IView } from '../../../../web-map/web-map'
-import { DrawTool, OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool'
+import DrawTool, { OnDrawEndParams, OnDrawEndReture } from '../draw/draw-tool'
 
 /**
  * HitTest工具类
@@ -62,3 +62,5 @@ export class HitTestTool extends DrawTool<{
   //#endregion
 
 }
+
+export default HitTestTool

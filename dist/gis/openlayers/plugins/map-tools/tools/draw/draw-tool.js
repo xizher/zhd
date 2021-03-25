@@ -1,9 +1,15 @@
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
 import { createCircle, createLineString, createPoint, createPolygon } from '../../../../utilities/geom.utilities';
-import { BaseTool } from '../../base-tool';
-import { Drawer } from './drawer';
+import BaseTool from '../../base-tool';
+import Drawer from './drawer';
 import { ext } from '../../../../../../js-exts';
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa';
-import { baseUtils } from '../../../../../../js-utils';
+import { baseUtils, descriptorUtils } from '../../../../../../js-utils';
 import { unByKey } from 'ol/Observable';
 /** 绘图工具 */
 export class DrawTool extends BaseTool {
@@ -28,10 +34,10 @@ export class DrawTool extends BaseTool {
         this._drawType = _options.drawType;
         this._cursorType = _options.cursorType;
         this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget;
-        this.on('draw-start', e => this.onDrawStart(e));
-        this.on('draw-move', e => this.onDrawMove(e));
-        this.on('draw-end', e => this.onDrawEnd(e));
-        this.on('draw-clear', e => this.onDrawClear(e));
+        this.on('draw-start', this.onDrawStart);
+        this.on('draw-move', this.onDrawMove);
+        this.on('draw-end', this.onDrawEnd);
+        this.on('draw-clear', this.onDrawClear);
     }
     //#endregion
     //#region getter
@@ -106,13 +112,13 @@ export class DrawTool extends BaseTool {
             return false;
         }
         this.map.$owner.mapCursor.setMapCursor('default');
-        DrawTool._clearDrawHandlers();
+        DrawTool._ClearDrawHandlers();
         return true;
     }
     //#endregion
     //#region 私有静态方法
     /** 清理绘制动作响应事件 */
-    static _clearDrawHandlers() {
+    static _ClearDrawHandlers() {
         Object.entries(this._handlerPool).forEach(([key, item]) => {
             if (item) {
                 item.remove();
@@ -122,8 +128,8 @@ export class DrawTool extends BaseTool {
         return this;
     }
     /** 绘制点 */
-    static _point(drawTool) {
-        this._clearDrawHandlers();
+    static '_point'(drawTool) {
+        this._ClearDrawHandlers();
         const handler = drawTool.map.on('singleclick', ({ coordinate }) => {
             const geometry = createPoint(coordinate);
             drawTool.fire('draw-start', { coordinate });
@@ -134,7 +140,7 @@ export class DrawTool extends BaseTool {
     }
     /** 绘制直线段 */
     static '_line'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startCoordinate = null;
         const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
             if (drawing) {
@@ -166,7 +172,7 @@ export class DrawTool extends BaseTool {
     }
     /** 快速绘制直线段 */
     static '_line-faster'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startCoordinate = null;
         const handlerMove = drawTool.map.on('pointermove', (e) => {
             if (drawing) {
@@ -209,7 +215,7 @@ export class DrawTool extends BaseTool {
     }
     /** 绘制多段线 */
     static '_polyline'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false;
         const coordinates = [];
         const handlerSingleClick = drawTool.map.on('singleclick', ({ coordinate }) => {
@@ -250,7 +256,7 @@ export class DrawTool extends BaseTool {
     }
     /** 绘制面 */
     static '_polygon'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false;
         const coordinates = [];
         const handlerSingleClick = drawTool.map.on('singleclick', ({ coordinate }) => {
@@ -291,7 +297,7 @@ export class DrawTool extends BaseTool {
     }
     /** 绘制矩形 */
     static '_rectangle'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startX, startY;
         const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
             if (drawing) {
@@ -333,7 +339,7 @@ export class DrawTool extends BaseTool {
     }
     /** 快速绘制矩形 */
     static '_rectangle-faster'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startX, startY;
         const handlerMove = drawTool.map.on('pointermove', (e) => {
             if (drawing) {
@@ -385,7 +391,7 @@ export class DrawTool extends BaseTool {
     }
     /** 绘制圆 */
     static '_circle'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startCoordinate = null;
         const handlerStartAndEnd = drawTool.map.on('singleclick', ({ coordinate }) => {
             if (drawing) {
@@ -419,7 +425,7 @@ export class DrawTool extends BaseTool {
     }
     /** 快速绘制圆 */
     static '_circle-faster'(drawTool) {
-        this._clearDrawHandlers();
+        this._ClearDrawHandlers();
         let drawing = false, startCoordinate = null;
         const handlerMove = drawTool.map.on('pointermove', (e) => {
             if (drawing) {
@@ -477,3 +483,16 @@ DrawTool._handlerPool = {
     'mousedown': null,
     'mouseup': null,
 };
+__decorate([
+    descriptorUtils.AutoBind
+], DrawTool.prototype, "onDrawStart", null);
+__decorate([
+    descriptorUtils.AutoBind
+], DrawTool.prototype, "onDrawMove", null);
+__decorate([
+    descriptorUtils.AutoBind
+], DrawTool.prototype, "onDrawEnd", null);
+__decorate([
+    descriptorUtils.AutoBind
+], DrawTool.prototype, "onDrawClear", null);
+export default DrawTool;

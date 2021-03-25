@@ -1,4 +1,4 @@
-import { WebMapPlugin } from '../../web-map/web-map-plugin'
+import WebMapPlugin from '../../web-map/web-map-plugin'
 import LayerGroup from 'ol/layer/Group'
 import VectorLayer from 'ol/layer/Vector'
 import Style from 'ol/style/Style'
@@ -8,7 +8,7 @@ import { createCollection, createFeature } from '../../utilities/base.utilities'
 import { WebMap } from '../../web-map/web-map'
 import { Feature } from 'ol'
 import Geometry from 'ol/geom/Geometry'
-import { baseUtils } from '../../../../js-utils/index'
+import { baseUtils, descriptorUtils } from '../../../../js-utils/index'
 
 export interface IGeometryStyleOptions {
   pointStyle?: IStyleOptions
@@ -148,6 +148,7 @@ export class MapElementDisplay extends WebMapPlugin<{
     this._highlightLayer = createVectorLayer()
     this._layerGroup.setLayers(createCollection([this._graphicsLayer, this._highlightLayer]))
     this.map.addLayer(this._layerGroup)
+    this.map.$owner.on('loaded', this.reSortLayers)
     return this
   }
 
@@ -156,14 +157,15 @@ export class MapElementDisplay extends WebMapPlugin<{
   //#region 公有方法
 
   /** 重新设置图层位置 */
-  reSortLayer () : this {
+  @descriptorUtils.AutoBind
+  public reSortLayers () : this {
     this.map.getLayers().remove(this._layerGroup)
     this.map.addLayer(this._layerGroup)
     return this
   }
 
   /** 重写插件安装方法 */
-  installPlugin (webMap: WebMap) : this {
+  public installPlugin (webMap: WebMap) : this {
     super.installPlugin(webMap)
     return this._init()
   }
@@ -172,7 +174,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 添加基础图元
    * @param features 图元
    */
-  add (features: Feature | Feature[]) : this {
+  public add (features: Feature | Feature[]) : this {
     const _features = Array.isArray(features) ? features : [features]
     this._graphicsLayer.getSource().addFeatures(_features)
     return this
@@ -182,7 +184,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 移除指定基础图元
    * @param features 图元
    */
-  remove (features: Feature | Feature[]) : this {
+  public remove (features: Feature | Feature[]) : this {
     const _features = Array.isArray(features) ? features : [features]
     _features.map(feat => {
       this._graphicsLayer.getSource().removeFeature(feat)
@@ -191,7 +193,7 @@ export class MapElementDisplay extends WebMapPlugin<{
   }
 
   /** 清空基础图元 */
-  clear () : this {
+  public clear () : this {
     this._graphicsLayer.getSource().clear()
     return this
   }
@@ -200,7 +202,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 设置指定基础图元
    * @param features 图元
    */
-  set (features: Feature | Feature[]) : this {
+  public set (features: Feature | Feature[]) : this {
     return this.clear().add(features)
   }
 
@@ -208,7 +210,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 添加高亮图元
    * @param features 图元
    */
-  addHighlight (features: Feature | Feature[]) : this {
+  public addHighlight (features: Feature | Feature[]) : this {
     const _features = Array.isArray(features) ? features : [features]
     this._highlightLayer.getSource().addFeatures(_features)
     return this
@@ -218,7 +220,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 移除指定高亮图元
    * @param features 图元
    */
-  removeHighlight (features: Feature | Feature[]) : this {
+  public removeHighlight (features: Feature | Feature[]) : this {
     const _features = Array.isArray(features) ? features : [features]
     _features.map(feat => {
       this._highlightLayer.getSource().removeFeature(feat)
@@ -227,7 +229,7 @@ export class MapElementDisplay extends WebMapPlugin<{
   }
 
   /** 清空高亮图元 */
-  clearHighlight () : this {
+  public clearHighlight () : this {
     this._highlightLayer.getSource().clear()
     return this
   }
@@ -236,12 +238,12 @@ export class MapElementDisplay extends WebMapPlugin<{
    * 设置指定高亮图元
    * @param features 图元
    */
-  setHighlight (features: Feature | Feature[]) : this {
+  public setHighlight (features: Feature | Feature[]) : this {
     return this.clearHighlight().addHighlight(features)
   }
 
   /** 清空所有图元 */
-  clearAll () : this {
+  public clearAll () : this {
     return this.clear().clearHighlight()
   }
 
@@ -250,7 +252,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param geometries 几何图形
    * @param styleOptions 样式配置项
    */
-  parseGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
+  public parseGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
     const _geometries = Array.isArray(geometries) ? geometries : [geometries]
     return _geometries.map(geometry => {
       let style: Style, options = {}
@@ -284,7 +286,7 @@ export class MapElementDisplay extends WebMapPlugin<{
    * @param geometries 几何图形
    * @param styleOptions 样式配置项
    */
-  parseHighlightGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
+  public parseHighlightGraphics (geometries: Geometry | Geometry[], styleOptions: IStyleOptions) : Feature[] {
     const _geometries = Array.isArray(geometries) ? geometries : [geometries]
     return _geometries.map(geometry => {
       let style: Style, options = {}
@@ -315,3 +317,5 @@ export class MapElementDisplay extends WebMapPlugin<{
   //#endregion
 
 }
+
+export default MapElementDisplay

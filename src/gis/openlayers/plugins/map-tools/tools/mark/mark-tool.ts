@@ -1,7 +1,7 @@
 import VectorLayer from 'ol/layer/Vector'
 import VectorSource from 'ol/source/Vector'
 import { Modify, Draw, Snap } from 'ol/interaction'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
 import { IMap, IView } from '../../../../web-map/web-map'
 import GeometryType from 'ol/geom/GeometryType'
 import { IObserverCallbackParams } from '../../../../../../observer'
@@ -159,3 +159,5 @@ export class MarkTool extends BaseTool<{
   //#endregion
 
 }
+
+export default MarkTool

@@ -1,6 +1,6 @@
-import { WebMap } from '../../web-map/web-map';
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
-import { BaseTool } from './base-tool';
+import WebMap from '../../web-map/web-map';
+import WebMapPlugin from '../../web-map/web-map-plugin';
+import BaseTool from './base-tool';
 /** 地图工具链 */
 export declare class MapTools extends WebMapPlugin<{
     'change': {
@@ -48,3 +48,4 @@ export declare class MapTools extends WebMapPlugin<{
      */
     getTool<T extends BaseTool>(key: string): T | null;
 }
+export default MapTools;

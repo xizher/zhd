@@ -1,20 +1,20 @@
-import { WebMap } from '../../web-map/web-map'
-import { WebMapPlugin } from '../../web-map/web-map-plugin'
-import { BaseTool } from './base-tool'
-import { DrawTool } from './tools/draw/draw-tool'
-import { MarkRemoveTool } from './tools/mark/mark-remove-tool'
-import { MarkTool } from './tools/mark/mark-tool'
-import { MeasureRemoveTool } from './tools/measure/measure-remove-tool'
-import { MeasureTool } from './tools/measure/measure-tool'
-import { ZoomHomeTool } from './tools/zoom/zoom-home-tool'
-import { ZoomInRectTool } from './tools/zoom/zoom-in-rect-tool'
-import { ZoomInTool } from './tools/zoom/zoom-in-tool'
-import { ZoomOutRectTool } from './tools/zoom/zoom-out-rect-tool'
-import { ZoomOutTool } from './tools/zoom/zoom-out-tool'
-import { FullscreenTool } from './tools/fullscreen/fullsceen-tool'
-import { FullmapTool } from './tools/zoom/fullmap-tool'
-import { ClearTool } from './tools/clear/clear-tool'
-import { HitTestTool } from './tools/hit-test/hit-test-tool'
+import WebMap from '../../web-map/web-map'
+import WebMapPlugin from '../../web-map/web-map-plugin'
+import BaseTool from './base-tool'
+import DrawTool from './tools/draw/draw-tool'
+import MarkRemoveTool from './tools/mark/mark-remove-tool'
+import MarkTool from './tools/mark/mark-tool'
+import MeasureRemoveTool from './tools/measure/measure-remove-tool'
+import MeasureTool from './tools/measure/measure-tool'
+import ZoomHomeTool from './tools/zoom/zoom-home-tool'
+import ZoomInRectTool from './tools/zoom/zoom-in-rect-tool'
+import ZoomInTool from './tools/zoom/zoom-in-tool'
+import ZoomOutRectTool from './tools/zoom/zoom-out-rect-tool'
+import ZoomOutTool from './tools/zoom/zoom-out-tool'
+import FullscreenTool from './tools/fullscreen/fullsceen-tool'
+import FullmapTool from './tools/zoom/fullmap-tool'
+import ClearTool from './tools/clear/clear-tool'
+import HitTestTool from './tools/hit-test/hit-test-tool'
 
 /** 地图工具链 */
 export class MapTools extends WebMapPlugin<{
@@ -88,7 +88,7 @@ export class MapTools extends WebMapPlugin<{
   //#region 公有方法
 
   /** 重写：插件安装方法 */
-  installPlugin (webMap: WebMap) : this {
+  public installPlugin (webMap: WebMap) : this {
     super.installPlugin(webMap)
     this._init()
     return this
@@ -98,7 +98,7 @@ export class MapTools extends WebMapPlugin<{
    * 设置工具
    * @param toolKey 工具Key
    */
-  setMapTool (toolKey: string) : this {
+  public setMapTool (toolKey: string) : this {
     if (!this._toolPool.has(toolKey)) {
       return this
     }
@@ -134,7 +134,7 @@ export class MapTools extends WebMapPlugin<{
    * @param key 工具Key
    * @param tool 工具对象
    */
-  createCustomTool (key: string, tool: BaseTool) : this {
+  public createCustomTool (key: string, tool: BaseTool) : this {
     this._toolPool.set(key, tool)
     return this
   }
@@ -143,7 +143,7 @@ export class MapTools extends WebMapPlugin<{
    * 检查是否存在工具
    * @param key 工具Key
    */
-  hasTool (key: string) : boolean {
+  public hasTool (key: string) : boolean {
     return this._toolPool.has(key)
   }
 
@@ -151,7 +151,7 @@ export class MapTools extends WebMapPlugin<{
    * 移除工具
    * @param key 工具Key
    */
-  deleteTool (key: string) : this {
+  public deleteTool (key: string) : this {
     this._toolPool.has(key) && this._toolPool.delete(key)
     return this
   }
@@ -160,7 +160,7 @@ export class MapTools extends WebMapPlugin<{
    * 获取工具
    * @param key 工具Key
    */
-  getTool<T extends BaseTool> (key: string) : T | null {
+  public getTool<T extends BaseTool> (key: string) : T | null {
     if (!this._toolPool.has(key)) {
       return null
     }
@@ -170,3 +170,5 @@ export class MapTools extends WebMapPlugin<{
   //#endregion
 
 }
+
+export default MapTools

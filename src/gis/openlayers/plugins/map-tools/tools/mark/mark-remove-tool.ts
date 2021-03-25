@@ -2,8 +2,8 @@ import { Feature } from 'ol'
 import { Select } from 'ol/interaction'
 import { IMap, IView } from '../../../../web-map/web-map'
 import { MapCursorType } from '../../../map-cursor/map-cursor'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
-import { MarkTool } from './mark-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
+import MarkTool from './mark-tool'
 
 /**
  * 标记清理工具类
@@ -88,3 +88,5 @@ export class MarkRemoveTool extends BaseTool {
   //#endregion
 
 }
+
+export default MarkRemoveTool

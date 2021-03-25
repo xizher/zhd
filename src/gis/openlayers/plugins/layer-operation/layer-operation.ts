@@ -3,8 +3,8 @@ import VectorSource from 'ol/source/Vector'
 import { OgcServerString } from '../../../../global/types.global'
 import { baseUtils } from '../../../../js-utils'
 import { createLayerGroup, createTileLayer, createVectorLayer } from '../../utilities/layer.utilities'
-import { WebMap } from '../../web-map/web-map'
-import { WebMapPlugin } from '../../web-map/web-map-plugin'
+import WebMap from '../../web-map/web-map'
+import WebMapPlugin from '../../web-map/web-map-plugin'
 import GeoJSON from 'ol/format/GeoJSON'
 import {bbox as bboxStrategy} from 'ol/loadingstrategy'
 import LayerGroup from 'ol/layer/Group'
@@ -204,14 +204,14 @@ export class LayerOperation extends WebMapPlugin<{
   //#region 公有方法
 
   /** 安装插件 */
-  installPlugin (webMap: WebMap) : this {
+  public installPlugin (webMap: WebMap) : this {
     super.installPlugin(webMap)
     this._init()
     return this
   }
 
   /** 获取所有图层的综合范围 */
-  getFullExtent () : Extent | null {
+  public getFullExtent () : Extent | null {
     const layers = [...this._layerPool.values()]
     let extent : Extent | null = null
     layers.forEach(([lyr]) => {
@@ -226,7 +226,7 @@ export class LayerOperation extends WebMapPlugin<{
   }
 
   /** 通过图层名获取图层对象 */
-  getLayerByName (name: string) : Layer | null {
+  public getLayerByName (name: string) : Layer | null {
     if (!this._layerPool.has(name)) {
       return null
     }
@@ -239,7 +239,7 @@ export class LayerOperation extends WebMapPlugin<{
    * @param name 图层名
    * @param visible 图层可见性，默认true
    */
-  setLayerVisible (name: string, visible = true) : this {
+  public setLayerVisible (name: string, visible = true) : this {
     const layer = this.getLayerByName(name)
     if (!layer) {
       return
@@ -256,7 +256,7 @@ export class LayerOperation extends WebMapPlugin<{
    * @param name 图层名
    * @param opacity 不可透明度
    */
-  setLayerOpacity (name: string, opacity: number) : this {
+  public setLayerOpacity (name: string, opacity: number) : this {
     const layer = this.getLayerByName(name)
     if (!layer) {
       return
@@ -273,7 +273,7 @@ export class LayerOperation extends WebMapPlugin<{
    * @param name 图层名
    * @param level 图层层级
    */
-  setLayerLevel (name: string, level: number) : this {
+  public setLayerLevel (name: string, level: number) : this {
     const layer = this.getLayerByName(name)
     if (!layer) {
       return
@@ -290,7 +290,7 @@ export class LayerOperation extends WebMapPlugin<{
    * 缩放至图层
    * @param name 图层名
    */
-  zoomToLayer (name: string) : this {
+  public zoomToLayer (name: string) : this {
     const layer = this.getLayerByName(name)
     if (!layer) {
       return
@@ -306,7 +306,7 @@ export class LayerOperation extends WebMapPlugin<{
    * 获取图层属性
    * @param name 图层名
    */
-  getAttributes <T extends { [key: string]: any }> (name: string) : T[] | null { // eslint-disable-line
+  public getAttributes <T extends { [key: string]: any }> (name: string) : T[] | null { // eslint-disable-line
     const [layer, options] = this._layerPool.get(name) as [VectorLayer, ILayerItemOptions]
     if (!layer) {
       return null
@@ -328,3 +328,5 @@ export class LayerOperation extends WebMapPlugin<{
   //#endregion
 
 }
+
+export default LayerOperation

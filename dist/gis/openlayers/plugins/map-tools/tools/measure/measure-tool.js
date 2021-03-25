@@ -6,7 +6,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { unByKey } from 'ol/Observable';
 import VectorSource from 'ol/source/Vector';
 import { createStyle2 } from '../../../../utilities/style.utilities';
-import { BaseTool } from '../../base-tool';
+import BaseTool from '../../base-tool';
 import './measure-tool.css';
 /** 测量工具类 */
 export class MeasureTool extends BaseTool {
@@ -253,3 +253,4 @@ export class MeasureTool extends BaseTool {
 MeasureTool._MSG_START_TO_DRAW = 'Click to start drawing';
 MeasureTool._MSG_CONTIUNE_POLYLINE = 'Click to continue drawing the polyline';
 MeasureTool._MSG_CONTIUNE_POLYGON = 'Click to continue drawing the polygon';
+export default MeasureTool;

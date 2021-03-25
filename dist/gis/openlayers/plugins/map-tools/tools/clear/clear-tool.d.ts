@@ -1,5 +1,5 @@
 import { IMap, IView } from '../../../../web-map/web-map';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture } from '../../base-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture } from '../../base-tool';
 /**
  * 清理图元工具类
  */
@@ -13,3 +13,4 @@ export declare class ClearTool extends BaseTool {
     /** 工具激化处理事件 */
     onToolActived(event: OnToolActivedParams<this>): OnToolActivedReture;
 }
+export default ClearTool;

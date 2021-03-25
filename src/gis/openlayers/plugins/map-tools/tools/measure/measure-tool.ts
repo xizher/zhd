@@ -12,7 +12,7 @@ import OverlayPositioning from 'ol/OverlayPositioning'
 import VectorSource from 'ol/source/Vector'
 import { createStyle2 } from '../../../../utilities/style.utilities'
 import { IMap, IView } from '../../../../web-map/web-map'
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool'
 import './measure-tool.css'
 
 export type MeasureType = 'area' | 'length' | ''
@@ -329,3 +329,5 @@ export class MeasureTool extends BaseTool<{
   //#endregion
 
 }
+
+export default MeasureTool

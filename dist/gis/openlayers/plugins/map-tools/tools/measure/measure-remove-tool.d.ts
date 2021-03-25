@@ -1,6 +1,6 @@
 import { IMap, IView } from '../../../../web-map/web-map';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
-import { MeasureTool } from './measure-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture, OnToolDeActivedParams, OnToolDeActivedReture } from '../../base-tool';
+import MeasureTool from './measure-tool';
 /**
  * 测量清理工具类
  */
@@ -26,3 +26,4 @@ export declare class MeasureRemoveTool extends BaseTool {
     /** 工具失活处理事件 */
     onToolDeActived(e: OnToolDeActivedParams<this>): OnToolDeActivedReture;
 }
+export default MeasureRemoveTool;

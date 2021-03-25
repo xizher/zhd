@@ -1,5 +1,5 @@
 import { IMap, IView } from '../../../../web-map/web-map';
-import { BaseTool, OnToolActivedParams, OnToolActivedReture } from '../../base-tool';
+import BaseTool, { OnToolActivedParams, OnToolActivedReture } from '../../base-tool';
 /** 全屏工具类 */
 export declare class FullscreenTool extends BaseTool<{}> {
     /**
@@ -14,3 +14,4 @@ export declare class FullscreenTool extends BaseTool<{}> {
     private _cancelFullscreen;
     onToolActived(e: OnToolActivedParams<this>): OnToolActivedReture;
 }
+export default FullscreenTool;
