@@ -1,15 +1,9 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 import { createCircle, createLineString, createPoint, createPolygon } from '../../../../utilities/geom.utilities';
 import BaseTool from '../../base-tool';
 import Drawer from './drawer';
 import { ext } from '../../../../../../js-exts';
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa';
-import { baseUtils, descriptorUtils } from '../../../../../../js-utils';
+import { baseUtils } from '../../../../../../js-utils';
 import { unByKey } from 'ol/Observable';
 /** 绘图工具 */
 export class DrawTool extends BaseTool {
@@ -34,10 +28,10 @@ export class DrawTool extends BaseTool {
         this._drawType = _options.drawType;
         this._cursorType = _options.cursorType;
         this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget;
-        this.on('draw-start', this.onDrawStart);
-        this.on('draw-move', this.onDrawMove);
-        this.on('draw-end', this.onDrawEnd);
-        this.on('draw-clear', this.onDrawClear);
+        this.on('draw-start', e => this.onDrawStart(e));
+        this.on('draw-move', e => this.onDrawMove(e));
+        this.on('draw-end', e => this.onDrawEnd(e));
+        this.on('draw-clear', e => this.onDrawClear(e));
     }
     //#endregion
     //#region getter
@@ -483,16 +477,4 @@ DrawTool._handlerPool = {
     'mousedown': null,
     'mouseup': null,
 };
-__decorate([
-    descriptorUtils.AutoBind
-], DrawTool.prototype, "onDrawStart", null);
-__decorate([
-    descriptorUtils.AutoBind
-], DrawTool.prototype, "onDrawMove", null);
-__decorate([
-    descriptorUtils.AutoBind
-], DrawTool.prototype, "onDrawEnd", null);
-__decorate([
-    descriptorUtils.AutoBind
-], DrawTool.prototype, "onDrawClear", null);
 export default DrawTool;

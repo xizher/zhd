@@ -1,5 +1,4 @@
 import { IObject } from '../../../../global/interfaces.global'
-import { descriptorUtils } from '../../../../js-utils'
 import Observer, { IObserverCallbackParams } from '../../../../observer/observer'
 import { IMap, IView } from '../../web-map/web-map'
 
@@ -64,8 +63,8 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
     this._view = view
     this._isOnceTool = isOnceTool
 
-    this.on('tool-actived', this.onToolActived)
-    this.on('tool-deactived', this.onToolDeActived)
+    this.on('tool-actived', e => this.onToolActived(e))
+    this.on('tool-deactived', e => this.onToolDeActived(e))
   }
 
   //#endregion
@@ -95,7 +94,6 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   }
 
   /** 工具激化处理事件 */
-  @descriptorUtils.AutoBind
   public onToolActived (e: OnToolActivedParams<this>) : OnToolActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!this._actived) {
       return false
@@ -104,7 +102,6 @@ export class BaseTool<T = IObject> extends Observer<T & { // eslint-disable-line
   }
 
   /** 工具失活处理事件 */
-  @descriptorUtils.AutoBind
   public onToolDeActived (e: OnToolDeActivedParams<this>) : OnToolDeActivedReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     if (!this._actived) {
       return false

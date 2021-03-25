@@ -15,7 +15,7 @@ import { Coordinate } from 'ol/coordinate'
 import { ext } from '../../../../../../js-exts'
 import { distanceByTwoPoint } from '../../../../../spatial-analysis/base.sa'
 import { IObject } from '../../../../../../global/interfaces.global'
-import { baseUtils, descriptorUtils } from '../../../../../../js-utils'
+import { baseUtils } from '../../../../../../js-utils'
 import { unByKey } from 'ol/Observable'
 
 export type DrawType =
@@ -114,10 +114,10 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     this._cursorType = _options.cursorType
     this._isDrawOnlyOneTarget = _options.isDrawOnlyOneTarget
 
-    this.on('draw-start', this.onDrawStart)
-    this.on('draw-move', this.onDrawMove)
-    this.on('draw-end', this.onDrawEnd)
-    this.on('draw-clear', this.onDrawClear)
+    this.on('draw-start', e => this.onDrawStart(e))
+    this.on('draw-move', e => this.onDrawMove(e))
+    this.on('draw-end', e => this.onDrawEnd(e))
+    this.on('draw-clear', e => this.onDrawClear(e))
   }
 
   //#endregion
@@ -136,7 +136,6 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
   }
 
   /** 绘图开始处理事件 */
-  @descriptorUtils.AutoBind
   public onDrawStart (e: OnDrawStartParams<this>) : OnDrawStartReture {
     if (!this.actived) {
       return false
@@ -144,7 +143,6 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     return e.coordinate
   }
   /** 绘图过程处理事件 */
-  @descriptorUtils.AutoBind
   public onDrawMove (e: OnDrawMoveParams<this>) : OnDrawMoveReture {
     if (!this.actived) {
       return false
@@ -153,7 +151,6 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     return features
   }
   /** 绘图结束处理事件 */
-  @descriptorUtils.AutoBind
   public onDrawEnd (e: OnDrawEndParams<this>) : OnDrawEndReture {
     if (!this.actived) {
       return false
@@ -165,7 +162,6 @@ export class DrawTool<T = IObject> extends BaseTool<T & {
     return features
   }
   /** 绘图清除处理事件 */
-  @descriptorUtils.AutoBind
   public onDrawClear (e: OnDrawClearParams<this>) : OnDrawClearReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     this._drawer.clear()
     if (!this.actived) {

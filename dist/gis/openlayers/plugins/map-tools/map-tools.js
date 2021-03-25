@@ -125,6 +125,9 @@ export class MapTools extends WebMapPlugin {
      */
     deleteTool(key) {
         this._toolPool.has(key) && this._toolPool.delete(key);
+        if (this._activedKey === key) {
+            this.setMapTool('default');
+        }
         return this;
     }
     /**
