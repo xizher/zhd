@@ -1,19 +1,23 @@
-import { IObject } from '../../../global/interfaces.global'
 import { IObserverCallbackParams, Observer } from '../../../observer'
 import { WebMap } from '../web-map/web-map'
 
 export type OnToolResetParams<T> = IObserverCallbackParams<'tool-reset', T>
 export type OnToolExecutingParams<T> = IObserverCallbackParams<'tool-executing', T>
 export type OnToolDoneParams<T> = IObserverCallbackParams<'tool-done', T>
+export type OnToolErrorParams<T> = IObserverCallbackParams<'tool-error', T>
 export type OnToolResetReture = boolean
 export type OnToolExecutingReture = boolean
 export type OnToolDoneReture = boolean
+export type OnToolErrorReture = boolean
 
 /** 执行动作工具（弃用） */
 export class BaseTool<T> extends Observer<T & {
   'tool-reset': void
   'tool-executing': void
   'tool-done': void
+  'tool-error': {
+    message: string
+  }
 }> {
 
   //#region 私有属性
@@ -43,6 +47,7 @@ export class BaseTool<T> extends Observer<T & {
     this.on('tool-reset', e => this.onToolReset(e))
     this.on('tool-executing', e=> this.onToolExecuting(e))
     this.on('tool-done', e => this.onToolDone(e))
+    this.on('tool-error', e => this.onToolError(e))
   }
 
   //#endregion
@@ -61,9 +66,15 @@ export class BaseTool<T> extends Observer<T & {
     return this
   }
 
+  doneTool (success: true) : this
+  doneTool (success: false, errorMessage: string) : this
   /** 完成执行工具 */
-  doneTool () : this {
-    this.fire('tool-done')
+  doneTool (success: true | false, errorMessage?: string) : this {
+    if (success) {
+      this.fire('tool-done')
+    } else {
+      this.fire('tool-error', ({ message: errorMessage } as any)) // eslint-disable-line
+    }
     return this
   }
 
@@ -81,6 +92,12 @@ export class BaseTool<T> extends Observer<T & {
 
   /** 工具执行完成触发事件 */
   onToolDone (e: OnToolDoneParams<this>) : OnToolDoneReture { // eslint-disable-line @typescript-eslint/no-unused-vars
+    this._webMap.mapCursor.stopWaitingCursor()
+    return true
+  }
+
+  /** 工具执行异常触发事件 */
+  onToolError (e: OnToolErrorParams<this>) : OnToolErrorReture { // eslint-disable-line @typescript-eslint/no-unused-vars
     this._webMap.mapCursor.stopWaitingCursor()
     return true
   }

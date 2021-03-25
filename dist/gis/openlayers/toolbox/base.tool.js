@@ -14,6 +14,7 @@ export class BaseTool extends Observer {
         this.on('tool-reset', e => this.onToolReset(e));
         this.on('tool-executing', e => this.onToolExecuting(e));
         this.on('tool-done', e => this.onToolDone(e));
+        this.on('tool-error', e => this.onToolError(e));
     }
     //#endregion
     //#region getter
@@ -33,8 +34,13 @@ export class BaseTool extends Observer {
         return this;
     }
     /** 完成执行工具 */
-    doneTool() {
-        this.fire('tool-done');
+    doneTool(success, errorMessage) {
+        if (success) {
+            this.fire('tool-done');
+        }
+        else {
+            this.fire('tool-error', { message: errorMessage }); // eslint-disable-line
+        }
         return this;
     }
     /** 工具重置触发事件 */
@@ -48,6 +54,11 @@ export class BaseTool extends Observer {
     }
     /** 工具执行完成触发事件 */
     onToolDone(e) {
+        this._webMap.mapCursor.stopWaitingCursor();
+        return true;
+    }
+    /** 工具执行异常触发事件 */
+    onToolError(e) {
         this._webMap.mapCursor.stopWaitingCursor();
         return true;
     }

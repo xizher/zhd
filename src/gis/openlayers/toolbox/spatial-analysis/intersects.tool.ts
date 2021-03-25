@@ -1,7 +1,7 @@
 import { Feature } from 'ol'
 import Geometry from 'ol/geom/Geometry'
 import { WebMap } from '../../web-map/web-map'
-import { BaseTool, OnToolDoneParams, OnToolDoneReture, OnToolExecutingParams, OnToolExecutingReture } from '../base.tool'
+import { BaseTool, OnToolDoneParams, OnToolDoneReture, OnToolExecutingParams, OnToolExecutingReture, OnToolResetParams, OnToolResetReture } from '../base.tool'
 import trufHelper from '../../truf-helper/truf-helper'
 
 /** 交集工具类 */
@@ -15,7 +15,7 @@ export class IntersectsTool extends BaseTool<{
   private _features: Feature[]
 
   /** 裁剪区域对象 */
-  private _clipGeom: Geometry
+  private _instersectsGeom: Geometry
 
   /** 裁剪结果 */
   private _resultFeatures: Feature[] = []
@@ -29,8 +29,8 @@ export class IntersectsTool extends BaseTool<{
     return this
   }
 
-  setClipGeometry (geometry: Geometry) : this {
-    this._clipGeom = geometry
+  setIntersectsGeometry (geometry: Geometry) : this {
+    this._instersectsGeom = geometry
     return this
   }
 
@@ -56,8 +56,16 @@ export class IntersectsTool extends BaseTool<{
     if (!super.onToolExecuting(e)) {
       return false
     }
+    if (!this._instersectsGeom) {
+      this.doneTool(false, '交集目标范围未确定')
+      return true
+    }
+    if (!this._features) {
+      this.doneTool(false, '求交要素数据未确定')
+      return true
+    }
     this.clearResult()
-    let polygon = trufHelper.createGeoJSON(this._clipGeom)
+    let polygon = trufHelper.createGeoJSON(this._instersectsGeom)
     polygon = trufHelper.toWgs84(polygon)
     this._features.forEach(feat => {
       let geojson = trufHelper.createGeoJSON(feat)
@@ -67,7 +75,7 @@ export class IntersectsTool extends BaseTool<{
         this._resultFeatures.push(feat)
       }
     })
-    this.doneTool()
+    this.doneTool(true)
     return true
   }
 
@@ -76,6 +84,16 @@ export class IntersectsTool extends BaseTool<{
     if (!super.onToolDone(e)) {
       return false
     }
+    return true
+  }
+
+  onToolReset (e: OnToolResetParams<this>) : OnToolResetReture {
+    if (!super.onToolReset(e)) {
+      return false
+    }
+    this.clearResult()
+    this._instersectsGeom = null
+    this._features = null
     return true
   }
 

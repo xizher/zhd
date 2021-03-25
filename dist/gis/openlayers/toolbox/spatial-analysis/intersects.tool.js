@@ -17,8 +17,8 @@ export class IntersectsTool extends BaseTool {
         this._features = features;
         return this;
     }
-    setClipGeometry(geometry) {
-        this._clipGeom = geometry;
+    setIntersectsGeometry(geometry) {
+        this._instersectsGeom = geometry;
         return this;
     }
     getResult() {
@@ -33,8 +33,16 @@ export class IntersectsTool extends BaseTool {
         if (!super.onToolExecuting(e)) {
             return false;
         }
+        if (!this._instersectsGeom) {
+            this.doneTool(false, '交集目标范围未确定');
+            return true;
+        }
+        if (!this._features) {
+            this.doneTool(false, '求交要素数据未确定');
+            return true;
+        }
         this.clearResult();
-        let polygon = trufHelper.createGeoJSON(this._clipGeom);
+        let polygon = trufHelper.createGeoJSON(this._instersectsGeom);
         polygon = trufHelper.toWgs84(polygon);
         this._features.forEach(feat => {
             let geojson = trufHelper.createGeoJSON(feat);
@@ -44,7 +52,7 @@ export class IntersectsTool extends BaseTool {
                 this._resultFeatures.push(feat);
             }
         });
-        this.doneTool();
+        this.doneTool(true);
         return true;
     }
     /** 工具执行完成触发事件 */
@@ -52,6 +60,15 @@ export class IntersectsTool extends BaseTool {
         if (!super.onToolDone(e)) {
             return false;
         }
+        return true;
+    }
+    onToolReset(e) {
+        if (!super.onToolReset(e)) {
+            return false;
+        }
+        this.clearResult();
+        this._instersectsGeom = null;
+        this._features = null;
         return true;
     }
 }
