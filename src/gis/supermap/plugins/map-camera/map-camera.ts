@@ -61,12 +61,11 @@ export class MapCamera extends WebMapPlugin<{
     return extent
   }
 
-  zoomTo (lon: number, lat: number, height?: number, callback?: () => void) : this {
+  zoomTo (lon: number, lat: number, height?: number) : this {
     const _hegith = height ?? this.getCameraHeight()
     this.camera.flyTo({
       destination: Supermap.Cartesian3.fromDegrees(lon, lat, _hegith),
       duration: 0,
-      complete: callback
     })
     return this
   }
