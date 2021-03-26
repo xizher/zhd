@@ -12,4 +12,5 @@ export declare class MapCamera extends WebMapPlugin<{}> {
         height: number;
     };
     zoomTo(lon: number, lat: number, height?: number): this;
+    zoomToExtent(west: number, south: number, east: number, north: number): this;
 }

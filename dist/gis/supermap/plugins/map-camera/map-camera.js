@@ -59,4 +59,11 @@ export class MapCamera extends WebMapPlugin {
         });
         return this;
     }
+    zoomToExtent(west, south, east, north) {
+        this.camera.flyTo({
+            destination: Supermap.Rectangle.fromDegrees(west, south, east, north),
+            duration: 0,
+        });
+        return this;
+    }
 }

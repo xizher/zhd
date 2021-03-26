@@ -70,6 +70,14 @@ export class MapCamera extends WebMapPlugin<{
     return this
   }
 
+  zoomToExtent (west: number, south: number, east: number, north: number) : this {
+    this.camera.flyTo({
+      destination: Supermap.Rectangle.fromDegrees(west, south, east, north),
+      duration: 0,
+    })
+    return this
+  }
+
   //#endregion
 
 
