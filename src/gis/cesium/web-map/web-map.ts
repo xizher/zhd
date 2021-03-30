@@ -5,7 +5,7 @@ import {
 } from 'cesium'
 import { baseUtils } from '../../../js-utils'
 import Basemap from '../plugins/basemap/basemap'
-import { IPlugins, WebMapPlugin } from './web-map-plugin'
+import WebMapPlugin, { IPlugins } from './web-map-plugin'
 
 export interface IViewer extends Viewer {
   $owner: WebMap
@@ -86,7 +86,7 @@ export class WebMap implements IPlugins {
   //#region 私有方法
 
   /** 初始化 */
-  _init () : void {
+  private _init () : void {
     const div = document.createElement('div')
     div.setAttribute('id', this._options.creditContainer as string)
     div.style.display = 'none'
@@ -106,7 +106,7 @@ export class WebMap implements IPlugins {
    * 挂载插件
    * @param plugin WebMap插件对象
    */
-  use <T> (plugin: WebMapPlugin<T>) : this {
+  public use <T> (plugin: WebMapPlugin<T>) : this {
     this[plugin.pluginName] = plugin.installPlugin(this)
     return this
   }
@@ -114,3 +114,5 @@ export class WebMap implements IPlugins {
   //#endregion
 
 }
+
+export default WebMap

@@ -1,6 +1,6 @@
 import { Observer } from '../../../observer'
 import Basemap from '../plugins/basemap/basemap'
-import { IEntities, IViewer, WebMap } from './web-map'
+import WebMap, { IEntities, IViewer } from './web-map'
 
 export interface IPlugins {
   basemap?: Basemap
@@ -57,7 +57,7 @@ export class WebMapPlugin<T> extends Observer<T> {
    * 安装WebMap插件
    * @param webMap WebMap对象
    */
-  installPlugin (webMap: WebMap) : this {
+  public installPlugin (webMap: WebMap) : this {
     this._viewer = webMap.viewer
     this._entities = webMap.entities
     return this
@@ -67,3 +67,4 @@ export class WebMapPlugin<T> extends Observer<T> {
 
 }
 
+export default WebMapPlugin
