@@ -1,6 +1,6 @@
 import { Observer } from '../../../observer';
 import Basemap from '../plugins/basemap/basemap';
-import { IEntities, IViewer, WebMap } from './web-map';
+import WebMap, { IEntities, IViewer } from './web-map';
 export interface IPlugins {
     basemap?: Basemap;
 }
@@ -26,3 +26,4 @@ export declare class WebMapPlugin<T> extends Observer<T> {
      */
     installPlugin(webMap: WebMap): this;
 }
+export default WebMapPlugin;

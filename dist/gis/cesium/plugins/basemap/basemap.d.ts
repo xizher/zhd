@@ -1,10 +1,11 @@
 import { ImageryProvider } from 'cesium';
-import { WebMap } from '../../web-map/web-map';
-import { WebMapPlugin } from '../../web-map/web-map-plugin';
+import WebMap from '../../web-map/web-map';
+import WebMapPlugin from '../../web-map/web-map-plugin';
 export interface IBasemapOptions {
     key: string;
     visible: boolean;
 }
+/** 底图控制插件类 */
 export declare class Basemap extends WebMapPlugin<{
     'change:key': {
         key: string;
@@ -14,12 +15,12 @@ export declare class Basemap extends WebMapPlugin<{
     };
 }> {
     /** 天地图秘钥 */
-    private _tianDiTuKey;
-    /** 天地图地址集合 */ private _tianDiTuUrls;
+    private static _TianDiTuKey;
+    /** 天地图地址集合 */ private static _TianDiTuUrls;
     /** GEOQ地图地址集合 */
-    private _geoqUrls;
+    private static _GeoqUrls;
     /** 高德地图地址集合 */
-    private _gaodeUrls;
+    private static _GaoDeUrls;
     /** 配置项 */
     private _options;
     /** 底图项池 */
@@ -42,6 +43,10 @@ export declare class Basemap extends WebMapPlugin<{
     private _init;
     /** 创建天地图底图项集合 */
     private _createTianDiTuItems;
+    /** 创建GeoQ底图项集合 */
+    private _createGeoqItems;
+    /** 创建高德底图项 */
+    private _createGaoDeItems;
     /** 安装插件 */
     installPlugin(webMap: WebMap): this;
     createCustomBasemap(key: string, imageryProviders: ImageryProvider | ImageryProvider[]): this;

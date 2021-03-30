@@ -34,3 +34,4 @@ export class WebMapPlugin extends Observer {
         return this;
     }
 }
+export default WebMapPlugin;

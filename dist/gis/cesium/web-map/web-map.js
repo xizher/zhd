@@ -64,3 +64,4 @@ export class WebMap {
         return this;
     }
 }
+export default WebMap;

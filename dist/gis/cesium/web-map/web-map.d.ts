@@ -1,6 +1,6 @@
 import { Viewer, EntityCollection } from 'cesium';
 import Basemap from '../plugins/basemap/basemap';
-import { IPlugins, WebMapPlugin } from './web-map-plugin';
+import WebMapPlugin, { IPlugins } from './web-map-plugin';
 export interface IViewer extends Viewer {
     $owner: WebMap;
 }
@@ -26,10 +26,11 @@ export declare class WebMap implements IPlugins {
      */
     constructor(container: string, options?: Viewer.ConstructorOptions);
     /** 初始化 */
-    _init(): void;
+    private _init;
     /**
      * 挂载插件
      * @param plugin WebMap插件对象
      */
     use<T>(plugin: WebMapPlugin<T>): this;
 }
+export default WebMap;
